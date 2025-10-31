@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
+import java.io.EOFException
 import java.io.IOException
 import java.net.SocketException
 import java.util.concurrent.TimeoutException
@@ -17,6 +18,7 @@ class GlobalExceptionHandler {
 
     /**
      * Handle [RuntimeException]
+     * @return [GlobalErrorResponse] - Response of error type
      */
     @ExceptionHandler(RuntimeException::class)
     fun handleRuntimeException(exception: RuntimeException): ResponseEntity<GlobalErrorResponse> {
@@ -33,6 +35,7 @@ class GlobalExceptionHandler {
 
     /**
      * Handle all [Exception]
+     * @return [GlobalErrorResponse] - Response of error type
      */
     @ExceptionHandler(Exception::class)
     fun handleGeneralException(exception: Exception): ResponseEntity<GlobalErrorResponse> {
@@ -49,6 +52,7 @@ class GlobalExceptionHandler {
 
     /**
      * Handle [IOException]
+     * @return [GlobalErrorResponse] - Response of error type
      */
     @ExceptionHandler(IOException::class)
     fun handleIOException(exception: IOException): ResponseEntity<GlobalErrorResponse> {
@@ -65,6 +69,7 @@ class GlobalExceptionHandler {
 
     /**
      * Handle [SocketException]
+     * @return [GlobalErrorResponse] - Response of error type
      */
     @ExceptionHandler(SocketException::class)
     fun handleSocketException(exception: SocketException): ResponseEntity<GlobalErrorResponse> {
@@ -81,6 +86,7 @@ class GlobalExceptionHandler {
 
     /**
      * Handle [TimeoutException]
+     * @return [GlobalErrorResponse] - Response of error type
      */
     @ExceptionHandler(TimeoutException::class)
     fun handleTimeoutException(exception: TimeoutException): ResponseEntity<GlobalErrorResponse> {
@@ -91,6 +97,23 @@ class GlobalExceptionHandler {
                     error = "Timeout Exception",
                     message = "Oops...server throw timeout exception with message: ${exception.message}",
                     code = HttpStatus.GATEWAY_TIMEOUT.value()
+                )
+            )
+    }
+
+    /**
+     * Handle [EOFException]
+     * @return [GlobalErrorResponse] - Response of error type
+     */
+    @ExceptionHandler(EOFException::class)
+    fun handleEOFException(exception: EOFException): ResponseEntity<GlobalErrorResponse> {
+        return ResponseEntity
+            .status(HttpStatus.INTERNAL_SERVER_ERROR)
+            .body(
+                GlobalErrorResponse(
+                    error = "EOF Exception",
+                    message = "Oops...server throw timeout exception with message: ${exception.message}",
+                    code = HttpStatus.INTERNAL_SERVER_ERROR.value()
                 )
             )
     }

@@ -1,4 +1,4 @@
-package com.foodback.demo.entity
+package com.foodback.demo.entity.User
 
 /**
  * Enum class with all roles.

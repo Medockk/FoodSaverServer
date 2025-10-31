@@ -54,6 +54,7 @@ class SecurityConfig(
     ): SecurityFilterChain {
         http
             .csrf { it.disable() }
+            .cors { }
             .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
             .exceptionHandling {
                 it.authenticationEntryPoint(authHandler)
@@ -62,7 +63,7 @@ class SecurityConfig(
             .authorizeHttpRequests {
                 it
                     .requestMatchers("/api/auth/**").permitAll()
-                    .requestMatchers("/api/users/**").hasAnyRole("USER", "ADMIN")
+                    // .requestMatchers("/api/users/**").hasAnyRole("USER", "ADMIN")
                     .anyRequest().authenticated()
             }
             .addFilterBefore(firebaseAuthFilter, UsernamePasswordAuthenticationFilter::class.java)

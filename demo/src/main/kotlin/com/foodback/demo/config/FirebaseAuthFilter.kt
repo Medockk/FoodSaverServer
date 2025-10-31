@@ -1,6 +1,6 @@
 package com.foodback.demo.config
 
-import com.foodback.demo.entity.Roles
+import com.foodback.demo.entity.User.Roles
 import com.foodback.demo.exception.auth.UserNotFoundException
 import com.foodback.demo.repository.UserRepository
 import com.google.firebase.auth.FirebaseAuth
@@ -97,6 +97,7 @@ class FirebaseAuthFilter(
         }
 
         val cookie = request.cookies ?: return null
+        println("\n\n\n${cookie.firstOrNull { it.name == "jwt" }?.value}\n\n\n")
         return cookie.firstOrNull { it.name == "jwt" }?.value
     }
 }

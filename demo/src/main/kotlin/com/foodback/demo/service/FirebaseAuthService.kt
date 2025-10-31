@@ -6,8 +6,8 @@ import com.foodback.demo.dto.request.auth.SignUpRequest
 import com.foodback.demo.dto.response.auth.AuthResponse
 import com.foodback.demo.dto.response.auth.FirebaseResponse
 import com.foodback.demo.dto.response.auth.RefreshResponseModel
-import com.foodback.demo.entity.Roles
-import com.foodback.demo.entity.UserEntity
+import com.foodback.demo.entity.User.Roles
+import com.foodback.demo.entity.User.UserEntity
 import com.foodback.demo.exception.auth.BadRequestException
 import com.foodback.demo.repository.UserRepository
 import com.foodback.demo.utils.CookieUtil

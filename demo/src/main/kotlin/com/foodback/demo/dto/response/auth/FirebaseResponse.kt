@@ -1,7 +1,7 @@
 package com.foodback.demo.dto.response.auth
 
-import com.foodback.demo.entity.Roles
-import com.foodback.demo.entity.UserEntity
+import com.foodback.demo.entity.User.Roles
+import com.foodback.demo.entity.User.UserEntity
 
 /**
  * Special response from FirebaseAuth
@@ -20,7 +20,7 @@ data class FirebaseResponse(
     val localId: String,
     val email: String?,
     val name: String?,
-    val displayName: String?,
+    val displayName: String? = null,
     val photoUrl: String? = null
 ){
     /**

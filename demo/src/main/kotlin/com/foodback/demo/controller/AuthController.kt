@@ -5,7 +5,7 @@ import com.foodback.demo.dto.request.auth.SignInRequest
 import com.foodback.demo.dto.request.auth.SignUpRequest
 import com.foodback.demo.dto.response.auth.AuthResponse
 import com.foodback.demo.dto.response.auth.RefreshResponseModel
-import com.foodback.demo.entity.UserEntity
+import com.foodback.demo.entity.User.UserEntity
 import com.foodback.demo.service.FirebaseAuthService
 import com.foodback.demo.service.ImageService
 import com.google.firebase.auth.FirebaseAuth
@@ -16,10 +16,6 @@ import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
-import java.io.File
-import java.nio.file.Files
-import java.nio.file.OpenOption
-import java.nio.file.Paths
 
 /**
  * Controller to authenticate users and update jwt token
@@ -64,6 +60,7 @@ class AuthController(
         @RequestBody signInRequest: SignInRequest,
         httpServletResponse: HttpServletResponse
     ): ResponseEntity<AuthResponse> {
+        println(signInRequest)
         val response = firebaseAuthService.signIn(signInRequest, httpServletResponse)
         return ResponseEntity.ok(response)
     }
@@ -94,6 +91,16 @@ class UsersController(
     val firebaseAuthService: FirebaseAuthService,
     private val supabaseService: ImageService
 ) {
+
+
+    @GetMapping("all")
+    fun getAllUsers(): ResponseEntity<List<String>> {
+        return try {
+            ResponseEntity.ok(listOf("1", "2", "3", "4"))
+        } catch (e: Exception) {
+            ResponseEntity.ok(emptyList())
+        }
+    }
 
     @PostMapping("image")
     fun uploadImage(

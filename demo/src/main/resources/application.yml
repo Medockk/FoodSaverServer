@@ -4,9 +4,9 @@ spring:
     version: 1.0.0
 
   datasource:
-    url: jdbc:postgresql://aws-0-eu-north-1.pooler.supabase.com:6543/postgres?prepareThreshold=0
+    url: jdbc:postgresql://aws-0-eu-north-1.pooler.supabase.com:5432/postgres?prepareThreshold=0&sslmode=disable
     username: postgres.bxyncqawvvfrtzxmqvfa
-    password: qwe1@3QWEv2
+    password: qwe1@3QWEqwe
     driver-class-name: org.postgresql.Driver
     hikari:
       maximum-pool-size: 1
@@ -21,10 +21,23 @@ spring:
     properties:
       hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
 
+  tomcat:
+    connection-timeout: 60000
+
 logging:
   level:
+#    com.foodback.demo.config.FirebaseAuthFilter: TRACE
+
     org.springframework.security: DEBUG
     org.springframework.web: DEBUG
+#    org.springframework.web.filter.OncePerRequestFilter: DEBUG
+#    org.springframework.web.HttpLogging: DEBUG
+#
+#    google:
+#      firebase: DEBUG
+#      auth: DEBUG
+#
+#    org.apache.coyote.http11: DEBUG
 
 firebase:
   api-key: AIzaSyADcu2FgZbVq3YHwdOik-n4iEbfaOjMO24
@@ -34,5 +47,5 @@ supabase:
   key: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ4eW5jcWF3dnZmcnR6eG1xdmZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDkxMDg3MDQsImV4cCI6MjA2NDY4NDcwNH0.iiG8uC92uzUDuzPQ5sMTj4ilGE5rGV-HQGrg_MXRGDo
 
 server:
-  address: 192.168.100.164
+  address: 192.168.100.247
   port: 8088
