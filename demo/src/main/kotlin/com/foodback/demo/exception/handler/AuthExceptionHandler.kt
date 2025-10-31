@@ -1,10 +1,10 @@
 package com.foodback.demo.exception.handler
 
-import com.foodback.demo.exception.general.GlobalErrorResponse
 import com.foodback.demo.exception.auth.BadRequestException
 import com.foodback.demo.exception.auth.CookieNotFoundException
 import com.foodback.demo.exception.auth.TokenVerificationFailedException
 import com.foodback.demo.exception.auth.UserNotFoundException
+import com.foodback.demo.exception.general.GlobalErrorResponse
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ExceptionHandler
