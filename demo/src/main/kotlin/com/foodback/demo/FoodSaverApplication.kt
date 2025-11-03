@@ -2,13 +2,15 @@ package com.foodback.demo
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
+import org.springframework.scheduling.annotation.EnableScheduling
 
 /**
  * Entry point of current application
  */
 @SpringBootApplication
-class DemoApplication
+@EnableScheduling
+class FoodSaverApplication
 
 fun main(args: Array<String>) {
-	runApplication<DemoApplication>(*args)
+	runApplication<FoodSaverApplication>(*args)
 }

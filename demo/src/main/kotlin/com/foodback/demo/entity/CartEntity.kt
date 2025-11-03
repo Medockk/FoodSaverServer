@@ -1,14 +1,16 @@
 package com.foodback.demo.entity
 
 import jakarta.persistence.*
+import org.hibernate.annotations.UuidGenerator
 import java.time.Instant
+import java.util.UUID
 
 @Entity
 @Table(name = "cart")
 data class CartEntity(
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long? = null,
+    @UuidGenerator(style = UuidGenerator.Style.RANDOM)
+    var id: UUID? = null,
 
     @Column(unique = true, nullable = false)
     var uid: String,
@@ -16,13 +18,13 @@ data class CartEntity(
     @Column(nullable = false)
     var productCount: Int = 0,
 
-    var createdAt: Instant = Instant.now(),
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(
-        name = "product_id",
-        unique = false,
-        nullable = false
+    @OneToMany(
+        fetch = FetchType.LAZY,
+        mappedBy = "cart",
+        cascade = [CascadeType.ALL],
+        orphanRemoval = true
     )
-    var productId: ProductEntity
+    var items: MutableList<CartItemEntity> = mutableListOf(),
+
+    var createdAt: Instant = Instant.now()
 )
