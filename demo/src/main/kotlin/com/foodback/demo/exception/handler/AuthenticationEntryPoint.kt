@@ -24,7 +24,7 @@ class CustomAuthenticationEntryPoint : AuthenticationEntryPoint {
         val statusCode = HttpStatus.UNAUTHORIZED.value()
         val globalErrorResponse = GlobalErrorResponse(
             error = "Unauthorized",
-            message = authException.message ?: "Unknown authentication error",
+            message = "Oops... authenticate in first to get access to this resource",
             code = statusCode
         )
 
@@ -42,10 +42,10 @@ class CustomAccessDeniedHandler : AccessDeniedHandler {
         response: HttpServletResponse,
         accessDeniedException: AccessDeniedException
     ) {
-        val statusCode = HttpStatus.UNAUTHORIZED.value()
+        val statusCode = HttpStatus.FORBIDDEN.value()
         val globalErrorResponse = GlobalErrorResponse(
-            error = "Unauthorized",
-            message = accessDeniedException.message ?: accessDeniedException.localizedMessage ?: "Unknown exception",
+            error = "Access Denied",
+            message = "Oops...You don't have access to this resource",
             code = statusCode
         )
 

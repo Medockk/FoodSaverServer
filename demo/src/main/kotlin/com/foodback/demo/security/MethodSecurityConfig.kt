@@ -1,4 +1,4 @@
-package com.foodback.demo.config
+package com.foodback.demo.security
 
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity

@@ -1,13 +1,15 @@
 package com.foodback.demo.entity.User
 
 import jakarta.persistence.*
-import jakarta.validation.constraints.Email
+import org.hibernate.annotations.UuidGenerator
 import java.time.Instant
+import java.util.*
 
 /**
  * Entity to make requests to Supabase.
  * @param uid Unique user identifier
- * @param email Email of current user
+ * @param username Username of current user
+ * @param passwordHash Hash of User password
  * @param name Name of current user. Can be null
  * @param photoUrl Url to user avatar
  * @param createdAt Date of creating new user
@@ -18,10 +20,13 @@ import java.time.Instant
 @Table(name = "users")
 data class UserEntity(
     @Id
-    var uid: String = "",
+    @UuidGenerator(style = UuidGenerator.Style.RANDOM)
+    var uid: UUID? = null,
+
     @Column(nullable = false)
-    @field:Email
-    var email: String = "",
+    var username: String = "",
+    var passwordHash: String? = "",
+
     @Column(nullable = true)
     var name: String? = "",
     @Column(nullable = true)
