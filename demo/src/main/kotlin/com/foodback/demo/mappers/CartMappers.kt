@@ -1,4 +1,4 @@
-package com.foodback.demo.dto.request.mappers
+package com.foodback.demo.mappers
 
 import com.foodback.demo.dto.request.cart.CartRequestModel
 import com.foodback.demo.entity.CartEntity

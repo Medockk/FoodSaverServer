@@ -4,8 +4,7 @@ import com.foodback.demo.entity.CartEntity
 import com.foodback.demo.entity.CartItemEntity
 import com.foodback.demo.entity.ProductEntity
 import org.springframework.data.jpa.repository.JpaRepository
-import java.util.Optional
-import java.util.UUID
+import java.util.*
 
 interface CartItemRepository: JpaRepository<CartItemEntity, UUID> {
 

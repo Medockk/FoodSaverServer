@@ -2,53 +2,65 @@ package com.foodback.demo.config
 
 import com.foodback.demo.exception.handler.CustomAccessDeniedHandler
 import com.foodback.demo.exception.handler.CustomAuthenticationEntryPoint
-import com.foodback.demo.repository.UserRepository
+import com.foodback.demo.security.JwtAuthenticationFilter
+import com.foodback.demo.security.JwtUtil
+import com.foodback.demo.security.UserDetailsServiceImpl
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.http.HttpHeaders
-import org.springframework.http.MediaType
+import org.springframework.context.annotation.Primary
+import org.springframework.security.authentication.AuthenticationManager
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.http.SessionCreationPolicy
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
-import org.springframework.web.reactive.function.client.WebClient
 
 /**
  * Security class to configure permissions and main security configurations
  */
 @Configuration
 class SecurityConfig(
-    private val userRepository: UserRepository
+    private val jwtUtil: JwtUtil,
+    private val userDetailsService: UserDetailsServiceImpl
 ) {
 
     /**
-     * Method to provide Single instance of FirebaseAuthFilter
+     * Method to provide Single instance of JwtAuthenticationFilter
      */
     @Bean
-    fun firebaseAuthFilter(): FirebaseAuthFilter {
-        return FirebaseAuthFilter(userRepository)
+    fun jwtAuthenticationFilter(): JwtAuthenticationFilter {
+        return JwtAuthenticationFilter(jwtUtil, userDetailsService)
     }
 
     /**
-     * Method to provide Single instance of WebClient
+     * Method to get [AuthenticationManager] - special manager to authenticate user and get
+     * [com.foodback.demo.security.UserDetailsImpl] - authentication user entity
      */
     @Bean
-    fun webClient(): WebClient {
-        return WebClient.builder()
-            .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-            .build()
+    fun authenticationManager(authConfig: AuthenticationConfiguration): AuthenticationManager {
+        return authConfig.authenticationManager
     }
+
+    /**
+     * Method to get [PasswordEncoder] - spacial crypto util to convert password to hash
+     */
+    @Bean
+    @Primary
+    fun passwordEncoder(): PasswordEncoder =
+        BCryptPasswordEncoder()
 
     /**
      * Method to authorize HTTP requests for all users or some roles,
-     * add FirebaseAuthFilter before [UsernamePasswordAuthenticationFilter],
+     * add JwtAuthenticationFilter before [UsernamePasswordAuthenticationFilter],
      * disable csrf check, set session creation policy,
      * and add Exception handler for 401 and 403 HTTP-error
      */
     @Bean
     fun filterChain(
         http: HttpSecurity,
-        firebaseAuthFilter: FirebaseAuthFilter,
+        jwtAuthenticationFilter: JwtAuthenticationFilter,
         authHandler: CustomAuthenticationEntryPoint,
         accessDeniedHandler: CustomAccessDeniedHandler
     ): SecurityFilterChain {
@@ -64,9 +76,10 @@ class SecurityConfig(
                 it
                     .requestMatchers("/api/auth/**").permitAll()
                     // .requestMatchers("/api/users/**").hasAnyRole("USER", "ADMIN")
+                    .requestMatchers("/api/products").hasAnyRole("ADMIN")
                     .anyRequest().authenticated()
             }
-            .addFilterBefore(firebaseAuthFilter, UsernamePasswordAuthenticationFilter::class.java)
+            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
         return http.build()
     }
 }

@@ -1,15 +1,15 @@
 package com.foodback.demo.service
 
 import com.foodback.demo.dto.request.cart.ProductRequestModel
-import com.foodback.demo.dto.request.mappers.toEntity
-import com.foodback.demo.dto.request.mappers.toResponseModel
 import com.foodback.demo.dto.response.cart.ProductResponseModel
+import com.foodback.demo.mappers.toEntity
+import com.foodback.demo.mappers.toResponseModel
 import com.foodback.demo.repository.ProductRepository
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
-import java.util.UUID
+import java.util.*
 
 /**
  * Special service to
@@ -28,6 +28,7 @@ class ProductService(
         println(result)
     }
 
+    @Transactional
     fun addProduct(
         product: ProductRequestModel
     ): ProductResponseModel {

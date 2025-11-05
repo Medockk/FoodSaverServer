@@ -1,17 +1,15 @@
 package com.foodback.demo.service
 
 import com.foodback.demo.dto.request.cart.CartRequestModel
-import com.foodback.demo.dto.request.mappers.toResponseModel
 import com.foodback.demo.dto.response.cart.ProductResponseModel
 import com.foodback.demo.entity.CartEntity
 import com.foodback.demo.entity.CartItemEntity
-import com.foodback.demo.exception.auth.UserNotFoundException
 import com.foodback.demo.exception.product.ProductNotFoundException
+import com.foodback.demo.mappers.toResponseModel
 import com.foodback.demo.repository.CartItemRepository
 import com.foodback.demo.repository.CartRepository
 import com.foodback.demo.repository.ProductRepository
 import org.springframework.stereotype.Service
-import java.util.UUID
 
 @Service
 class CartService(

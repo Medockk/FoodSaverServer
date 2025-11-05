@@ -36,8 +36,7 @@ repositories {
         runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.12.5")
         /*JWT*/
 
-        implementation("com.google.firebase:firebase-admin:9.5.0")
-        implementation("org.springframework.boot:spring-boot-starter-webflux")
+        //implementation("org.springframework.boot:spring-boot-starter-webflux")
 
         runtimeOnly("org.postgresql:postgresql")
 

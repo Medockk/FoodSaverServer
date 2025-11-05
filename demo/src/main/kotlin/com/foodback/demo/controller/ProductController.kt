@@ -5,21 +5,24 @@ import com.foodback.demo.dto.response.cart.ProductResponseModel
 import com.foodback.demo.service.ProductService
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
-import org.springframework.web.bind.annotation.DeleteMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
-import java.util.UUID
+import org.springframework.web.bind.annotation.*
+import java.util.*
 
+/**
+ * Rest controller to process HTTP-requests
+ */
 @RestController
 @RequestMapping("/api/products")
 class ProductController(
     private val productService: ProductService
 ) {
 
+    /**
+     * Method to add special product to server
+     * This method can invoke only Users with role ADMIN
+     * If User doens't have role ADMIN this method throw UnAuthorized exception
+     * @param productRequestModel request with current product
+     */
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
     fun addProduct(
@@ -30,6 +33,11 @@ class ProductController(
         return ResponseEntity.ok(product)
     }
 
+    /**
+     * Method to delete product with special [id]
+     * This method can invoke only Users with authority 'DELETE_PRODUCT'
+     * @param id special product id
+     */
     @DeleteMapping("{product_id}")
     @PreAuthorize("hasAuthority('DELETE_PRODUCT')")
     fun deleteProduct(

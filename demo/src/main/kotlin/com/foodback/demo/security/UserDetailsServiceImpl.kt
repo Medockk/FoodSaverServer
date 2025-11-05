@@ -1,0 +1,20 @@
+package com.foodback.demo.security
+
+import com.foodback.demo.exception.auth.UserNotFoundException
+import com.foodback.demo.repository.UserRepository
+import org.springframework.security.core.userdetails.UserDetails
+import org.springframework.security.core.userdetails.UserDetailsService
+import org.springframework.stereotype.Service
+
+@Service
+class UserDetailsServiceImpl(
+    private val userRepository: UserRepository
+): UserDetailsService {
+
+    override fun loadUserByUsername(username: String): UserDetails {
+        val userEntity = userRepository.findByUsername(username)
+            ?: throw UserNotFoundException(username)
+
+        return UserDetailsImpl(userEntity)
+    }
+}

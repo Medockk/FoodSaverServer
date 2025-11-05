@@ -29,39 +29,22 @@ spring:
       null-value: SKIP
 
     deserialization:
-      FAIL_ON_UNKNOWN_PROPERTIES: false # Игнорировать лишние поля (хорошая практика)
-      ACCEPT_SINGLE_VALUE_AS_ARRAY: true # Для гибкости
+      FAIL_ON_UNKNOWN_PROPERTIES: false
+      ACCEPT_SINGLE_VALUE_AS_ARRAY: true
 
 logging:
   level:
-#    com.foodback.demo.security.JwtAuthenticationFilter: TRACE
-
     org.springframework.security: DEBUG
     org.springframework.web: DEBUG
-#    org.springframework.web.filter.OncePerRequestFilter: DEBUG
-#    org.springframework.web.HttpLogging: DEBUG
-#
-#    google:
-#      firebase: DEBUG
-#      auth: DEBUG
-#
-#    org.apache.coyote.http11: DEBUG
-
-firebase:
-  api-key: AIzaSyADcu2FgZbVq3YHwdOik-n4iEbfaOjMO24
 
 jwt:
   secret: DV62BDKJS9N2XHND7XN0210HZDM176BX7TBFUY17AZQ00WLDVNEY63VRHFVUSLBWI
   expiration:
-    ms: 360000
+    ms: 3_600_000
   refresh:
     expiration:
       ms: 604800000
 
-supabase:
-  url: https://bxyncqawvvfrtzxmqvfa.supabase.co
-  key: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ4eW5jcWF3dnZmcnR6eG1xdmZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDkxMDg3MDQsImV4cCI6MjA2NDY4NDcwNH0.iiG8uC92uzUDuzPQ5sMTj4ilGE5rGV-HQGrg_MXRGDo
-
 server:
-  address: 192.168.0.188
+  address: 192.168.100.107
   port: 8088
