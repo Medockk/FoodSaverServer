@@ -1,18 +1,34 @@
 package com.foodback.demo.entity
 
-import jakarta.persistence.*
+import jakarta.persistence.Column
+import jakarta.persistence.Entity
+import jakarta.persistence.Id
+import jakarta.persistence.Table
+import org.hibernate.annotations.UuidGenerator
+import java.time.Instant
+import java.util.*
 
 @Entity
 @Table(name = "products")
 data class ProductEntity(
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    var id: String = "",
+    @UuidGenerator(style = UuidGenerator.Style.RANDOM)
+    var id: UUID? = null,
 
+    @Column(nullable = false)
     var title: String,
+    @Column(nullable = false)
     var description: String,
 
-    var cost: Long,
+    @Column(nullable = false)
+    var cost: Float,
 
-    var rating: Long,
+    @Column(nullable = false)
+    var organization: String,
+
+    @Column(nullable = true)
+    var rating: Float? = null,
+
+    var addedAt: Instant? = Instant.now(),
+    var expiresAt: Instant? = Instant.now(),
 )

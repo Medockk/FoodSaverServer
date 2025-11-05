@@ -1,12 +1,12 @@
 spring:
   application:
-    name: demo
+    name: foodback
     version: 1.0.0
 
   datasource:
-    url: jdbc:postgresql://aws-0-eu-north-1.pooler.supabase.com:5432/postgres?prepareThreshold=0&sslmode=disable
-    username: postgres.bxyncqawvvfrtzxmqvfa
-    password: qwe1@3QWEqwe
+    url: jdbc:postgresql://localhost:5432/foodback_db
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
     driver-class-name: org.postgresql.Driver
     hikari:
       maximum-pool-size: 1
@@ -24,28 +24,27 @@ spring:
   tomcat:
     connection-timeout: 60000
 
+  jackson:
+    default-setter-info:
+      null-value: SKIP
+
+    deserialization:
+      FAIL_ON_UNKNOWN_PROPERTIES: false
+      ACCEPT_SINGLE_VALUE_AS_ARRAY: true
+
 logging:
   level:
-#    com.foodback.demo.config.FirebaseAuthFilter: TRACE
-
     org.springframework.security: DEBUG
     org.springframework.web: DEBUG
-#    org.springframework.web.filter.OncePerRequestFilter: DEBUG
-#    org.springframework.web.HttpLogging: DEBUG
-#
-#    google:
-#      firebase: DEBUG
-#      auth: DEBUG
-#
-#    org.apache.coyote.http11: DEBUG
 
-firebase:
-  api-key: AIzaSyADcu2FgZbVq3YHwdOik-n4iEbfaOjMO24
-
-supabase:
-  url: https://bxyncqawvvfrtzxmqvfa.supabase.co
-  key: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ4eW5jcWF3dnZmcnR6eG1xdmZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDkxMDg3MDQsImV4cCI6MjA2NDY4NDcwNH0.iiG8uC92uzUDuzPQ5sMTj4ilGE5rGV-HQGrg_MXRGDo
+jwt:
+  secret: DV62BDKJS9N2XHND7XN0210HZDM176BX7TBFUY17AZQ00WLDVNEY63VRHFVUSLBWI
+  expiration:
+    ms: 3_600_000
+  refresh:
+    expiration:
+      ms: 604800000
 
 server:
-  address: 192.168.100.247
+  address: 192.168.100.107
   port: 8088

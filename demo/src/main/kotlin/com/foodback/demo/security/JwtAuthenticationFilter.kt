@@ -1,23 +1,20 @@
-package com.foodback.demo.config
+package com.foodback.demo.security
 
-import com.foodback.demo.entity.User.Roles
 import com.foodback.demo.exception.auth.UserNotFoundException
-import com.foodback.demo.repository.UserRepository
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseAuthException
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
-import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource
 import org.springframework.web.filter.OncePerRequestFilter
 
 /**
  * Class to verify all request to server except /api/auth
  */
-class FirebaseAuthFilter(
-    private val userRepository: UserRepository
+class JwtAuthenticationFilter(
+    private val jwtUtil: JwtUtil,
+    private val userDetailsService: UserDetailsServiceImpl
 ) : OncePerRequestFilter() {
 
     /**
@@ -33,7 +30,6 @@ class FirebaseAuthFilter(
      * and this jwt token successfully verified, request will proceed,
      * overrise this request will cause 401 Unauthorized Exception
      * @throws UserNotFoundException If user with this email doesn't have in database
-     * @throws FirebaseAuthException If JWT token invalid
      * @throws Exception If JWT token not found
      */
     override fun doFilterInternal(
@@ -41,47 +37,28 @@ class FirebaseAuthFilter(
         response: HttpServletResponse,
         filterChain: FilterChain
     ) {
-        val header = exactToken(request) ?: run {
+        val idToken = exactToken(request) ?: run {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Missing Authorization header")
             return
         }
 
-        val idToken = header.removePrefix("Bearer ").trim()
-
         try {
-            val decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken)
+            if (jwtUtil.validate(idToken)) {
+                val username = jwtUtil.getUsername(idToken)
+                val user = userDetailsService.loadUserByUsername(username) as UserDetailsImpl
 
-            val user = userRepository.findByEmail(decodedToken.email)
-                ?: throw UserNotFoundException(decodedToken.email)
+                val auth = UsernamePasswordAuthenticationToken(
+                    user.uid,
+                    null,
+                    user.authorities
+                )
+                auth.details = WebAuthenticationDetailsSource().buildDetails(request)
+                SecurityContextHolder.getContext().authentication = auth
 
-            val roles = user
-                .roles
-                .map {
-                    SimpleGrantedAuthority(
-                        if (it.startsWith("ROLE_")) it
-                        else "ROLE_$it"
-                    )
-                }
-            println(roles)
-
-            val permissions = user
-                .roles
-                .flatMap { Roles.valueOf(it).permissions }
-                .map { SimpleGrantedAuthority(it) }
-
-            val auth = UsernamePasswordAuthenticationToken(
-                decodedToken.uid,
-                null,
-                roles + permissions
-            )
-            SecurityContextHolder.getContext().authentication = auth
-            request.setAttribute("uid", decodedToken.uid)
-
-            filterChain.doFilter(request, response)
-        } catch (e: FirebaseAuthException) {
-            throw e
-        } catch (e: UserNotFoundException) {
-            throw e
+                filterChain.doFilter(request, response)
+            } else {
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid JWT token")
+            }
         } catch (e: Exception) {
             throw e
         }
