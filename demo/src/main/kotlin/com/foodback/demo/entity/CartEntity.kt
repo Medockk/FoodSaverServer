@@ -20,7 +20,7 @@ data class CartEntity(
     var id: UUID? = null,
 
     @Column(unique = true, nullable = false)
-    var uid: String,
+    var uid: UUID,
 
     @Column(nullable = false)
     var productCount: Int = 0,

@@ -7,7 +7,9 @@ import com.foodback.demo.dto.response.auth.AuthResponse
 import com.foodback.demo.dto.response.auth.RefreshResponseModel
 import com.foodback.demo.entity.User.Roles
 import com.foodback.demo.entity.User.UserEntity
-import com.foodback.demo.mappers.toResponse
+import com.foodback.demo.exception.auth.AuthenticationException
+import com.foodback.demo.exception.general.ErrorCode.RequestError
+import com.foodback.demo.mappers.toAuthResponse
 import com.foodback.demo.repository.UserRepository
 import com.foodback.demo.security.JwtUtil
 import com.foodback.demo.security.UserDetailsImpl
@@ -41,12 +43,12 @@ class AuthService(
         request: SignUpRequest,
         response: HttpServletResponse
     ): AuthResponse {
-        if (userRepository.findByUsername(request.email) != null) {
-            throw IllegalArgumentException("User already registered")
+        if (userRepository.findByUsername(request.username) != null) {
+            throw AuthenticationException("User already registered", RequestError.Authentication.USERNAME_OCCUPIED)
         }
 
         val entity = UserEntity(
-            username = request.email,
+            username = request.username,
             name = request.displayName,
             passwordHash = passwordEncoder.encode(request.password),
             roles = mutableListOf(Roles.USER.name)
@@ -58,9 +60,9 @@ class AuthService(
         response.addJwtCookie(accessToken)
 
         if (user.uid != null) {
-            return user.toResponse(user.uid!!,accessToken, refreshToken, jwtExpirationMs)
+            return user.toAuthResponse(user.uid!!, accessToken, refreshToken, jwtExpirationMs)
         } else {
-            throw IllegalArgumentException("Failed to save user")
+            throw AuthenticationException(RequestError.Authentication.FAILED_REGISTER_USER)
         }
     }
 
@@ -68,9 +70,16 @@ class AuthService(
         request: SignInRequest,
         response: HttpServletResponse
     ): AuthResponse {
-        val auth = authenticationManager.authenticate(
-            UsernamePasswordAuthenticationToken(request.email, request.password)
-        )
+        val auth = try {
+            authenticationManager.authenticate(
+                UsernamePasswordAuthenticationToken(request.username, request.password)
+            )
+        } catch (e: org.springframework.security.core.AuthenticationException) {
+            throw AuthenticationException(
+                "Failed to authenticate user",
+                RequestError.Authentication.FAILED_AUTHORIZE_USER
+            )
+        }
         SecurityContextHolder.getContext().authentication = auth
 
         val principal = auth.principal as UserDetailsImpl
@@ -96,11 +105,11 @@ class AuthService(
     ): RefreshResponseModel {
 
         if (jwtUtil.validate(request.accessToken)) {
-            throw IllegalArgumentException("Jwt token is not expires")
+            throw AuthenticationException("Jwt token is not expires", RequestError.Authentication.JWT_TOKEN_NOT_EXPIRED)
         }
 
         if (!jwtUtil.validate(request.refreshToken)) {
-            throw IllegalArgumentException("Refresh token expires")
+            throw AuthenticationException("Refresh token expires", RequestError.Authentication.REFRESH_TOKEN_EXPIRED)
         }
 
         val username = jwtUtil.getUsername(request.accessToken)
