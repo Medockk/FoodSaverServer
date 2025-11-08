@@ -8,7 +8,7 @@ import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.security.Principal
-import java.util.UUID
+import java.util.*
 
 @RestController
 @RequestMapping("/api/user")

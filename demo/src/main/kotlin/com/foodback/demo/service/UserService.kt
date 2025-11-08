@@ -7,8 +7,7 @@ import com.foodback.demo.mappers.toResponse
 import com.foodback.demo.repository.UserRepository
 import org.springframework.stereotype.Service
 import java.time.Instant
-import java.util.UUID
-import kotlin.jvm.Throws
+import java.util.*
 
 /**
  * Service to make requests to database with same user data

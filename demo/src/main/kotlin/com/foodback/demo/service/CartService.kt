@@ -4,6 +4,8 @@ import com.foodback.demo.dto.request.cart.CartRequestModel
 import com.foodback.demo.dto.response.cart.ProductResponseModel
 import com.foodback.demo.entity.CartEntity
 import com.foodback.demo.entity.CartItemEntity
+import com.foodback.demo.exception.cart.CartException
+import com.foodback.demo.exception.general.ErrorCode.RequestError
 import com.foodback.demo.exception.product.ProductNotFoundException
 import com.foodback.demo.mappers.toProductResponse
 import com.foodback.demo.mappers.toResponseModel
@@ -12,7 +14,7 @@ import com.foodback.demo.repository.CartRepository
 import com.foodback.demo.repository.ProductRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.util.UUID
+import java.util.*
 
 @Service
 class CartService(
@@ -79,7 +81,7 @@ class CartService(
         uid: UUID
     ) {
         val cart = cartRepository.findByUid(uid).orElseThrow {
-            IllegalArgumentException()
+            CartException(RequestError.CartRequest.CART_NOT_FOUND, "Cart not found")
         }
         val cartItemEntity = cart.items.firstOrNull {
             it.product.id == productId
@@ -88,6 +90,8 @@ class CartService(
         if (cartItemEntity != null) {
             cart.productCount -= cartItemEntity.quantity
             cart.items.remove(cartItemEntity)
+        } else {
+            throw ProductNotFoundException()
         }
     }
 
@@ -97,7 +101,7 @@ class CartService(
         uid: UUID
     ): ProductResponseModel {
         val cart = cartRepository.findByUid(uid).orElseThrow {
-            IllegalArgumentException()
+            CartException(RequestError.CartRequest.CART_NOT_FOUND, "Cart not found")
         }
         val cartItemEntity = cart.items.firstOrNull {
             it.product.id == request.productId
@@ -111,7 +115,7 @@ class CartService(
             cart.productCount += request.quantity
             return cartItemEntity.toProductResponse()
         } else {
-            throw IllegalArgumentException()
+            throw ProductNotFoundException()
         }
     }
 
@@ -122,7 +126,7 @@ class CartService(
     ): ProductResponseModel {
 
         val cart = cartRepository.findByUid(uid).orElseThrow {
-            IllegalArgumentException()
+            CartException(RequestError.CartRequest.CART_NOT_FOUND, "Cart not found")
         }
         val cartItemEntity = cart.items.firstOrNull {
             it.product.id == request.productId
@@ -136,7 +140,7 @@ class CartService(
             cart.productCount -= request.quantity
             return cartItemEntity.toProductResponse()
         } else {
-            throw IllegalArgumentException()
+            throw ProductNotFoundException()
         }
     }
 }

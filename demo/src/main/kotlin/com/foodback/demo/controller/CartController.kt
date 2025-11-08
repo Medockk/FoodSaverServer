@@ -2,13 +2,12 @@ package com.foodback.demo.controller
 
 import com.foodback.demo.dto.request.cart.CartRequestModel
 import com.foodback.demo.dto.response.cart.ProductResponseModel
-import com.foodback.demo.exception.auth.UserNotFoundException
 import com.foodback.demo.service.CartService
 import com.foodback.demo.utils.toUUID
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.security.Principal
-import java.util.UUID
+import java.util.*
 
 /**
  * Rest controller to process HTTP request to get/modify user cart

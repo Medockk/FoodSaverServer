@@ -11,20 +11,20 @@ fun UserEntity.toAuthResponse(
     refreshToken: String,
     expiresIn: Long
 ) = AuthResponse(
-        uid = uid,
-        username = username,
-        roles = roles,
-        jwtToken = jwtToken,
-        refreshToken = refreshToken,
-        expiresIn = expiresIn
-    )
+    uid = uid,
+    username = username,
+    roles = roles,
+    jwtToken = jwtToken,
+    refreshToken = refreshToken,
+    expiresIn = expiresIn
+)
 
 fun UserEntity.toResponse() = UserResponseModel(
-        uid = requireNotNull(uid),
-        username = username,
-        email = email,
-        name = name,
-        photoUrl = photoUrl,
-        createdAt = createdAt,
-        roles = roles
-    )
+    uid = requireNotNull(uid),
+    username = username,
+    email = email,
+    name = name,
+    photoUrl = photoUrl,
+    createdAt = createdAt,
+    roles = roles
+)
