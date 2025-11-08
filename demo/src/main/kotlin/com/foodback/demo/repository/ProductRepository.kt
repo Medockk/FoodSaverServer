@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
 import java.util.*
 
-interface ProductRepository: JpaRepository<ProductEntity, UUID> {
+interface ProductRepository : JpaRepository<ProductEntity, UUID> {
 
     @Modifying
     @Transactional

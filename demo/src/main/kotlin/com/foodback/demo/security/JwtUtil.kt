@@ -32,7 +32,7 @@ class JwtUtil {
             .subject(login)
             .issuedAt(Date())
             .expiration(Date(System.currentTimeMillis() + expirationJwtMs))
-            .signWith(key, Jwts.SIG.HS256   )
+            .signWith(key, Jwts.SIG.HS256)
             .compact()
     }
 

@@ -1,4 +1,4 @@
-package com.foodback.demo.exception.general
+package com.foodback.demo.exception.general.Error
 
 /**
  * Global Error Response body
@@ -10,6 +10,7 @@ package com.foodback.demo.exception.general
 data class GlobalErrorResponse(
     val error: String,
     val message: String,
-    val code: Int,
+    val httpCode: Int,
+    val errorCode: Int = 0,
     val timestamp: Long = System.currentTimeMillis(),
 )
