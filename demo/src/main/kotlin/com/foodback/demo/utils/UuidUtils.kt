@@ -1,8 +1,7 @@
 package com.foodback.demo.utils
 
 import com.foodback.demo.exception.general.UuidException
-import java.util.UUID
-import kotlin.jvm.Throws
+import java.util.*
 
 /**
  * Special Util function to convert [String] value to [UUID] value

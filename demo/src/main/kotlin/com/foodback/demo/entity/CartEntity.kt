@@ -1,6 +1,5 @@
 package com.foodback.demo.entity
 
-import com.foodback.demo.entity.User.UserEntity
 import jakarta.persistence.*
 import org.hibernate.annotations.UuidGenerator
 import java.time.Instant

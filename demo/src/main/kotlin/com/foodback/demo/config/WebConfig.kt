@@ -16,7 +16,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 class WebConfig(
     @Autowired
     private val handler: GlobalExceptionHandler
-): WebMvcConfigurer {
+) : WebMvcConfigurer {
 
     override fun addCorsMappings(registry: CorsRegistry) {
         registry.addMapping("/**")

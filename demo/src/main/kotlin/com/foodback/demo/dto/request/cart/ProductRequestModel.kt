@@ -20,4 +20,4 @@ data class ProductRequestModel(
     val expiresAt: Instant? = Instant.now(),
     val addedAt: Instant? = Instant.now(),
 
-)
+    )

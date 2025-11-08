@@ -1,7 +1,7 @@
 package com.foodback.demo.dto.response.user
 
 import java.time.Instant
-import java.util.UUID
+import java.util.*
 
 data class UserResponseModel(
     val uid: UUID,

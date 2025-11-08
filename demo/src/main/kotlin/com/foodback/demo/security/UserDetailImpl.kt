@@ -8,7 +8,7 @@ import java.util.*
 
 class UserDetailsImpl(
     private val userEntity: UserEntity
-): UserDetails {
+) : UserDetails {
 
     val uid: UUID = requireNotNull(userEntity.uid) {
         "User identifier must be not null"

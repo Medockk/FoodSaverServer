@@ -12,5 +12,5 @@ import org.springframework.scheduling.annotation.EnableScheduling
 class FoodSaverApplication
 
 fun main(args: Array<String>) {
-	runApplication<FoodSaverApplication>(*args)
+    runApplication<FoodSaverApplication>(*args)
 }

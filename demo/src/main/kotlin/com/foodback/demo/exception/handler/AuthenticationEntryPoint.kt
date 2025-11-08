@@ -1,6 +1,6 @@
 package com.foodback.demo.exception.handler
 
-import com.foodback.demo.exception.general.GlobalErrorResponse
+import com.foodback.demo.exception.general.Error.GlobalErrorResponse
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.http.HttpStatus
@@ -25,7 +25,7 @@ class CustomAuthenticationEntryPoint : AuthenticationEntryPoint {
         val globalErrorResponse = GlobalErrorResponse(
             error = "Unauthorized",
             message = "Oops... authenticate in first to get access to this resource",
-            code = statusCode
+            httpCode = statusCode
         )
 
         response.status = statusCode
@@ -46,7 +46,7 @@ class CustomAccessDeniedHandler : AccessDeniedHandler {
         val globalErrorResponse = GlobalErrorResponse(
             error = "Access Denied",
             message = "Oops...You don't have access to this resource",
-            code = statusCode
+            httpCode = statusCode
         )
 
         response.status = statusCode
@@ -60,7 +60,7 @@ private fun GlobalErrorResponse.toJson(): String {
             {
                 "error": "$error",
                 "message": "$message",
-                "code": "$code",
+                "httpCode": "$httpCode",
                 "timestamp": "$timestamp"
             }
         """.trimIndent()

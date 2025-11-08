@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="bf661595-a502-411e-a631-fb659bdf502f" name="Changes" comment="Добавлено взаимодействие с данными пользователя и корзиной пользователя">
+      <change afterPath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/exception/auth/AuthenticationException.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/exception/cart/CartException.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/exception/general/Error/GlobalError.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/exception/general/ErrorCode/RequestError.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/exception/general/ErrorCode/ServerErrorCode.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/exception/general/UuidException.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/project.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/jsonSchemas.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/kotlinc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/controller/UserController.kt" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/controller/UserController.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/dto/request/auth/SignInRequest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/dto/request/auth/SignInRequest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/dto/request/auth/SignUpRequest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/dto/request/auth/SignUpRequest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/exception/auth/BadRequestException.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/exception/auth/CookieNotFoundException.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/exception/auth/TokenVerificationFailedException.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/exception/auth/UserNotFoundException.kt" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/exception/auth/UserNotFoundException.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/exception/general/GlobalErrorResponse.kt" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/exception/general/Error/GlobalErrorResponse.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/exception/handler/AuthExceptionHandler.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/exception/handler/AuthenticationEntryPoint.kt" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/exception/handler/AuthenticationEntryPoint.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/exception/handler/GlobalExceptionHandler.kt" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/exception/handler/GlobalExceptionHandler.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/exception/handler/ProductExceptionHandler.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/exception/product/ProductNotFoundException.kt" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/exception/product/ProductNotFoundException.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/service/AuthService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/service/AuthService.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/service/CartService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/service/CartService.kt" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$/demo">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <projects_view>
+          <tree_state>
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="demo" type="f1a62948:ProjectNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="demo" type="f1a62948:ProjectNode" />
+                <item name="Dependencies" type="6de06a37:ExternalSystemViewDefaultContributor$MyDependenciesNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="demo" type="f1a62948:ProjectNode" />
+                <item name="Dependencies" type="6de06a37:ExternalSystemViewDefaultContributor$MyDependenciesNode" />
+                <item name="compileClasspath" type="62daadca:ExternalSystemViewDefaultContributor$DependencyScopeExternalSystemNode" />
+              </path>
+            </expand>
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Kotlin Enum" />
+        <option value="Interface" />
+        <option value="Class" />
+        <option value="Kotlin Data Class" />
+        <option value="Kotlin Annotation" />
+        <option value="AnnotationType" />
+        <option value="Kotlin File" />
+        <option value="Kotlin Interface" />
+        <option value="Kotlin Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Medockk&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Medockk/demo.git&quot;,
+    &quot;accountId&quot;: &quot;2f00fdd1-cd8e-45fd-a9c1-6a32026f9f80&quot;
+  }
+}</component>
+  <component name="GradleScriptDefinitionsStorage" workingDir="$PROJECT_DIR$/demo" gradleHome="C:\Users\S\.gradle\wrapper\dists\gradle-8.14.3-bin\cv11ve7ro1n3o1j4so8xd9n66\gradle-8.14.3" javaHome="C:\Program Files\Java\jdk-23" gradleVersion="8.14.3" />
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="ProjectErrors" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 4
+}</component>
+  <component name="ProjectId" id="328RoqegmLAHzdiJhLIrJGBtDwl" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Gradle.Download Sources.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.demo [:com.foodback.demo.DemoApplicationKt.main()].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.demo [:com.foodback.demo.FoodSaverApplicationKt.main()].executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;ToolWindow.Run.ShowToolbar&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;user__branch&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/S/IntellijIdeaProjects/demo&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.sourceCode.yaml&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\S\Downloads\demo\demo\src\main\kotlin\com\foodback\demo" />
+      <recent name="C:\Users\S\Downloads\demo\demo\src\main\resources" />
+      <recent name="C:\Users\S\Downloads\demo\demo\src\main\resources\static\images" />
+      <recent name="C:\Users\S\Downloads\demo\demo\src\main\resources\static" />
+    </key>
+    <key name="K2MoveDeclarationsDialog.RECENT_PACKAGE_KEY">
+      <recent name="com.foodback.demo.exception.general.ErrorCode" />
+      <recent name="com.foodback.demo.exception.general.Error" />
+      <recent name="com.foodback.demo.security" />
+      <recent name="com.foodback.demo.entity.User" />
+      <recent name="com.foodback.demo.exception.general" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="FoodSaverApplicationKt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
+      <envs>
+        <env name="SUPABASE_PASSWORD" value="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJpcXBzb3JmcXRmZWR6aXlpc3VqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA4MjUwNTMsImV4cCI6MjA2NjQwMTA1M30.sVJiVS4qWsXtiFCjJyUGetC-HmUC6Dg7-7M5NN4PErs" />
+      </envs>
+      <option name="MAIN_CLASS_NAME" value="com.foodback.demo.FoodSaverApplicationKt" />
+      <module name="demo.main" />
+      <shortenClasspath name="NONE" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="kotlin.scripts.KotlinBuildScript...\::Users:S:IntellijIdeaProjects:demo:demo:build.gradle.kts" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Kotlin.FoodSaverApplicationKt" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="bf661595-a502-411e-a631-fb659bdf502f" name="Changes" comment="" />
+      <created>1756800391318</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1756800391318</updated>
+    </task>
+    <task id="LOCAL-00001" summary="Initial commit">
+      <option name="closed" value="true" />
+      <created>1757922451218</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1757922451218</updated>
+    </task>
+    <task id="LOCAL-00002" summary="m">
+      <option name="closed" value="true" />
+      <created>1758355413247</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1758355413247</updated>
+    </task>
+    <task id="LOCAL-00003" summary="web-socket">
+      <option name="closed" value="true" />
+      <created>1758793484125</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1758793484125</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Успешно реализован сервер. Успешен вызов firebase-сервисов для регистрации/авторизации/обновления jwt-токена. Реализована защита сервера с jwt-токенами.">
+      <option name="closed" value="true" />
+      <created>1761903877425</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1761903877425</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Успешно реализован сервер. Успешен вызов firebase-сервисов для регистрации/авторизации/обновления jwt-токена. Реализована защита сервера с jwt-токенами.">
+      <option name="closed" value="true" />
+      <created>1761904771957</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1761904771957</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Создан Product/Cart Controller + Настроена локальная бд">
+      <option name="closed" value="true" />
+      <created>1762176366960</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1762176366960</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Полный отказ от сервисов, переход на локальную бд, изменение аутентификации пользователей">
+      <option name="closed" value="true" />
+      <created>1762327772006</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1762327772007</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Добавлено взаимодействие с данными пользователя и корзиной пользователя">
+      <option name="closed" value="true" />
+      <created>1762581368212</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1762581368212</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Initial commit" />
+    <MESSAGE value="m" />
+    <MESSAGE value="web-socket" />
+    <MESSAGE value="Успешно реализован сервер. Успешен вызов firebase-сервисов для регистрации/авторизации/обновления jwt-токена. Реализована защита сервера с jwt-токенами." />
+    <MESSAGE value="Создан Product/Cart Controller + Настроена локальная бд" />
+    <MESSAGE value="Полный отказ от сервисов, переход на локальную бд, изменение аутентификации пользователей" />
+    <MESSAGE value="Добавлено взаимодействие с данными пользователя и корзиной пользователя" />
+    <option name="LAST_COMMIT_MESSAGE" value="Добавлено взаимодействие с данными пользователя и корзиной пользователя" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.net.SocketException" package="java.net" />
+          <option name="timeStamp" value="1" />
+        </breakpoint>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="org.postgresql.util.PSQLException" package="org.postgresql.util" />
+          <option name="timeStamp" value="2" />
+        </breakpoint>
+        <breakpoint type="java-exception">
+          <properties class="com.foodback.demo.exception.auth.UserNotFoundException" package="com.foodback.demo.exception.auth" />
+          <option name="timeStamp" value="3" />
+        </breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>
