@@ -46,5 +46,5 @@ jwt:
       ms: 604800000
 
 server:
-  address: 192.168.100.107
+  address: 192.168.224.1
   port: 8088

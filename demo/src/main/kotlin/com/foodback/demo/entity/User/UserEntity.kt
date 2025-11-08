@@ -1,6 +1,7 @@
 package com.foodback.demo.entity.User
 
 import jakarta.persistence.*
+import jakarta.validation.constraints.Email
 import org.hibernate.annotations.UuidGenerator
 import java.time.Instant
 import java.util.*
@@ -26,6 +27,10 @@ data class UserEntity(
     @Column(nullable = false)
     var username: String = "",
     var passwordHash: String? = "",
+
+    @Column(unique = true, nullable = true)
+    @field:Email
+    var email: String? = null,
 
     @Column(nullable = true)
     var name: String? = "",

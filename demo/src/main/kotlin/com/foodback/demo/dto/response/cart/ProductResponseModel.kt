@@ -20,7 +20,7 @@ data class ProductResponseModel(
     val description: String,
 
     val cost: Float,
-    val rating: Float,
+    val rating: Float?,
     val organization: String,
     val count: Int,
 

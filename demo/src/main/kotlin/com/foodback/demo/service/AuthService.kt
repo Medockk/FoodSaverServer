@@ -7,7 +7,7 @@ import com.foodback.demo.dto.response.auth.AuthResponse
 import com.foodback.demo.dto.response.auth.RefreshResponseModel
 import com.foodback.demo.entity.User.Roles
 import com.foodback.demo.entity.User.UserEntity
-import com.foodback.demo.mappers.toResponse
+import com.foodback.demo.mappers.toAuthResponse
 import com.foodback.demo.repository.UserRepository
 import com.foodback.demo.security.JwtUtil
 import com.foodback.demo.security.UserDetailsImpl
@@ -58,7 +58,7 @@ class AuthService(
         response.addJwtCookie(accessToken)
 
         if (user.uid != null) {
-            return user.toResponse(user.uid!!,accessToken, refreshToken, jwtExpirationMs)
+            return user.toAuthResponse(user.uid!!,accessToken, refreshToken, jwtExpirationMs)
         } else {
             throw IllegalArgumentException("Failed to save user")
         }
