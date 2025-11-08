@@ -5,11 +5,14 @@ import com.foodback.demo.dto.response.cart.ProductResponseModel
 import com.foodback.demo.entity.CartEntity
 import com.foodback.demo.entity.CartItemEntity
 import com.foodback.demo.exception.product.ProductNotFoundException
+import com.foodback.demo.mappers.toProductResponse
 import com.foodback.demo.mappers.toResponseModel
 import com.foodback.demo.repository.CartItemRepository
 import com.foodback.demo.repository.CartRepository
 import com.foodback.demo.repository.ProductRepository
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
+import java.util.UUID
 
 @Service
 class CartService(
@@ -18,9 +21,10 @@ class CartService(
     private val productRepository: ProductRepository
 ) {
 
+    @Transactional
     fun addProductToCart(
         request: CartRequestModel,
-        uid: String,
+        uid: UUID,
     ): CartItemEntity? {
 
         val cart = cartRepository.findByUid(uid).orElseGet {
@@ -49,7 +53,7 @@ class CartService(
     }
 
     fun getUserCart(
-        uid: String
+        uid: UUID
     ): List<ProductResponseModel> {
         val cart = cartRepository.findByUid(uid).orElseGet {
             val entity = CartEntity(uid = uid)
@@ -62,5 +66,77 @@ class CartService(
         }
 
         return products
+    }
+
+    @Transactional
+    fun clearCart(uid: UUID) {
+        cartRepository.deleteAllByUid(uid)
+    }
+
+    @Transactional
+    fun deleteProductById(
+        productId: UUID,
+        uid: UUID
+    ) {
+        val cart = cartRepository.findByUid(uid).orElseThrow {
+            IllegalArgumentException()
+        }
+        val cartItemEntity = cart.items.firstOrNull {
+            it.product.id == productId
+        }
+
+        if (cartItemEntity != null) {
+            cart.productCount -= cartItemEntity.quantity
+            cart.items.remove(cartItemEntity)
+        }
+    }
+
+    @Transactional
+    fun increaseProduct(
+        request: CartRequestModel,
+        uid: UUID
+    ): ProductResponseModel {
+        val cart = cartRepository.findByUid(uid).orElseThrow {
+            IllegalArgumentException()
+        }
+        val cartItemEntity = cart.items.firstOrNull {
+            it.product.id == request.productId
+        }?.apply {
+            quantity += request.quantity
+        }
+
+        if (cartItemEntity != null) {
+            val index = cart.items.indexOf(cartItemEntity)
+            cart.items[index] = cartItemEntity
+            cart.productCount += request.quantity
+            return cartItemEntity.toProductResponse()
+        } else {
+            throw IllegalArgumentException()
+        }
+    }
+
+    @Transactional
+    fun decreaseProduct(
+        request: CartRequestModel,
+        uid: UUID
+    ): ProductResponseModel {
+
+        val cart = cartRepository.findByUid(uid).orElseThrow {
+            IllegalArgumentException()
+        }
+        val cartItemEntity = cart.items.firstOrNull {
+            it.product.id == request.productId
+        }?.apply {
+            quantity -= request.quantity
+        }
+
+        if (cartItemEntity != null) {
+            val index = cart.items.indexOf(cartItemEntity)
+            cart.items[index] = cartItemEntity
+            cart.productCount -= request.quantity
+            return cartItemEntity.toProductResponse()
+        } else {
+            throw IllegalArgumentException()
+        }
     }
 }

@@ -11,11 +11,11 @@ data class CartItemEntity(
     @UuidGenerator(style = UuidGenerator.Style.RANDOM)
     var id: UUID? = null,
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cart_id", nullable = false)
     var cart: CartEntity,
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", nullable = false)
     var product: ProductEntity,
 

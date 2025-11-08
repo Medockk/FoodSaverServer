@@ -6,5 +6,6 @@ import java.util.*
 
 interface CartRepository: JpaRepository<CartEntity, UUID> {
 
-    fun findByUid(uid: String): Optional<CartEntity>
+    fun findByUid(uid: UUID): Optional<CartEntity>
+    fun deleteAllByUid(uid: UUID)
 }

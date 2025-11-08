@@ -1,5 +1,6 @@
 package com.foodback.demo.entity
 
+import com.foodback.demo.entity.User.UserEntity
 import jakarta.persistence.*
 import org.hibernate.annotations.UuidGenerator
 import java.time.Instant
@@ -20,7 +21,7 @@ data class CartEntity(
     var id: UUID? = null,
 
     @Column(unique = true, nullable = false)
-    var uid: String,
+    var uid: UUID,
 
     @Column(nullable = false)
     var productCount: Int = 0,
