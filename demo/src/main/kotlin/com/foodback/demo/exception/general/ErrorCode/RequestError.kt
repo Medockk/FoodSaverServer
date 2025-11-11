@@ -17,7 +17,9 @@ sealed interface RequestError : ErrorCode {
     }
 
     enum class UserRequest(override val code: Int = 2000) : RequestError {
-        USER_NOT_FOUND(2001)
+        USER_NOT_FOUND(2001),
+        EMPTY_EMAIL(2002),
+        EMAIL_NOT_FOUND(2003)
     }
 
     enum class ProductRequest(override val code: Int = 3000) : RequestError {

@@ -10,13 +10,11 @@ import org.springframework.http.HttpStatus
  */
 class UuidException : GlobalError {
 
-    override val message: String
     override val httpStatus: HttpStatus
     override val customCode: ErrorCode
 
-    constructor(message: String = "Failed to parse Uuid") {
+    constructor(message: String = "Failed to parse Uuid"): super(message) {
         this.customCode = RequestError.Uuid.FAILED_PARSE_UUID
-        this.message = message
         this.httpStatus = HttpStatus.BAD_REQUEST
     }
 }

@@ -2,7 +2,7 @@ package com.foodback.demo.service
 
 import com.foodback.demo.dto.request.user.UserRequestModel
 import com.foodback.demo.dto.response.user.UserResponseModel
-import com.foodback.demo.exception.auth.UserNotFoundException
+import com.foodback.demo.exception.auth.UserException
 import com.foodback.demo.mappers.toResponse
 import com.foodback.demo.repository.UserRepository
 import org.springframework.stereotype.Service
@@ -18,7 +18,7 @@ class UserService(
     private val userRepository: UserRepository
 ) {
 
-    @Throws(UserNotFoundException::class)
+    @Throws(UserException::class)
     fun getUser(
         uid: UUID
     ): UserResponseModel {
@@ -27,7 +27,7 @@ class UserService(
         return user.toResponse()
     }
 
-    @Throws(UserNotFoundException::class)
+    @Throws(UserException::class)
     fun updateUser(
         uid: UUID,
         request: UserRequestModel
