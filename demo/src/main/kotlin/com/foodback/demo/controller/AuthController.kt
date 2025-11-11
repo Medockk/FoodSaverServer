@@ -1,16 +1,15 @@
 package com.foodback.demo.controller
 
-import com.foodback.demo.dto.request.auth.RefreshRequestModel
-import com.foodback.demo.dto.request.auth.ResetPasswordRequest
-import com.foodback.demo.dto.request.auth.SignInRequest
-import com.foodback.demo.dto.request.auth.SignUpRequest
+import com.foodback.demo.dto.request.auth.*
 import com.foodback.demo.dto.response.auth.AuthResponse
 import com.foodback.demo.dto.response.auth.RefreshResponseModel
 import com.foodback.demo.exception.auth.UserException
+import com.foodback.demo.exception.general.ErrorCode.RequestError
 import com.foodback.demo.service.AuthService
 import com.foodback.demo.service.DefaultEmailService
 import jakarta.servlet.http.HttpServletResponse
 import jakarta.validation.Valid
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.annotation.*
@@ -75,32 +74,42 @@ class AuthController(
     /**
      * Method to reset password
      * @param request Request to send RESET-TOKEN to email
+     */
+    @Transactional
+    @PutMapping("reset-password", params = ["!id"])
+    fun changePassword(
+        @Valid
+        @RequestBody(required = true)
+        request: ResetPasswordRequest
+    ): ResponseEntity<Unit> {
+
+        val email = request.email
+
+        val resetToken = authService.resetPassword(email = email)
+        defaultEmailService.sendMessage(email, resetToken)
+        return ResponseEntity.ok().build()
+    }
+
+    /**
+     * Method to reset password
+     * @param request Request to send RESET-TOKEN to email
      * @param id RESET-TOKEN to reset password
      * @throws UserException If [request] or [id] is null
      */
     @Transactional
-    @PutMapping("reset-password")
+    @PutMapping("reset-password", params = ["id"])
     fun changePassword(
         @Valid
-        @RequestBody(required = false)
-        request: ResetPasswordRequest? = null,
-        @RequestParam(required = false) id: UUID? = null
+        @RequestBody(required = true)
+        request: NewPasswordRequest,
+        @RequestParam(required = true) id: UUID
     ): ResponseEntity<Unit> {
 
-        if (request != null) {
-            val email = request.email
+        if (request.password != request.confirmPassword)
+            throw UserException("Password and Confirm password must be equals!", HttpStatus.BAD_REQUEST, RequestError.Authentication.PASSWORD_NOT_EQUALS)
 
-            val resetToken = authService.resetPassword(email = email)
-            defaultEmailService.sendMessage(email, resetToken)
-            return ResponseEntity.ok().build()
-        }
-
-        if (id != null) {
-            authService.resetPassword(id)
-            return ResponseEntity.ok().build()
-        }
-
-        throw UserException("Wrong data")
+        authService.resetPassword(token = id, request)
+        return ResponseEntity.ok().build()
     }
 }
 

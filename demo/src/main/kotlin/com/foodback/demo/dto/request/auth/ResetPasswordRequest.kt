@@ -10,3 +10,8 @@ data class ResetPasswordRequest(
     @field:Email
     val email: String
 )
+
+data class NewPasswordRequest(
+    val password: String,
+    val confirmPassword: String,
+)
