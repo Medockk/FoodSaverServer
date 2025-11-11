@@ -6,6 +6,10 @@ import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 import java.util.*
 
+/**
+ * A class, that returns [org.springframework.security.authentication.AuthenticationManager], when
+ * authentication is Success
+ */
 class UserDetailsImpl(
     private val userEntity: UserEntity
 ) : UserDetails {
@@ -14,6 +18,9 @@ class UserDetailsImpl(
         "User identifier must be not null"
     }
 
+    /**
+     * Method to get all user authorize
+     */
     override fun getAuthorities(): Collection<GrantedAuthority> {
         val authorities = userEntity.roles
             .mapNotNull { role ->
@@ -28,10 +35,16 @@ class UserDetailsImpl(
         return authorities
     }
 
+    /**
+     * Method to get encoded password
+     */
     override fun getPassword(): String? {
         return userEntity.passwordHash
     }
 
+    /**
+     * Method to get unique username
+     */
     override fun getUsername(): String {
         return userEntity.username
     }

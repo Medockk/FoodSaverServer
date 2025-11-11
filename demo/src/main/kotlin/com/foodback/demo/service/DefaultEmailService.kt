@@ -7,12 +7,21 @@ import org.springframework.mail.javamail.MimeMessageHelper
 import org.springframework.stereotype.Service
 import java.util.*
 
+/**
+ * Special service to work with mail sender
+ */
 @Service
 class DefaultEmailService(
     private val javaMainSender: JavaMailSender
 ) {
 
-    fun sendMassage(email: String?, token: UUID) {
+    /**
+     * Method to send [token] to [email]
+     * @param email the email address to send the [token]
+     * @param token RESET-PASSWORD token
+     * @throws UserException if [email] is null or empty
+     */
+    fun sendMessage(email: String?, token: UUID) {
 
         if (email.isNullOrBlank()) throw UserException("Email must be not empty!", RequestError.UserRequest.EMPTY_EMAIL)
 

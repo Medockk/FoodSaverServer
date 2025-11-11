@@ -4,6 +4,13 @@ import jakarta.persistence.*
 import org.hibernate.annotations.UuidGenerator
 import java.util.*
 
+/**
+ * Special database entity - related-table of [cart] and [product]
+ * @param id unique identifier in format [UUID]
+ * @param cart A [CartEntity] table
+ * @param product A [ProductEntity] table
+ * @param quantity Quantity of current product in user cart
+ */
 @Entity
 @Table(name = "cart_item_entity")
 data class CartItemEntity(

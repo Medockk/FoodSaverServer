@@ -6,7 +6,7 @@ import com.foodback.demo.exception.general.ErrorCode.RequestError
 import org.springframework.http.HttpStatus
 
 /**
- * If product not found in database
+ * General exception to working with all products
  */
 class ProductNotFoundException : GlobalError {
 

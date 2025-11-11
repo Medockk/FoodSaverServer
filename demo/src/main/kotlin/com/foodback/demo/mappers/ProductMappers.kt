@@ -5,6 +5,8 @@ import com.foodback.demo.dto.response.cart.ProductResponseModel
 import com.foodback.demo.entity.ProductEntity
 import java.time.Instant
 
+// Methods to convert Request to entity and vice versa
+
 fun ProductRequestModel.toEntity() =
     ProductEntity(
         title = title,

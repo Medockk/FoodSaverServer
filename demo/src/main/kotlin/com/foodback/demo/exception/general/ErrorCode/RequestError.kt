@@ -1,5 +1,8 @@
 package com.foodback.demo.exception.general.ErrorCode
 
+/**
+ * General sealed interface to identify all requests error
+ */
 sealed interface RequestError : ErrorCode {
 
     // Code 1000 until 1999
@@ -16,20 +19,26 @@ sealed interface RequestError : ErrorCode {
         REFRESH_TOKEN_EXPIRED(1008)
     }
 
+    // Code between 2000 until 2999
     enum class UserRequest(override val code: Int = 2000) : RequestError {
         USER_NOT_FOUND(2001),
         EMPTY_EMAIL(2002),
         EMAIL_NOT_FOUND(2003)
     }
 
+    // Code between 3000 until 3999
     enum class ProductRequest(override val code: Int = 3000) : RequestError {
         PRODUCT_NOT_FOUND(3001)
     }
 
+    // Code between 4000 until 4999
     enum class CartRequest(override val code: Int = 4000) : RequestError {
         CART_NOT_FOUND(4001)
     }
 
+    /**
+     * Special code if failed to convert [String] to [java.util.UUID]
+     */
     enum class Uuid(override val code: Int = 1999) : RequestError {
         FAILED_PARSE_UUID(1999)
     }

@@ -9,6 +9,10 @@ import org.springframework.stereotype.Component
 @Component
 class CookieUtil {
 
+    /**
+     * Method to add JWT token to cookie
+     * @return A [Cookie] with [jwt]
+     */
     fun createJwtCookie(jwt: String, name: String = "jwt"): Cookie {
         return Cookie(name, jwt).apply {
             path = "/"

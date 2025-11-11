@@ -6,6 +6,8 @@ import com.foodback.demo.entity.CartEntity
 import com.foodback.demo.entity.CartItemEntity
 import java.util.*
 
+// Methods to convert Request to entity and vice versa
+
 fun CartRequestModel.toEntity(
     uid: UUID
 ) = CartEntity(

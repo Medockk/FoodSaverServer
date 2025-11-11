@@ -30,7 +30,15 @@ import java.util.*
 
 /**
  * Service to Authenticate user and update JWT token
+ * @param userRepository Special object of [org.springframework.data.jpa.repository.JpaRepository] to get
+ * access to table users in database
  * @param cookieUtil Utility to put jwt token to Cookie
+ * @param authenticationManager special Spring manager to authenticate user
+ * @param jwtUtil Special util to generate/verify access/refresh tokens
+ * @param passwordEncoder Special encoder to generate encoded password and match raw password with encoded password
+ * @param jwtExpirationMs expiration access token in milliseconds
+ * @param resetPasswordRepository Special object of [org.springframework.data.jpa.repository.JpaRepository] to get
+ *  * access to table reset_password_token in database
  */
 @Service
 class AuthService(
@@ -45,6 +53,11 @@ class AuthService(
     private val resetPasswordRepository: ResetPasswordRepository,
 ) {
 
+    /**
+     * Method to authorize a new user
+     * @param request Auth request
+     * @param response Response to put access token to cookie
+     */
     @Transactional
     fun signUp(
         request: SignUpRequest,
@@ -73,6 +86,11 @@ class AuthService(
         }
     }
 
+    /**
+     * Method to authenticate user
+     * @param request Request with user data
+     * @param response Response to put access token to cookie
+     */
     fun signIn(
         request: SignInRequest,
         response: HttpServletResponse
@@ -106,6 +124,10 @@ class AuthService(
         )
     }
 
+    /**
+     * @param request Request with user data
+     * @param response Response to put access token to cookie
+     */
     fun refreshToken(
         request: RefreshRequestModel,
         response: HttpServletResponse
@@ -129,6 +151,11 @@ class AuthService(
         )
     }
 
+    /**
+     * Method to reset password with email. This method check, does user with [email] exist,
+     * and send to this [email] link to reset password
+     * @param email user email
+     */
     @Transactional
     fun resetPassword(
         email: String
@@ -148,6 +175,10 @@ class AuthService(
         return resetPasswordRepository.save(resetPasswordEntity).resetToken
     }
 
+    /**
+     * Method to reset password with special [token].
+     * @param token RESET-TOKEN
+     */
     @Transactional
     fun resetPassword(
         token: UUID

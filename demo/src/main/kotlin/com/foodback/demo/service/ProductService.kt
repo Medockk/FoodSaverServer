@@ -12,13 +12,17 @@ import java.time.Instant
 import java.util.*
 
 /**
- * Special service to
+ * Special service to do some products logic
+ * @param productRepository Special repository to work with database
  */
 @Service
 class ProductService(
     private val productRepository: ProductRepository
 ) {
 
+    /**
+     * Method to auto-delete expires products
+     */
     @Transactional
     @Scheduled(fixedRate = 60_000) // 1 minute
     fun deleteExpiresRecords() {
@@ -28,6 +32,10 @@ class ProductService(
         println(result)
     }
 
+    /**
+     * Method to add product to system
+     * @param product the product itself
+     */
     @Transactional
     fun addProduct(
         product: ProductRequestModel
@@ -37,6 +45,10 @@ class ProductService(
         ).toResponseModel(1)
     }
 
+    /**
+     * Method to delete product by [id] from system
+     * @param id product id, which need to delete
+     */
     @Transactional
     fun deleteProduct(
         id: UUID

@@ -6,7 +6,7 @@ import com.foodback.demo.exception.general.ErrorCode.RequestError
 import org.springframework.http.HttpStatus
 
 /**
- * User not found Exception
+ * Global exception with working to user
  */
 class UserException : GlobalError {
 

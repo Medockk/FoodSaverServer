@@ -16,6 +16,15 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
 
+/**
+ * Special service to do some logic with user cart
+ * @param cartRepository special object of [org.springframework.data.jpa.repository.JpaRepository] - repository to
+ * access to cart database
+ * @param cartItemRepository special object of [org.springframework.data.jpa.repository.JpaRepository] - repository to
+ *  * access to cart_item database (special table contains information about product_id and cart_id)
+ *  @param productRepository special object of [org.springframework.data.jpa.repository.JpaRepository] - repository to
+ *  * access to product database
+ */
 @Service
 class CartService(
     private val cartRepository: CartRepository,
@@ -23,6 +32,11 @@ class CartService(
     private val productRepository: ProductRepository
 ) {
 
+    /**
+     * Method to add special product to cart
+     * @param request request contains product id
+     * @param uid user identifier
+     */
     @Transactional
     fun addProductToCart(
         request: CartRequestModel,
@@ -54,6 +68,11 @@ class CartService(
         return cartItemRepository.save(cartItem)
     }
 
+    /**
+     * Method to get all products contains in user cart
+     * @param uid identifier of current user
+     * @return A [List] of [ProductResponseModel]
+     */
     fun getUserCart(
         uid: UUID
     ): List<ProductResponseModel> {
@@ -70,11 +89,20 @@ class CartService(
         return products
     }
 
+    /**
+     * Method to clear user cart from all products
+     * @param uid identifier of current user
+     */
     @Transactional
     fun clearCart(uid: UUID) {
         cartRepository.deleteAllByUid(uid)
     }
 
+    /**
+     * Method to delete product from cart
+     * @param productId id of product to delete
+     * @param uid user identifier
+     */
     @Transactional
     fun deleteProductById(
         productId: UUID,
@@ -95,6 +123,12 @@ class CartService(
         }
     }
 
+    /**
+     * Method to increase product count in user cart
+     * @param request Special request, contains product id, which needs to be increase
+     * @param uid identifier of current user
+     * @return A [ProductResponseModel] new information about product which increased
+     */
     @Transactional
     fun increaseProduct(
         request: CartRequestModel,
@@ -119,6 +153,12 @@ class CartService(
         }
     }
 
+    /**
+     * Method to decrease product count in user cart
+     * @param request Special request, contains product id, which needs to be decrease
+     * @param uid identifier of current user
+     * @return A [ProductResponseModel] new information about product which decreased
+     */
     @Transactional
     fun decreaseProduct(
         request: CartRequestModel,

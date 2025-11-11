@@ -2,7 +2,6 @@ package com.foodback.demo.entity
 
 import jakarta.persistence.*
 import org.hibernate.annotations.UuidGenerator
-import java.time.Instant
 import java.util.*
 
 /**
@@ -10,7 +9,7 @@ import java.util.*
  * @param id unique identifier of current cart
  * @param uid User identifier
  * @param productCount Count of products, saved in cart
- * @param items
+ * @param items A [CartItemEntity] - special related-table entity
  */
 @Entity
 @Table(name = "cart")
@@ -31,7 +30,5 @@ data class CartEntity(
         cascade = [CascadeType.ALL],
         orphanRemoval = true
     )
-    var items: MutableList<CartItemEntity> = mutableListOf(),
-
-    var createdAt: Instant = Instant.now()
+    var items: MutableList<CartItemEntity> = mutableListOf()
 )

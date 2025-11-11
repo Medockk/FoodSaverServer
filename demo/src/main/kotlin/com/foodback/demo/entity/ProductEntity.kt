@@ -8,6 +8,17 @@ import org.hibernate.annotations.UuidGenerator
 import java.time.Instant
 import java.util.*
 
+/**
+ * Special database entity
+ * @param id unique identifier of product in format [UUID]
+ * @param title Product name
+ * @param description Description of current product
+ * @param cost Cost of current product
+ * @param rating 5-star rating
+ * @param organization Organization, whose sell current product
+ * @param addedAt Date, when current product added in system
+ * @param expiresAt Date, when current product expiration
+ */
 @Entity
 @Table(name = "products")
 data class ProductEntity(

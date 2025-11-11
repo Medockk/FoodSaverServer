@@ -5,6 +5,9 @@ import com.foodback.demo.exception.general.ErrorCode.ErrorCode
 import com.foodback.demo.exception.general.ErrorCode.RequestError
 import org.springframework.http.HttpStatus
 
+/**
+ * Global authentication exception
+ */
 class AuthenticationException : GlobalError {
 
     override val httpStatus: HttpStatus

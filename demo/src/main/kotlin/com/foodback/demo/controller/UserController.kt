@@ -3,27 +3,27 @@ package com.foodback.demo.controller
 import com.foodback.demo.dto.request.user.UserRequestModel
 import com.foodback.demo.dto.response.user.UserResponseModel
 import com.foodback.demo.exception.auth.UserException
-import com.foodback.demo.exception.general.ErrorCode.RequestError
-import com.foodback.demo.service.AuthService
-import com.foodback.demo.service.DefaultEmailService
 import com.foodback.demo.service.UserService
-import com.foodback.demo.utils.toUUID
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
-import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.annotation.*
 import java.security.Principal
 import java.util.*
 
+/**
+ * Special controller to handle HTTP-requests to endpoint /api/user/
+ * @param userService Service to do some server logic
+ */
 @RestController
 @RequestMapping("/api/user")
 class UserController(
-    private val userService: UserService,
-    private val defaultEmailService: DefaultEmailService,
-
-    private val authService: AuthService
+    private val userService: UserService
 ) {
 
+    /**
+     * Method to get [UserResponseModel] - data about current user
+     * @param principal auto-generated param, contains special UID
+     */
     @Throws(UserException::class)
     @GetMapping
     fun getUser(
@@ -40,6 +40,11 @@ class UserController(
         return ResponseEntity.ok(result)
     }
 
+    /**
+     * Method to update user data
+     * @param request data to update user information
+     * @param principal auto-generated param, contains special UID
+     */
     @Throws(UserException::class)
     @PutMapping
     fun updateUser(
@@ -54,23 +59,5 @@ class UserController(
             throw UserException("Oops... Failed to get user data")
         }
         return ResponseEntity.ok(userService.updateUser(uid, request))
-    }
-
-    @Transactional
-    @PutMapping("reset-password")
-    fun changePassword(
-        principal: Principal,
-    ): ResponseEntity<Unit> {
-        val uid = principal.name.toUUID()
-        val user = userService.getUser(uid)
-        val email = user.email
-
-        if (email.isNullOrBlank())
-            throw UserException("Email must be not blank", RequestError.UserRequest.EMPTY_EMAIL)
-
-        val resetToken = authService.resetPassword(email = email)
-        defaultEmailService.sendMassage(email, resetToken)
-
-        return ResponseEntity.ok().build()
     }
 }

@@ -4,7 +4,8 @@ package com.foodback.demo.exception.general.Error
  * Global Error Response body
  * @param error Current Error Type
  * @param message Message of current error
- * @param code Code of error
+ * @param httpCode Common HTTP response code of error
+ * @param errorCode Custom HTTP response code of error
  * @param timestamp Time, when current error was called
  */
 data class GlobalErrorResponse(

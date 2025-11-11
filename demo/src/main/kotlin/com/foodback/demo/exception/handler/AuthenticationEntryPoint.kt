@@ -34,7 +34,9 @@ class CustomAuthenticationEntryPoint : AuthenticationEntryPoint {
     }
 }
 
-
+/**
+ * Custom handler for 403 HTTP-error
+ */
 @Component
 class CustomAccessDeniedHandler : AccessDeniedHandler {
     override fun handle(
