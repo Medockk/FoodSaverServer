@@ -1,12 +1,16 @@
 package com.foodback.demo.controller
 
 import com.foodback.demo.dto.request.auth.RefreshRequestModel
+import com.foodback.demo.dto.request.auth.ResetPasswordRequest
 import com.foodback.demo.dto.request.auth.SignInRequest
 import com.foodback.demo.dto.request.auth.SignUpRequest
 import com.foodback.demo.dto.response.auth.AuthResponse
 import com.foodback.demo.dto.response.auth.RefreshResponseModel
+import com.foodback.demo.exception.auth.UserException
 import com.foodback.demo.service.AuthService
+import com.foodback.demo.service.DefaultEmailService
 import jakarta.servlet.http.HttpServletResponse
+import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.annotation.*
@@ -19,6 +23,7 @@ import java.util.*
 @RequestMapping("/api/auth")
 class AuthController(
     private val authService: AuthService,
+    private val defaultEmailService: DefaultEmailService
 ) {
 
     /**
@@ -67,14 +72,35 @@ class AuthController(
         return ResponseEntity.ok(response)
     }
 
+    /**
+     * Method to reset password
+     * @param request Request to send RESET-TOKEN to email
+     * @param id RESET-TOKEN to reset password
+     * @throws UserException If [request] or [id] is null
+     */
     @Transactional
-    @PutMapping
-    fun resetPassword(
-        @RequestParam(required = true) id: UUID
+    @PutMapping("reset-password")
+    fun changePassword(
+        @Valid
+        @RequestBody(required = false)
+        request: ResetPasswordRequest? = null,
+        @RequestParam(required = false) id: UUID? = null
     ): ResponseEntity<Unit> {
 
-        authService.resetPassword(id)
-        return ResponseEntity.ok().build()
+        if (request != null) {
+            val email = request.email
+
+            val resetToken = authService.resetPassword(email = email)
+            defaultEmailService.sendMessage(email, resetToken)
+            return ResponseEntity.ok().build()
+        }
+
+        if (id != null) {
+            authService.resetPassword(id)
+            return ResponseEntity.ok().build()
+        }
+
+        throw UserException("Wrong data")
     }
 }
 

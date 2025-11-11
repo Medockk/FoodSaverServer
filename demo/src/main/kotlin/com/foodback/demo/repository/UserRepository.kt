@@ -11,12 +11,17 @@ import java.util.*
 interface UserRepository : JpaRepository<UserEntity, UUID> {
 
     /**
-     * Method to find user by email
+     * Method to find user by [username]
      * @param username Username of user to find in database
      * @return A [UserEntity] of this user or null, if user not found
      */
     fun findByUsername(username: String): UserEntity?
 
+    /**
+     * Method to find user by [id]
+     * @param id unique user identifier
+     * @throws UserException if user does not exist
+     */
     @Throws(UserException::class)
     fun findUserById(id: UUID): UserEntity {
         return findById(id).orElseThrow {
@@ -24,5 +29,9 @@ interface UserRepository : JpaRepository<UserEntity, UUID> {
         }
     }
 
+    /**
+     * Save method to find user by [email]
+     * @param email user email
+     */
     fun findByEmail(email: String): Optional<UserEntity>
 }

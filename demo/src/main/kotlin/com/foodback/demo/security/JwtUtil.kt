@@ -10,6 +10,12 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Configuration
 import java.util.*
 
+/**
+ * Special util to work with JWT tokens
+ * @property jwtSecret Secret key to add a signature to JWT
+ * @property expirationJwtMs expiration of access token in milliseconds
+ * @property expirationRefreshMs expiration of refresh token in milliseconds
+ */
 @Configuration
 class JwtUtil {
 
@@ -26,25 +32,37 @@ class JwtUtil {
         Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret))
     }
 
-    fun generateAccessToken(login: String): String {
+    /**
+     * Method to generate access token for [username]
+     * @param username unique username
+     */
+    fun generateAccessToken(username: String): String {
         println("JWT expires time: $expirationJwtMs")
         return Jwts.builder()
-            .subject(login)
+            .subject(username)
             .issuedAt(Date())
             .expiration(Date(System.currentTimeMillis() + expirationJwtMs))
             .signWith(key, Jwts.SIG.HS256)
             .compact()
     }
 
-    fun generateRefreshToken(login: String): String {
+    /**
+     * Method to generate refresh token for [username]
+     * @param username unique username
+     */
+    fun generateRefreshToken(username: String): String {
         return Jwts.builder()
             .signWith(key, Jwts.SIG.HS256)
-            .subject(login)
+            .subject(username)
             .issuedAt(Date())
             .expiration(Date(System.currentTimeMillis() + expirationRefreshMs))
             .compact()
     }
 
+    /**
+     * Method to get unique username from [token]
+     * @param token access token
+     */
     fun getUsername(token: String): String {
         return Jwts.parser()
             .verifyWith(key)
@@ -54,6 +72,9 @@ class JwtUtil {
             .subject
     }
 
+    /**
+     * Method to verify and validate JWT token
+     */
     fun validate(token: String): Boolean {
         try {
             Jwts.parser().verifyWith(key).build().parse(token)

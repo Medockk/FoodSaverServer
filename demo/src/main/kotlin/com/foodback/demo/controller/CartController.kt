@@ -5,6 +5,7 @@ import com.foodback.demo.dto.response.cart.ProductResponseModel
 import com.foodback.demo.service.CartService
 import com.foodback.demo.utils.toUUID
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import java.security.Principal
 import java.util.*
@@ -45,7 +46,13 @@ class CartController(
         cartService.addProductToCart(cartRequestModel, uid)
     }
 
+    /**
+     * Method to delete product, if user have role ADMIN, of else throw [AccessDeniedException]
+     * @param productId special product id
+     * @param principal auto-generated param, contains special UID
+     */
     @DeleteMapping
+    @PreAuthorize("haseRole('ADMIN')")
     fun deleteProduct(
         @RequestParam(value = "product_id", required = true)
         productId: UUID,
@@ -56,6 +63,10 @@ class CartController(
         )
     }
 
+    /**
+     * Method to clear user cart
+     * @param principal auto-generated param, contains special UID
+     */
     @DeleteMapping("all")
     fun clearCart(
         principal: Principal
@@ -65,6 +76,11 @@ class CartController(
         )
     }
 
+    /**
+     * Method to increase product count
+     * @param request request, contains product id and quantity
+     * @param principal auto-generated param, contains special UID
+     */
     @PutMapping("increase")
     fun increaseProductCount(
         @RequestBody
@@ -76,6 +92,11 @@ class CartController(
         return ResponseEntity.ok(product)
     }
 
+    /**
+     * Method to decrease product count
+     * @param request request, contains product id and quantity
+     * @param principal auto-generated param, contains special UID
+     */
     @PutMapping("decrease")
     fun decreaseProductCount(
         @RequestBody

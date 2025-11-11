@@ -5,6 +5,9 @@ import com.foodback.demo.exception.general.ErrorCode.ErrorCode
 import com.foodback.demo.exception.general.ErrorCode.RequestError
 import org.springframework.http.HttpStatus
 
+/**
+ * General exception to working with user cart
+ */
 class CartException : GlobalError {
 
     override val httpStatus: HttpStatus

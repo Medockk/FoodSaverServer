@@ -6,6 +6,14 @@ import org.hibernate.annotations.UuidGenerator
 import java.time.Instant
 import java.util.*
 
+/**
+ * Special database entity
+ * @param id unique identifier in format [UUID]
+ * @param resetToken unique RESET-TOKEN to reset password
+ * @param uid user identifier, which own [resetToken]
+ * @param expiresAt Date, when this [resetToken] ceases to operate
+ * @param isUsed Flag, if this [resetToken] already used
+ */
 @Entity
 @Table(name = "reset_password_token")
 data class ResetPasswordEntity(

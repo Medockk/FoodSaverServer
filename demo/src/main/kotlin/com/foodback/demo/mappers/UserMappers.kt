@@ -5,6 +5,8 @@ import com.foodback.demo.dto.response.user.UserResponseModel
 import com.foodback.demo.entity.User.UserEntity
 import java.util.*
 
+// Methods to convert Request to entity and vice versa
+
 fun UserEntity.toAuthResponse(
     uid: UUID,
     jwtToken: String,

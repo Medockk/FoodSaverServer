@@ -7,7 +7,7 @@ import java.time.Instant
 import java.util.*
 
 /**
- * Entity to make requests to Supabase.
+ * Special database entity
  * @param uid Unique user identifier
  * @param username Username of current user
  * @param passwordHash Hash of User password
