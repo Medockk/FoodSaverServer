@@ -6,9 +6,8 @@ import org.springframework.http.HttpStatus
 /**
  * Abstract class to define all exceptions
  */
-abstract class GlobalError() : Exception() {
+abstract class GlobalError(override val message: String) : Exception(message) {
 
-    abstract override val message: String
     abstract val httpStatus: HttpStatus
     abstract val customCode: ErrorCode
 

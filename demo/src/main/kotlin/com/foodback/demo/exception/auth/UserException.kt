@@ -8,17 +8,22 @@ import org.springframework.http.HttpStatus
 /**
  * User not found Exception
  */
-class UserNotFoundException : GlobalError {
+class UserException : GlobalError {
 
     override val message: String
     override val httpStatus: HttpStatus
     override val customCode: ErrorCode
 
-    constructor(message: String) {
+    constructor(message: String): super(message) {
         this.message = message
         this.httpStatus = HttpStatus.NOT_FOUND
         this.customCode = RequestError.UserRequest.USER_NOT_FOUND
     }
 
     constructor() : this(message = "User not found!")
+    constructor(message: String, customCode: ErrorCode): super(message) {
+        this.message = message
+        this.customCode = customCode
+        this.httpStatus = HttpStatus.INTERNAL_SERVER_ERROR
+    }
 }
