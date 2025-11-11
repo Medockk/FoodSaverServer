@@ -16,11 +16,16 @@ sealed interface RequestError : ErrorCode {
 
         JWT_TOKEN_EXPIRED(1006),
         JWT_TOKEN_NOT_EXPIRED(1007),
-        REFRESH_TOKEN_EXPIRED(1008)
+        REFRESH_TOKEN_EXPIRED(1008),
+
+        PASSWORD_NOT_EQUALS(1009),
+        RESET_TOKEN_NOT_FOUND(1010),
+        RESET_TOKEN_LINKED_TO_NULL(1011)
     }
 
     // Code between 2000 until 2999
     enum class UserRequest(override val code: Int = 2000) : RequestError {
+        UNKNOWN_ERROR,
         USER_NOT_FOUND(2001),
         EMPTY_EMAIL(2002),
         EMAIL_NOT_FOUND(2003)

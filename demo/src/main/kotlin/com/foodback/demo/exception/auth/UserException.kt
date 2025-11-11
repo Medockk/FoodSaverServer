@@ -20,10 +20,21 @@ class UserException : GlobalError {
         this.customCode = RequestError.UserRequest.USER_NOT_FOUND
     }
 
-    constructor() : this(message = "User not found!")
     constructor(message: String, customCode: ErrorCode): super(message) {
         this.message = message
         this.customCode = customCode
         this.httpStatus = HttpStatus.INTERNAL_SERVER_ERROR
+    }
+
+    constructor(message: String, httpStatus: HttpStatus): super(message) {
+        this.message = message
+        this.httpStatus = httpStatus
+        this.customCode = RequestError.UserRequest.UNKNOWN_ERROR
+    }
+
+    constructor(message: String, httpStatus: HttpStatus, customCode: ErrorCode): super(message) {
+        this.message = message
+        this.httpStatus = httpStatus
+        this.customCode = customCode
     }
 }

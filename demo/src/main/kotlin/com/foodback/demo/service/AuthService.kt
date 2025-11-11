@@ -1,5 +1,6 @@
 package com.foodback.demo.service
 
+import com.foodback.demo.dto.request.auth.NewPasswordRequest
 import com.foodback.demo.dto.request.auth.RefreshRequestModel
 import com.foodback.demo.dto.request.auth.SignInRequest
 import com.foodback.demo.dto.request.auth.SignUpRequest
@@ -19,6 +20,7 @@ import com.foodback.demo.security.UserDetailsImpl
 import com.foodback.demo.utils.CookieUtil
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.http.HttpStatus
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
@@ -99,7 +101,7 @@ class AuthService(
             authenticationManager.authenticate(
                 UsernamePasswordAuthenticationToken(request.username, request.password)
             )
-        } catch (e: org.springframework.security.core.AuthenticationException) {
+        } catch (_: org.springframework.security.core.AuthenticationException) {
             throw AuthenticationException(
                 "Failed to authenticate user",
                 RequestError.Authentication.FAILED_AUTHORIZE_USER
@@ -181,12 +183,17 @@ class AuthService(
      */
     @Transactional
     fun resetPassword(
-        token: UUID
+        token: UUID,
+        request: NewPasswordRequest
     ) {
-        val entity = resetPasswordRepository.findByResetToken(token).orElseThrow {
-            UserException("Token expires or wrong")
+        val entity: ResetPasswordEntity = resetPasswordRepository.findByResetToken(token).orElseThrow {
+            UserException("Token expires or wrong", HttpStatus.BAD_REQUEST, RequestError.Authentication.RESET_TOKEN_NOT_FOUND)
         }
         entity.isUsed = true
+
+        val user = entity.uid ?: throw UserException("Reset token linked to a null user", RequestError.Authentication.RESET_TOKEN_LINKED_TO_NULL)
+        val passwordHash = passwordEncoder.encode(/* rawPassword = */ request.password)
+        user.passwordHash = passwordHash
     }
 
     /**
