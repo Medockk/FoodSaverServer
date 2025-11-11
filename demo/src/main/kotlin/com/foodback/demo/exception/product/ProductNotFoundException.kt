@@ -14,7 +14,7 @@ class ProductNotFoundException : GlobalError {
     override val httpStatus: HttpStatus
     override val customCode: ErrorCode
 
-    constructor(message: String, customCode: ErrorCode, httpStatus: HttpStatus) {
+    constructor(message: String, customCode: ErrorCode, httpStatus: HttpStatus): super(message) {
         this.message = message
         this.customCode = customCode
         this.httpStatus = httpStatus

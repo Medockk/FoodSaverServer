@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Gradle: org.springframework:spring-web:7.0.0-RC3" type="java-imported" external-system-id="GRADLE">
+    <properties groupId="org.springframework" artifactId="spring-web" version="7.0.0-RC3" baseVersion="7.0.0-RC3" />
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-web/7.0.0-RC3/bdcef112ba63c294bbecac51a96d06ced280d9b0/spring-web-7.0.0-RC3.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-web/7.0.0-RC3/5fcdee508dd2b2a10d7212ee21d7338f46fc7501/spring-web-7.0.0-RC3-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
