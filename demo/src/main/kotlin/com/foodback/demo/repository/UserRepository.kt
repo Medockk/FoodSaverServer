@@ -1,7 +1,7 @@
 package com.foodback.demo.repository
 
 import com.foodback.demo.entity.User.UserEntity
-import com.foodback.demo.exception.auth.UserNotFoundException
+import com.foodback.demo.exception.auth.UserException
 import org.springframework.data.jpa.repository.JpaRepository
 import java.util.*
 
@@ -17,10 +17,12 @@ interface UserRepository : JpaRepository<UserEntity, UUID> {
      */
     fun findByUsername(username: String): UserEntity?
 
-    @Throws(UserNotFoundException::class)
+    @Throws(UserException::class)
     fun findUserById(id: UUID): UserEntity {
         return findById(id).orElseThrow {
-            UserNotFoundException("User with id $id not found")
+            UserException("User with id $id not found")
         }
     }
+
+    fun findByEmail(email: String): Optional<UserEntity>
 }

@@ -1,6 +1,6 @@
 package com.foodback.demo.security
 
-import com.foodback.demo.exception.auth.UserNotFoundException
+import com.foodback.demo.exception.auth.UserException
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -29,7 +29,7 @@ class JwtAuthenticationFilter(
      * If request have header Authorization Bearer jwt OR Cookie with jwt,
      * and this jwt token successfully verified, request will proceed,
      * overrise this request will cause 401 Unauthorized Exception
-     * @throws UserNotFoundException If user with this email doesn't have in database
+     * @throws UserException If user with this email doesn't have in database
      * @throws Exception If JWT token not found
      */
     override fun doFilterInternal(

@@ -8,10 +8,9 @@ import com.foodback.demo.dto.response.auth.RefreshResponseModel
 import com.foodback.demo.service.AuthService
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.transaction.annotation.Transactional
+import org.springframework.web.bind.annotation.*
+import java.util.*
 
 /**
  * Controller to authenticate users and update jwt token
@@ -19,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/auth")
 class AuthController(
-    private val authService: AuthService
+    private val authService: AuthService,
 ) {
 
     /**
@@ -66,6 +65,16 @@ class AuthController(
     ): ResponseEntity<RefreshResponseModel> {
         val response = authService.refreshToken(refreshRequestModel, httpServletResponse)
         return ResponseEntity.ok(response)
+    }
+
+    @Transactional
+    @PutMapping
+    fun resetPassword(
+        @RequestParam(required = true) id: UUID
+    ): ResponseEntity<Unit> {
+
+        authService.resetPassword(id)
+        return ResponseEntity.ok().build()
     }
 }
 

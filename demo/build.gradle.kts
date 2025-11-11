@@ -36,6 +36,10 @@ dependencies {
     runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.12.5")
     /*JWT*/
 
+    /*Email Sender*/
+    implementation("org.springframework.boot:spring-boot-starter-mail")
+    /*Email Sender*/
+
     //implementation("org.springframework.boot:spring-boot-starter-webflux")
 
     runtimeOnly("org.postgresql:postgresql")

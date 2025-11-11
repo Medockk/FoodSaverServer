@@ -5,11 +5,14 @@ import com.foodback.demo.dto.request.auth.SignInRequest
 import com.foodback.demo.dto.request.auth.SignUpRequest
 import com.foodback.demo.dto.response.auth.AuthResponse
 import com.foodback.demo.dto.response.auth.RefreshResponseModel
+import com.foodback.demo.entity.ResetPasswordEntity
 import com.foodback.demo.entity.User.Roles
 import com.foodback.demo.entity.User.UserEntity
 import com.foodback.demo.exception.auth.AuthenticationException
+import com.foodback.demo.exception.auth.UserException
 import com.foodback.demo.exception.general.ErrorCode.RequestError
 import com.foodback.demo.mappers.toAuthResponse
+import com.foodback.demo.repository.ResetPasswordRepository
 import com.foodback.demo.repository.UserRepository
 import com.foodback.demo.security.JwtUtil
 import com.foodback.demo.security.UserDetailsImpl
@@ -22,6 +25,8 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.time.Instant
+import java.util.*
 
 /**
  * Service to Authenticate user and update JWT token
@@ -35,7 +40,9 @@ class AuthService(
     private val jwtUtil: JwtUtil,
     private val passwordEncoder: PasswordEncoder,
     @Value($$"${jwt.expiration.ms}")
-    private val jwtExpirationMs: Long
+    private val jwtExpirationMs: Long,
+
+    private val resetPasswordRepository: ResetPasswordRepository,
 ) {
 
     @Transactional
@@ -120,6 +127,35 @@ class AuthService(
             jwtToken = accessToken,
             expiresIn = jwtExpirationMs
         )
+    }
+
+    @Transactional
+    fun resetPassword(
+        email: String
+    ): UUID {
+        val user = userRepository.findByEmail(email).orElseThrow {
+            UserException("User with email $email not found!", RequestError.UserRequest.EMAIL_NOT_FOUND)
+        }
+
+        val expiresAt = Instant.ofEpochMilli(System.currentTimeMillis() + 1_800_000)
+        println(expiresAt)
+        val resetPasswordEntity = ResetPasswordEntity(
+            resetToken = UUID.randomUUID(),
+            uid = user,
+            expiresAt = expiresAt,
+            isUsed = false
+        )
+        return resetPasswordRepository.save(resetPasswordEntity).resetToken
+    }
+
+    @Transactional
+    fun resetPassword(
+        token: UUID
+    ) {
+        val entity = resetPasswordRepository.findByResetToken(token).orElseThrow {
+            UserException("Token expires or wrong")
+        }
+        entity.isUsed = true
     }
 
     /**
