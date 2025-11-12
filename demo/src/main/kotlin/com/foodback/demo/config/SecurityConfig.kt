@@ -2,9 +2,10 @@ package com.foodback.demo.config
 
 import com.foodback.demo.exception.handler.CustomAccessDeniedHandler
 import com.foodback.demo.exception.handler.CustomAuthenticationEntryPoint
-import com.foodback.demo.security.JwtAuthenticationFilter
-import com.foodback.demo.security.JwtUtil
-import com.foodback.demo.security.UserDetailsServiceImpl
+import com.foodback.demo.security.csrf.CsrfTokenFilter
+import com.foodback.demo.security.jwt.JwtAuthenticationFilter
+import com.foodback.demo.security.jwt.JwtUtil
+import com.foodback.demo.security.auth.UserDetailsServiceImpl
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Primary
@@ -16,6 +17,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository
+import org.springframework.security.web.csrf.CsrfFilter
+import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler
 
 /**
  * Security class to configure permissions and main security configurations
@@ -36,7 +40,7 @@ class SecurityConfig(
 
     /**
      * Method to get [AuthenticationManager] - special manager to authenticate user and get
-     * [com.foodback.demo.security.UserDetailsImpl] - authentication user entity
+     * [com.foodback.demo.security.auth.UserDetailsImpl] - authentication user entity
      */
     @Bean
     fun authenticationManager(authConfig: AuthenticationConfiguration): AuthenticationManager {
@@ -64,8 +68,18 @@ class SecurityConfig(
         authHandler: CustomAuthenticationEntryPoint,
         accessDeniedHandler: CustomAccessDeniedHandler
     ): SecurityFilterChain {
+
+        val csrfTokenRepository = CookieCsrfTokenRepository.withHttpOnlyFalse().apply {
+            setCookieName("XSRF-TOKEN")
+            setHeaderName("X-XSRF-TOKEN")
+        }
+
         http
-            .csrf { it.disable() }
+            .csrf { csrf ->
+                csrf.csrfTokenRepository(csrfTokenRepository)
+                    .ignoringRequestMatchers("/api/auth/**")
+                    .csrfTokenRequestHandler(CsrfTokenRequestAttributeHandler())
+            }
             .cors { }
             .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
             .exceptionHandling {
@@ -80,6 +94,7 @@ class SecurityConfig(
                     .anyRequest().authenticated()
             }
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
+            .addFilterBefore(CsrfTokenFilter(csrfTokenRepository), CsrfFilter::class.java)
         return http.build()
     }
 }

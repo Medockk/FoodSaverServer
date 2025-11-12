@@ -1,4 +1,4 @@
-package com.foodback.demo.security
+package com.foodback.demo.security.jwt
 
 import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.Jwts

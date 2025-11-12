@@ -1,4 +1,4 @@
-package com.foodback.demo.security
+package com.foodback.demo.security.auth
 
 import com.foodback.demo.entity.User.Roles
 import com.foodback.demo.entity.User.UserEntity

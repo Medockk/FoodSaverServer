@@ -1,4 +1,4 @@
-package com.foodback.demo.security
+package com.foodback.demo.security.auth
 
 import com.foodback.demo.exception.auth.UserException
 import com.foodback.demo.repository.UserRepository

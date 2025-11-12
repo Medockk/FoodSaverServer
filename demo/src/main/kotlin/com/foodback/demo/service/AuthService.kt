@@ -15,8 +15,8 @@ import com.foodback.demo.exception.general.ErrorCode.RequestError
 import com.foodback.demo.mappers.toAuthResponse
 import com.foodback.demo.repository.ResetPasswordRepository
 import com.foodback.demo.repository.UserRepository
-import com.foodback.demo.security.JwtUtil
-import com.foodback.demo.security.UserDetailsImpl
+import com.foodback.demo.security.auth.UserDetailsImpl
+import com.foodback.demo.security.jwt.JwtUtil
 import com.foodback.demo.utils.CookieUtil
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.beans.factory.annotation.Value
