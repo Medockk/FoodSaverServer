@@ -1,6 +1,8 @@
-package com.foodback.demo.security
+package com.foodback.demo.security.jwt
 
 import com.foodback.demo.exception.auth.UserException
+import com.foodback.demo.security.auth.UserDetailsImpl
+import com.foodback.demo.security.auth.UserDetailsServiceImpl
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
