@@ -6,6 +6,7 @@ import com.foodback.demo.security.csrf.CsrfTokenFilter
 import com.foodback.demo.security.jwt.JwtAuthenticationFilter
 import com.foodback.demo.security.jwt.JwtUtil
 import com.foodback.demo.security.auth.UserDetailsServiceImpl
+import org.springframework.boot.web.server.Cookie
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Primary
@@ -72,6 +73,10 @@ class SecurityConfig(
         val csrfTokenRepository = CookieCsrfTokenRepository.withHttpOnlyFalse().apply {
             setCookieName("XSRF-TOKEN")
             setHeaderName("X-XSRF-TOKEN")
+            setCookiePath("/")
+            setCookieCustomizer {
+                it.sameSite(Cookie.SameSite.NONE.name)
+            }
         }
 
         http
