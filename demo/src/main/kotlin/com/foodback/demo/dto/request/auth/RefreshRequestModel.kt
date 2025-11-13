@@ -7,5 +7,5 @@ package com.foodback.demo.dto.request.auth
  */
 data class RefreshRequestModel(
     val refreshToken: String,
-    val accessToken: String
+    val accessToken: String?
 )
