@@ -135,7 +135,7 @@ class AuthService(
         response: HttpServletResponse
     ): RefreshResponseModel {
 
-        if (jwtUtil.validate(request.accessToken)) {
+        if (request.accessToken != null && jwtUtil.validate(request.accessToken)) {
             throw AuthenticationException("Jwt token is not expires", RequestError.Authentication.JWT_TOKEN_NOT_EXPIRED)
         }
 
@@ -143,7 +143,7 @@ class AuthService(
             throw AuthenticationException("Refresh token expires", RequestError.Authentication.REFRESH_TOKEN_EXPIRED)
         }
 
-        val username = jwtUtil.getUsername(request.accessToken)
+        val username = jwtUtil.getUsername(request.refreshToken)
         val accessToken = jwtUtil.generateAccessToken(username)
         response.addJwtCookie(accessToken)
 
