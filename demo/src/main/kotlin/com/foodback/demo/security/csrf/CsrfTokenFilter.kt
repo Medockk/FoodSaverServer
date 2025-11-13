@@ -25,7 +25,6 @@ class CsrfTokenFilter(
         response: HttpServletResponse,
         filterChain: FilterChain
     ) {
-        filterChain.doFilter(request, response)
 
         val csrfToken = request.getAttribute(CsrfToken::class.java.name) as? CsrfToken
         if (csrfToken != null) {
@@ -39,5 +38,6 @@ class CsrfTokenFilter(
         }
 
         csrfTokenRepository.saveToken(tokenFromRepository, request, response)
+        filterChain.doFilter(request, response)
     }
 }
