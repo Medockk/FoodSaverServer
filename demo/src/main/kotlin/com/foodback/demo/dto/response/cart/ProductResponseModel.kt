@@ -1,5 +1,6 @@
 package com.foodback.demo.dto.response.cart
 
+import com.foodback.demo.entity.OrganizationEntity
 import java.time.Instant
 import java.util.*
 
@@ -21,7 +22,7 @@ data class ProductResponseModel(
 
     val cost: Float,
     val rating: Float?,
-    val organization: String,
+    val organization: OrganizationEntity,
     val count: Int,
 
     val expiresAt: Instant = Instant.now(),

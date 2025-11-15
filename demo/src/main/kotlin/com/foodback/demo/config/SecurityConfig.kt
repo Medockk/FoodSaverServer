@@ -2,10 +2,10 @@ package com.foodback.demo.config
 
 import com.foodback.demo.exception.handler.CustomAccessDeniedHandler
 import com.foodback.demo.exception.handler.CustomAuthenticationEntryPoint
+import com.foodback.demo.security.auth.UserDetailsServiceImpl
 import com.foodback.demo.security.csrf.CsrfTokenFilter
 import com.foodback.demo.security.jwt.JwtAuthenticationFilter
 import com.foodback.demo.security.jwt.JwtUtil
-import com.foodback.demo.security.auth.UserDetailsServiceImpl
 import org.springframework.boot.web.server.Cookie
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

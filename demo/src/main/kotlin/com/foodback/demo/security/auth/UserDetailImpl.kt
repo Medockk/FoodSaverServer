@@ -18,6 +18,8 @@ class UserDetailsImpl(
         "User identifier must be not null"
     }
 
+    val organizationId: UUID? = userEntity.organization?.id
+
     /**
      * Method to get all user authorize
      */
