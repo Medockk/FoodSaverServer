@@ -22,7 +22,7 @@ fun CartItemEntity.toProductResponse() =
         description = product.description,
         cost = product.cost,
         rating = product.rating,
-        organization = product.organization,
+        organization = requireNotNull(product.organization),
         count = quantity,
         expiresAt = product.expiresAt!!
     )

@@ -1,9 +1,6 @@
 package com.foodback.demo.entity
 
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.Id
-import jakarta.persistence.Table
+import jakarta.persistence.*
 import org.hibernate.annotations.UuidGenerator
 import java.time.Instant
 import java.util.*
@@ -34,8 +31,9 @@ data class ProductEntity(
     @Column(nullable = false)
     var cost: Float,
 
-    @Column(nullable = false)
-    var organization: String,
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "organization_id", nullable = false)
+    var organization: OrganizationEntity? = null,
 
     @Column(nullable = true)
     var rating: Float? = null,

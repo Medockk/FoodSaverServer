@@ -41,6 +41,12 @@ sealed interface RequestError : ErrorCode {
         CART_NOT_FOUND(4001)
     }
 
+    // Code between 5000 until 5999
+    enum class OrganizationRequest(override val code: Int = 5000): RequestError {
+        UNKNOWN_ERROR(5000),
+        ORGANIZATION_NOT_FOUND(5001)
+    }
+
     /**
      * Special code if failed to convert [String] to [java.util.UUID]
      */

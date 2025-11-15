@@ -25,19 +25,19 @@ class CsrfTokenFilter(
         response: HttpServletResponse,
         filterChain: FilterChain
     ) {
+        var tokenFromRepository = csrfTokenRepository.loadToken(request)
+        if (tokenFromRepository == null) {
+            tokenFromRepository = csrfTokenRepository.generateToken(request)
+        }
+        request.setAttribute(CsrfToken::class.java.name, tokenFromRepository)
+        csrfTokenRepository.saveToken(tokenFromRepository, request, response)
+
+        filterChain.doFilter(request, response)
 
         val csrfToken = request.getAttribute(CsrfToken::class.java.name) as? CsrfToken
         if (csrfToken != null) {
             csrfTokenRepository.saveToken(csrfToken, request, response)
             return
         }
-
-        var tokenFromRepository = csrfTokenRepository.loadToken(request)
-        if (tokenFromRepository == null) {
-            tokenFromRepository = csrfTokenRepository.generateToken(request)
-        }
-
-        csrfTokenRepository.saveToken(tokenFromRepository, request, response)
-        filterChain.doFilter(request, response)
     }
 }

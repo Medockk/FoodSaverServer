@@ -103,7 +103,7 @@ class AuthService(
             )
         } catch (_: org.springframework.security.core.AuthenticationException) {
             throw AuthenticationException(
-                "Failed to authenticate user",
+                "Failed to authenticate user with username ${request.username}",
                 RequestError.Authentication.FAILED_AUTHORIZE_USER
             )
         }

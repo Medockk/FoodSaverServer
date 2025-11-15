@@ -2,9 +2,11 @@ package com.foodback.demo.controller
 
 import com.foodback.demo.dto.request.cart.ProductRequestModel
 import com.foodback.demo.dto.response.cart.ProductResponseModel
+import com.foodback.demo.security.auth.UserDetailsImpl
 import com.foodback.demo.service.ProductService
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 import java.util.*
 
@@ -39,11 +41,27 @@ class ProductController(
      * @param id special product id
      */
     @DeleteMapping("{product_id}")
-    @PreAuthorize("hasAuthority('DELETE_PRODUCT')")
+    @PreAuthorize("hasAuthority('DELETE_PRODUCT') and @haveAuthority.canDeleteProduct(#id, authentication)")
     fun deleteProduct(
         @PathVariable("product_id")
-        id: UUID
+        id: UUID,
+        @AuthenticationPrincipal
+        authentication: UserDetailsImpl
     ): ResponseEntity<Void> {
+        println("Authentication is: $authentication")
         return ResponseEntity.ok().build()
+    }
+
+    /**
+     * Method to get all products from database
+     * @param count Pagination count of products
+     * @return A [List] of [ProductResponseModel], contains all products or some [count] of product
+     */
+    @GetMapping
+    fun getProducts(
+        @RequestParam("count", required = false)
+        count: Int = Int.MAX_VALUE
+    ): ResponseEntity<List<ProductResponseModel>> {
+        return ResponseEntity.ok(productService.getAllProduct(productCount = count))
     }
 }
