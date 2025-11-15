@@ -50,7 +50,7 @@ class JwtAuthenticationFilter(
                 val user = userDetailsService.loadUserByUsername(username) as UserDetailsImpl
 
                 val auth = UsernamePasswordAuthenticationToken(
-                    user.uid,
+                    user,
                     null,
                     user.authorities
                 )
