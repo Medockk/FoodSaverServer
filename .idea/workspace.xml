@@ -5,7 +5,80 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3f085bda-274d-4e69-b8b6-7e6390c32883" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/.gitattributes" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/build.gradle.kts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/gradle/wrapper/gradle-wrapper.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/gradlew" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/gradlew.bat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/settings.gradle.kts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/FoodSaverApplication.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/config/SecurityConfig.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/config/WebConfig.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/controller/AuthController.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/controller/CartController.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/controller/ProductController.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/controller/UserController.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/dto/request/auth/RefreshRequestModel.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/dto/request/auth/ResetPasswordRequest.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/dto/request/auth/SignInRequest.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/dto/request/auth/SignUpRequest.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/dto/request/cart/CartRequestModel.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/dto/request/cart/ProductRequestModel.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/dto/request/user/UserRequestModel.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/dto/response/auth/AuthResponse.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/dto/response/auth/RefreshResponseModel.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/dto/response/cart/ProductResponseModel.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/dto/response/user/UserResponseModel.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/entity/CartEntity.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/entity/CartItemEntity.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/entity/OrganizationEntity.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/entity/ProductEntity.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/entity/ResetPasswordEntity.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/entity/User/Roles.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/entity/User/UserEntity.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/exception/OrganizationException.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/exception/auth/AuthenticationException.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/exception/auth/UserException.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/exception/cart/CartException.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/exception/general/Error/GlobalError.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/exception/general/Error/GlobalErrorResponse.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/exception/general/ErrorCode/RequestError.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/exception/general/ErrorCode/ServerErrorCode.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/exception/general/UuidException.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/exception/handler/AuthenticationEntryPoint.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/exception/handler/GlobalExceptionHandler.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/exception/product/ProductNotFoundException.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/mappers/CartMappers.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/mappers/ProductMappers.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/mappers/UserMappers.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/repository/CartItemRepository.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/repository/CartRepository.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/repository/OrganizationRepository.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/repository/ProductRepository.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/repository/ResetPasswordRepository.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/repository/UserRepository.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/security/MethodSecurityConfig.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/security/auth/UserDetailImpl.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/security/auth/UserDetailsServiceImpl.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/security/authority/AuthoritySecurityFunctions.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/security/csrf/CsrfTokenFilter.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/security/jwt/JwtAuthenticationFilter.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/security/jwt/JwtUtil.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/service/AuthService.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/service/CartService.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/service/DefaultEmailService.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/service/ProductService.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/service/TokenCleanupService.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/service/UserService.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/utils/CookieUtil.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/utils/EvaluatorTargetType.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/utils/OrganizationPermissionEvaluator.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/kotlin/com/foodback/demo/utils/UuidUtils.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/resources/application.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/resources/static/images/testtest.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/test/kotlin/com/foodback/demo/DemoApplicationTests.kt" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -106,9 +179,9 @@
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
     "ToolWindow.Run.ShowToolbar": "false",
-    "git-widget-placeholder": "user__branch",
+    "git-widget-placeholder": "master",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/S/IntellijIdeaProjects/demo",
+    "last_opened_file_path": "C:/Users/S/IntellijIdeaProjects/foodsaver",
     "settings.editor.selected.configurable": "preferences.updates"
   }
 }]]></component>
