@@ -3,12 +3,12 @@ package com.foodback.controller
 import com.foodback.dto.request.user.UserRequestModel
 import com.foodback.dto.response.user.UserResponseModel
 import com.foodback.exception.auth.UserException
+import com.foodback.security.auth.UserDetailsImpl
 import com.foodback.service.UserService
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
-import java.security.Principal
-import java.util.*
 
 /**
  * Special controller to handle HTTP-requests to endpoint /api/user/
@@ -27,14 +27,11 @@ class UserController(
     @Throws(UserException::class)
     @GetMapping
     fun getUser(
-        principal: Principal
+        @AuthenticationPrincipal
+        principal: UserDetailsImpl
     ): ResponseEntity<UserResponseModel> {
 
-        val uid = try {
-            UUID.fromString(principal.name)
-        } catch (_: Exception) {
-            throw UserException(principal.name)
-        }
+        val uid = principal.uid
 
         val result = userService.getUser(uid)
         return ResponseEntity.ok(result)
@@ -51,13 +48,10 @@ class UserController(
         @Valid
         @RequestBody(required = true)
         request: UserRequestModel,
-        principal: Principal
+        @AuthenticationPrincipal
+        principal: UserDetailsImpl
     ): ResponseEntity<UserResponseModel> {
-        val uid = try {
-            UUID.fromString(principal.name)
-        } catch (_: Exception) {
-            throw UserException("Oops... Failed to get user data")
-        }
+        val uid = principal.uid
         return ResponseEntity.ok(userService.updateUser(uid, request))
     }
 }
