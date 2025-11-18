@@ -2,10 +2,11 @@ package com.foodback.controller
 
 import com.foodback.dto.request.cart.CartRequestModel
 import com.foodback.dto.response.cart.ProductResponseModel
+import com.foodback.security.auth.UserDetailsImpl
 import com.foodback.service.CartService
-import com.foodback.utils.toUUID
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 import java.security.Principal
 import java.util.*
@@ -24,9 +25,10 @@ class CartController(
      */
     @GetMapping
     fun getUserCart(
-        principal: Principal
+        @AuthenticationPrincipal
+        principal: UserDetailsImpl
     ): ResponseEntity<List<ProductResponseModel>> {
-        val uid = principal.name.toUUID()
+        val uid = principal.uid
         return ResponseEntity.ok(cartService.getUserCart(uid))
     }
 
@@ -40,9 +42,10 @@ class CartController(
     fun addProductToCart(
         @RequestBody(required = true)
         cartRequestModel: CartRequestModel,
-        principal: Principal
+        @AuthenticationPrincipal
+        principal: UserDetailsImpl
     ) {
-        val uid = principal.name.toUUID()
+        val uid = principal.uid
         cartService.addProductToCart(cartRequestModel, uid)
     }
 
@@ -56,11 +59,12 @@ class CartController(
     fun deleteProduct(
         @RequestParam(value = "product_id", required = true)
         productId: UUID,
-        principal: Principal
+        @AuthenticationPrincipal
+        principal: UserDetailsImpl
     ): ResponseEntity<Unit> {
-        return ResponseEntity.ok(
-            cartService.deleteProductById(productId, principal.name.toUUID())
-        )
+        val uid = principal.uid
+        cartService.deleteProductById(productId, uid)
+        return ResponseEntity.ok().build()
     }
 
     /**
@@ -69,11 +73,11 @@ class CartController(
      */
     @DeleteMapping("all")
     fun clearCart(
-        principal: Principal
+        @AuthenticationPrincipal
+        principal: UserDetailsImpl
     ): ResponseEntity<Unit> {
-        return ResponseEntity.ok(
-            cartService.clearCart(principal.name.toUUID())
-        )
+        cartService.clearCart(principal.uid)
+        return ResponseEntity.ok().build()
     }
 
     /**
@@ -85,9 +89,10 @@ class CartController(
     fun increaseProductCount(
         @RequestBody
         request: CartRequestModel,
-        principal: Principal
+        @AuthenticationPrincipal
+        principal: UserDetailsImpl
     ): ResponseEntity<ProductResponseModel> {
-        val uid = principal.name.toUUID()
+        val uid = principal.uid
         val product = cartService.increaseProduct(request, uid)
         return ResponseEntity.ok(product)
     }
@@ -101,9 +106,10 @@ class CartController(
     fun decreaseProductCount(
         @RequestBody
         request: CartRequestModel,
-        principal: Principal
+        @AuthenticationPrincipal
+        principal: UserDetailsImpl
     ): ResponseEntity<ProductResponseModel> {
-        val uid = principal.name.toUUID()
+        val uid = principal.uid
         val product = cartService.decreaseProduct(request, uid)
 
         return ResponseEntity.ok(product)

@@ -36,19 +36,20 @@ class ProductController(
     }
 
     /**
-     * Method to delete product with special [id]
+     * Method to delete product with special [productId]
      * This method can invoke only Users with authority 'DELETE_PRODUCT'
-     * @param id special product id
+     * @param productId special product id
      */
     @DeleteMapping("{product_id}")
     @PreAuthorize("hasAuthority('DELETE_PRODUCT') and @haveAuthority.canDeleteProduct(#id, authentication)")
     fun deleteProduct(
         @PathVariable("product_id")
-        id: UUID,
+        productId: UUID,
         @AuthenticationPrincipal
         authentication: UserDetailsImpl
     ): ResponseEntity<Void> {
         println("Authentication is: $authentication")
+        productService.deleteProduct(productId)
         return ResponseEntity.ok().build()
     }
 

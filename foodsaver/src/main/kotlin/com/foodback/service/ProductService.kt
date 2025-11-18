@@ -58,14 +58,14 @@ class ProductService(
     }
 
     /**
-     * Method to delete product by [id] from system
-     * @param id product id, which need to delete
+     * Method to delete product by [productId] from system
+     * @param productId identifier of product, which need to delete
      */
     @Transactional
     fun deleteProduct(
-        id: UUID
+        productId: UUID
     ) {
-
+        productRepository.deleteById(productId)
     }
 
     /**
@@ -78,7 +78,7 @@ class ProductService(
             products.add(it.toResponseModel())
         }
 
-        return products
+        return products.sortedBy { (it.rating ?: 0f) }
     }
 
     fun getOrganizationIdByProductId(productId: UUID): UUID {
