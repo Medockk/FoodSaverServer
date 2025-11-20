@@ -14,7 +14,8 @@ class TokenCleanupService(
 ) {
 
     /**
-     * auth-launched method to delete expires or used RESET-PASSWORD tokens from database
+     * Auto-launched method to delete expires or used RESET-PASSWORD tokens from database.
+     * This method launched every 90 seconds.
      */
     @Transactional
     @Scheduled(fixedRate = 90_000)
