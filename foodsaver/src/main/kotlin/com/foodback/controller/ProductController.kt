@@ -55,14 +55,18 @@ class ProductController(
 
     /**
      * Method to get all products from database
-     * @param count Pagination count of products
-     * @return A [List] of [ProductResponseModel], contains all products or some [count] of product
+     * @param size Pagination count of products
+     * @param page Page in table, which need to get products
+     * @return A [List] of [ProductResponseModel], contains all products or some [size] of product
      */
     @GetMapping
     fun getProducts(
-        @RequestParam("count", required = false)
-        count: Int = Int.MAX_VALUE
+        @RequestParam("size", required = false)
+        size: Int = Int.MAX_VALUE,
+        @RequestParam("page", required = false)
+        page: Int = 0
     ): ResponseEntity<List<ProductResponseModel>> {
-        return ResponseEntity.ok(productService.getAllProduct(productCount = count))
+        val response = productService.getAllProduct(productCount = size, page = page)
+        return ResponseEntity.ok(response)
     }
 }

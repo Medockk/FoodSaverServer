@@ -1,21 +1,23 @@
 package com.foodback.security.csrf
 
+import com.foodback.exception.handler.CustomAccessDeniedHandler
 import jakarta.servlet.FilterChain
+import jakarta.servlet.http.Cookie
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
-import org.springframework.security.web.csrf.CsrfToken
-import org.springframework.security.web.csrf.CsrfTokenRepository
+import org.springframework.security.access.AccessDeniedException
 import org.springframework.web.filter.OncePerRequestFilter
+import java.util.*
 
 /**
  * Special filter of CSRF-tokens. This filter check: does the current request have CSRF-token.
- * If it doesn't have: generate the new CSRF-token and save token in [csrfTokenRepository].
- * Otherwise, save token to [csrfTokenRepository], to make sure, that the token will be in Cookie
- * @param csrfTokenRepository Repository of CSRF-tokens to compare CSRF-tokens from Header and Cookie and generate new token
  */
 class CsrfTokenFilter(
-    private val csrfTokenRepository: CsrfTokenRepository
-): OncePerRequestFilter() {
+    private val accessDeniedHandler: CustomAccessDeniedHandler
+) : OncePerRequestFilter() {
+
+    private val cookieName = "XSRF-TOKEN"
+    private val headerName = "X-XSRF-TOKEN"
 
     /**
      * Method to do filter logic
@@ -25,19 +27,49 @@ class CsrfTokenFilter(
         response: HttpServletResponse,
         filterChain: FilterChain
     ) {
-        var tokenFromRepository = csrfTokenRepository.loadToken(request)
-        if (tokenFromRepository == null) {
-            tokenFromRepository = csrfTokenRepository.generateToken(request)
-        }
-        request.setAttribute(CsrfToken::class.java.name, tokenFromRepository)
-        csrfTokenRepository.saveToken(tokenFromRepository, request, response)
 
-        filterChain.doFilter(request, response)
+        val path = request.requestURI
+        response.generateCsrfToken()
+        if (!path.startsWith("/api/auth")) {
+            val cookie = request.cookies.find { it.name == cookieName } ?: run {
+                accessDeniedHandler.handle(
+                    request,
+                    response,
+                    AccessDeniedException("Failed to exact CSRF-token from cookies")
+                )
+                return
+            }
+            val header = request.getHeader(headerName) ?: run {
+                accessDeniedHandler.handle(
+                    request,
+                    response,
+                    AccessDeniedException("Failed to exact CSRF-token from header")
+                )
+                return
+            }
 
-        val csrfToken = request.getAttribute(CsrfToken::class.java.name) as? CsrfToken
-        if (csrfToken != null) {
-            csrfTokenRepository.saveToken(csrfToken, request, response)
-            return
+            if (cookie.value == header) {
+                filterChain.doFilter(request, response)
+            } else {
+                accessDeniedHandler.handle(request, response, AccessDeniedException("CSRF-token not equal"))
+                return
+            }
+        } else {
+            filterChain.doFilter(request, response)
         }
+    }
+
+    /**
+     * Generate and add CSRF-token to  cookie
+     * @return Random CSRF-token
+     */
+    private fun HttpServletResponse.generateCsrfToken(): UUID {
+        val token = UUID.randomUUID()
+        val cookie = Cookie(cookieName, token.toString()).apply {
+            this.isHttpOnly = false
+            this.path = "/"
+        }
+        this.addCookie(cookie)
+        return token
     }
 }

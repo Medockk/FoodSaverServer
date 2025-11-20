@@ -20,7 +20,10 @@ sealed interface RequestError : ErrorCode {
 
         PASSWORD_NOT_EQUALS(1009),
         RESET_TOKEN_NOT_FOUND(1010),
-        RESET_TOKEN_LINKED_TO_NULL(1011)
+        RESET_TOKEN_LINKED_TO_NULL(1011),
+
+        UNAUTHORIZED_CSRF_TOKEN(1012),
+        UNAUTHORIZED_JWT_TOKEN(1013),
     }
 
     // Code between 2000 until 2999

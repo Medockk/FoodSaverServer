@@ -1,6 +1,7 @@
 package com.foodback.exception.handler
 
 import com.foodback.exception.general.Error.GlobalErrorResponse
+import com.foodback.exception.general.ErrorCode.RequestError
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.http.HttpStatus
@@ -21,11 +22,13 @@ class CustomAuthenticationEntryPoint : AuthenticationEntryPoint {
         response: HttpServletResponse,
         authException: AuthenticationException
     ) {
-        val statusCode = HttpStatus.UNAUTHORIZED.value()
+        val statusCode = HttpServletResponse.SC_UNAUTHORIZED
+
         val globalErrorResponse = GlobalErrorResponse(
-            error = "Unauthorized",
+            error = "Unauthorized! ${authException.message}",
             message = "Oops... authenticate in first to get access to this resource",
-            httpCode = statusCode
+            httpCode = statusCode,
+            errorCode = RequestError.Authentication.UNAUTHORIZED_JWT_TOKEN.code
         )
 
         response.status = statusCode
@@ -46,9 +49,10 @@ class CustomAccessDeniedHandler : AccessDeniedHandler {
     ) {
         val statusCode = HttpStatus.FORBIDDEN.value()
         val globalErrorResponse = GlobalErrorResponse(
-            error = "Access Denied",
-            message = "Oops...You don't have access to this resource",
-            httpCode = statusCode
+            error = "Access Denied! ${accessDeniedException.message}",
+            message = "Oops...You don't have access to this resource.",
+            httpCode = statusCode,
+            errorCode = RequestError.Authentication.UNAUTHORIZED_CSRF_TOKEN.code
         )
 
         response.status = statusCode
@@ -63,6 +67,7 @@ private fun GlobalErrorResponse.toJson(): String {
                 "error": "$error",
                 "message": "$message",
                 "httpCode": "$httpCode",
+                "errorCode": "$errorCode",
                 "timestamp": "$timestamp"
             }
         """.trimIndent()

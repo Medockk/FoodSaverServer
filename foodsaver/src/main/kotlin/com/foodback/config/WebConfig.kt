@@ -1,7 +1,6 @@
 package com.foodback.config
 
 import com.foodback.exception.handler.GlobalExceptionHandler
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Configuration
 import org.springframework.web.servlet.HandlerExceptionResolver
 import org.springframework.web.servlet.config.annotation.CorsRegistry
@@ -14,7 +13,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
  */
 @Configuration
 class WebConfig(
-    @Autowired
     private val handler: GlobalExceptionHandler
 ) : WebMvcConfigurer {
 

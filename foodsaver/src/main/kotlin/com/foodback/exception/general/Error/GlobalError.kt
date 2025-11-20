@@ -23,4 +23,8 @@ abstract class GlobalError(override val message: String) : Exception(message) {
     open fun getCustomCode(): Int {
         return customCode.code
     }
+
+    override fun getLocalizedMessage(): String {
+        return message
+    }
 }
