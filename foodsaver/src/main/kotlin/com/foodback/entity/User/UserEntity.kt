@@ -3,6 +3,8 @@ package com.foodback.entity.User
 import com.foodback.entity.OrganizationEntity
 import jakarta.persistence.*
 import jakarta.validation.constraints.Email
+import org.hibernate.annotations.OnDelete
+import org.hibernate.annotations.OnDeleteAction
 import org.hibernate.annotations.UuidGenerator
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.LastModifiedDate
@@ -53,6 +55,7 @@ data class UserEntity(
         joinColumns = [JoinColumn(name = "uid")],
         foreignKey = ForeignKey(ConstraintMode.CONSTRAINT)
     )
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @Column(name = "role")
     var roles: MutableList<String> = mutableListOf(Roles.USER.name),
 

@@ -101,7 +101,7 @@ class AuthService(
             authenticationManager.authenticate(
                 UsernamePasswordAuthenticationToken(request.username, request.password)
             )
-        } catch (_: org.springframework.security.core.AuthenticationException) {
+        } catch (_: Exception) {
             throw AuthenticationException(
                 "Failed to authenticate user with username ${request.username}",
                 RequestError.Authentication.FAILED_AUTHORIZE_USER

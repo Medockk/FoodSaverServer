@@ -2,6 +2,7 @@ package com.foodback.service
 
 import com.foodback.exception.auth.UserException
 import com.foodback.exception.general.ErrorCode.RequestError
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.mail.javamail.MimeMessageHelper
 import org.springframework.stereotype.Service
@@ -9,10 +10,17 @@ import java.util.*
 
 /**
  * Special service to work with mail sender
+ * @param javaMainSender special interface to send mail to gmail.com
+ * @param serverAddress Current server address, taken from application.yml
+ * @param serverPort Current server port, taken from application.yml
  */
 @Service
 class DefaultEmailService(
-    private val javaMainSender: JavaMailSender
+    private val javaMainSender: JavaMailSender,
+    @Value($$"${server.address}")
+    private val serverAddress: String,
+    @Value($$"${server.port}")
+    private val serverPort: String
 ) {
 
     /**
@@ -28,7 +36,7 @@ class DefaultEmailService(
         val message = javaMainSender.createMimeMessage()
         val helper = MimeMessageHelper(message, true, "UTF-8")
 
-        val frontendUrl = "http://172.19.0.1:8080/reset-password?id=$token"
+        val frontendUrl = "http://$serverAddress:$serverPort/reset-password?id=$token"
         val htmlContent = """
         <html>
         <body>

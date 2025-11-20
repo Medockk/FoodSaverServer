@@ -6,7 +6,6 @@ import com.foodback.security.auth.UserDetailsServiceImpl
 import com.foodback.security.csrf.CsrfTokenFilter
 import com.foodback.security.jwt.JwtAuthenticationFilter
 import com.foodback.security.jwt.JwtUtil
-import org.springframework.boot.web.server.Cookie
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Primary
@@ -18,9 +17,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository
-import org.springframework.security.web.csrf.CsrfFilter
-import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler
 
 /**
  * Security class to configure permissions and main security configurations
@@ -41,7 +37,7 @@ class SecurityConfig(
 
     /**
      * Method to get [AuthenticationManager] - special manager to authenticate user and get
-     * [com.foodback.demo.security.auth.UserDetailsImpl] - authentication user entity
+     * [com.foodback.security.auth.UserDetailsImpl] - authentication user entity
      */
     @Bean
     fun authenticationManager(authConfig: AuthenticationConfiguration): AuthenticationManager {
@@ -70,21 +66,8 @@ class SecurityConfig(
         accessDeniedHandler: CustomAccessDeniedHandler
     ): SecurityFilterChain {
 
-        val csrfTokenRepository = CookieCsrfTokenRepository.withHttpOnlyFalse().apply {
-            setCookieName("XSRF-TOKEN")
-            setHeaderName("X-XSRF-TOKEN")
-            setCookiePath("/")
-            setCookieCustomizer {
-                it.sameSite(Cookie.SameSite.NONE.name)
-            }
-        }
-
         http
-            .csrf { csrf ->
-                csrf.csrfTokenRepository(csrfTokenRepository)
-                    .ignoringRequestMatchers("/api/auth/**")
-                    .csrfTokenRequestHandler(CsrfTokenRequestAttributeHandler())
-            }
+            .csrf { csrf -> csrf.disable() }
             .cors { }
             .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
             .exceptionHandling {
@@ -99,7 +82,7 @@ class SecurityConfig(
                     .anyRequest().authenticated()
             }
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
-            .addFilterBefore(CsrfTokenFilter(csrfTokenRepository), CsrfFilter::class.java)
+            .addFilterAfter(CsrfTokenFilter(accessDeniedHandler), UsernamePasswordAuthenticationFilter::class.java)
         return http.build()
     }
 }
