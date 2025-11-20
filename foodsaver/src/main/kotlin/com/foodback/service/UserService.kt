@@ -6,7 +6,6 @@ import com.foodback.exception.auth.UserException
 import com.foodback.mappers.toResponse
 import com.foodback.repository.UserRepository
 import org.springframework.stereotype.Service
-import java.time.Instant
 import java.util.*
 
 /**
@@ -44,10 +43,9 @@ class UserService(
         request: UserRequestModel
     ): UserResponseModel {
         val user = userRepository.findUserById(uid).apply {
-            this.email = request.email
-            this.name = request.name
-            this.photoUrl = request.photoUrl
-            this.updatedAt = Instant.now()
+            request.email?.let { this.email = it }
+            request.name?.let { this.name = request.name }
+            request.photoUrl?.let { this.photoUrl = request.photoUrl }
         }
 
         return userRepository.save(user).toResponse()

@@ -22,7 +22,7 @@ import java.util.concurrent.TimeoutException
  */
 @Order(1)
 @RestControllerAdvice
-class GlobalExceptionHandler : HandlerExceptionResolver {
+class GlobalExceptionHandler: HandlerExceptionResolver {
 
     /**
      * Handle [RuntimeException]
@@ -47,7 +47,9 @@ class GlobalExceptionHandler : HandlerExceptionResolver {
      * @return [GlobalErrorResponse] - Response of error type
      */
     @ExceptionHandler(Exception::class)
-    fun handleGeneralException(exception: Exception): ResponseEntity<GlobalErrorResponse> {
+    fun handleGeneralException(
+        exception: Exception
+    ): ResponseEntity<GlobalErrorResponse> {
         return ResponseEntity
             .status(HttpStatus.INTERNAL_SERVER_ERROR)
             .body(
@@ -128,7 +130,9 @@ class GlobalExceptionHandler : HandlerExceptionResolver {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException::class)
-    fun handleMethodArgument(e: MethodArgumentNotValidException): ResponseEntity<GlobalErrorResponse> {
+    fun handleMethodArgument(
+        e: MethodArgumentNotValidException
+    ): ResponseEntity<GlobalErrorResponse> {
         e.printStackTrace()
         val error = e.bindingResult.allErrors.joinToString(separator = "; ") {
             "${it.defaultMessage}"
@@ -145,7 +149,9 @@ class GlobalExceptionHandler : HandlerExceptionResolver {
     }
 
     @ExceptionHandler(GlobalError::class)
-    fun handleGlobalError(e: GlobalError): ResponseEntity<GlobalErrorResponse> {
+    fun handleGlobalError(
+        e: GlobalError
+    ): ResponseEntity<GlobalErrorResponse> {
         e.printStackTrace()
 
         val httpStatus = e.httpStatus
@@ -155,7 +161,7 @@ class GlobalExceptionHandler : HandlerExceptionResolver {
             .body(
                 GlobalErrorResponse(
                     error = e.javaClass.simpleName,
-                    message = e.message.ifBlank { e.customCode.toString() },
+                    message = e.message.ifBlank { e.localizedMessage },
                     httpCode = e.getHttpStandardCode(),
                     errorCode = e.getCustomCode()
                 )
