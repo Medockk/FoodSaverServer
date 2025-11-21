@@ -22,4 +22,18 @@ interface ProductRepository : JpaRepository<ProductEntity, UUID> {
     @Query("DELETE FROM ProductEntity product WHERE product.expiresAt < :cutOffTime")
     fun deleteProductAfterExpiresAt(cutOffTime: Instant): Int
 
+    /**
+     * Method to find all [ProductEntity], containing special [title]
+     * @param title Product title
+     * @return A [List] of [ProductEntity] with special [title]
+     */
+    fun findAllByTitleContainingIgnoreCase(title: String): List<ProductEntity>
+
+    /**
+     * Method to find all [ProductEntity] with special [categoryId]. This method with strange named because
+     * Spring Data Jpa generate SQL-queries by method names.
+     * @param categoryId Identifier of category
+     * @return A [List] of [ProductEntity] with special [categoryId]
+     */
+    fun findAllByCategories_Id(categoryId: UUID): List<ProductEntity>
 }

@@ -83,7 +83,7 @@ class CartService(
 
         val cartItems = cartItemRepository.findAllByCart(cart).orElseGet { emptyList() }
         val products = cartItems.mapNotNull {
-            it.product.toResponseModel(it.quantity)
+            it.product.toResponseModel()
         }
 
         return products

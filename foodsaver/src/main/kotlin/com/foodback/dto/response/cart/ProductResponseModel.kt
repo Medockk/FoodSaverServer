@@ -14,6 +14,7 @@ import java.util.*
  * @param organization Organization, releasing current product
  * @param count Count of current product
  * @param expiresAt Expiration date expires
+ * @param categoryIds The Ids of all product categories
  */
 data class ProductResponseModel(
     val productId: UUID?,
@@ -24,6 +25,7 @@ data class ProductResponseModel(
     val rating: Float?,
     val organization: OrganizationEntity,
     val count: Int,
+    val categoryIds: List<UUID>,
 
     val expiresAt: Instant = Instant.now(),
 )

@@ -14,6 +14,7 @@ data class UserRequestModel(
     val email: String?,
     @field:NotBlankOrNull(message = "Name must be not blank or null")
     val name: String?,
+    @field:NotBlankOrNull(message = "Photo url must be not blank or null")
     val photoUrl: String?
 )
 

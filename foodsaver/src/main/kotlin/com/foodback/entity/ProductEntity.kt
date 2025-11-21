@@ -1,6 +1,7 @@
 package com.foodback.entity
 
 import jakarta.persistence.*
+import org.hibernate.annotations.ColumnDefault
 import org.hibernate.annotations.UuidGenerator
 import java.time.Instant
 import java.util.*
@@ -15,6 +16,8 @@ import java.util.*
  * @param organization Organization, whose sell current product
  * @param addedAt Date, when current product added in system
  * @param expiresAt Date, when current product expiration
+ * @param count The count of current product in storage
+ * @param categories A Categories of current product
  */
 @Entity
 @Table(name = "products")
@@ -37,6 +40,18 @@ data class ProductEntity(
 
     @Column(nullable = true)
     var rating: Float? = null,
+
+    @Column(nullable = false, updatable = true)
+    @ColumnDefault(value = "1")
+    var count: Int = 0,
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "product_category_link",
+        joinColumns = [JoinColumn("product_id")],
+        inverseJoinColumns = [JoinColumn("category_id")]
+    )
+    var categories: MutableList<ProductCategories> = mutableListOf(),
 
     var addedAt: Instant? = Instant.now(),
     var expiresAt: Instant? = Instant.now(),

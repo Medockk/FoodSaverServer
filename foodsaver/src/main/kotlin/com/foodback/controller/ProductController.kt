@@ -69,4 +69,32 @@ class ProductController(
         val response = productService.getAllProduct(productCount = size, page = page)
         return ResponseEntity.ok(response)
     }
+
+    /**
+     * Method to get all product containing like %[name]%
+     * @param name Name of products to be found
+     * @return A found [List] of [ProductResponseModel] where name equal [name]
+     */
+    @GetMapping("find/{name}")
+    fun findProduct(
+        @PathVariable("name", required = true)
+        name: String
+    ): ResponseEntity<List<ProductResponseModel>> {
+        val result = productService.findProduct(name.lowercase())
+        return ResponseEntity.ok(result)
+    }
+
+    /**
+     * Method to get all [ProductResponseModel] with some [categoryId]
+     * @param categoryId Identifier of category
+     * @return A [List] of [ProductResponseModel] with some category
+     */
+    @GetMapping("/category")
+    fun getProductsByCategory(
+        @RequestParam("categoryId", required = true)
+        categoryId: UUID
+    ): ResponseEntity<List<ProductResponseModel>> {
+        val result = productService.findProductsByCategory(categoryId)
+        return ResponseEntity.ok(result)
+    }
 }

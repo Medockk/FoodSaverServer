@@ -11,12 +11,16 @@ import java.util.*
  * @param organizationId Organization id, realizing this product
  * @param expiresAt Expiration date expires
  * @param addedAt Date when this product added to server
+ * @param categoryIds Ids of product categories
+ * @param count The count of products in storage
  */
 data class ProductRequestModel(
     val title: String,
     val description: String,
     val cost: Float,
     val organizationId: UUID,
+    val categoryIds: List<UUID>,
+    val count: Int = 1,
 
     val expiresAt: Instant? = Instant.now(),
     val addedAt: Instant? = Instant.now()
