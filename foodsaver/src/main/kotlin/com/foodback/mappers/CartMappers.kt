@@ -24,5 +24,6 @@ fun CartItemEntity.toProductResponse() =
         rating = product.rating,
         organization = requireNotNull(product.organization),
         count = quantity,
-        expiresAt = product.expiresAt!!
+        expiresAt = product.expiresAt!!,
+        categoryIds = emptyList(),
     )
