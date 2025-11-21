@@ -50,6 +50,14 @@ sealed interface RequestError : ErrorCode {
         ORGANIZATION_NOT_FOUND(5001)
     }
 
+    // Code between 6000 until 6999
+    enum class ProductCategoriesRequest(override val code: Int = 6000): RequestError {
+        UNKNOWN_ERROR(6000),
+        CATEGORY_NOT_FOUND(6001),
+
+        SOME_CATEGORIES_NOT_FOUND(6002),
+    }
+
     /**
      * Special code if failed to convert [String] to [java.util.UUID]
      */
