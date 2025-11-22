@@ -2,11 +2,9 @@ package com.foodback.controller
 
 import com.foodback.dto.request.cart.ProductRequestModel
 import com.foodback.dto.response.cart.ProductResponseModel
-import com.foodback.security.auth.UserDetailsImpl
 import com.foodback.service.ProductService
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
-import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 import java.util.*
 
@@ -22,11 +20,11 @@ class ProductController(
     /**
      * Method to add special product to server
      * This method can invoke only Users with role ADMIN
-     * If User doens't have role ADMIN this method throw UnAuthorized exception
+     * If User doesn't have role ADMIN this method throw UnAuthorized exception
      * @param productRequestModel request with current product
      */
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("@haveAuthority.canAddProduct(authentication) OR hasRole('ADMIN')")
     fun addProduct(
         @RequestBody(required = true)
         productRequestModel: ProductRequestModel
@@ -41,14 +39,11 @@ class ProductController(
      * @param productId special product id
      */
     @DeleteMapping("{product_id}")
-    @PreAuthorize("hasAuthority('DELETE_PRODUCT') and @haveAuthority.canDeleteProduct(#id, authentication)")
+    @PreAuthorize("hasAuthority('DELETE_PRODUCT') and @haveAuthority.canDeleteProduct(#productId, authentication)")
     fun deleteProduct(
         @PathVariable("product_id")
-        productId: UUID,
-        @AuthenticationPrincipal
-        authentication: UserDetailsImpl
+        productId: UUID
     ): ResponseEntity<Void> {
-        println("Authentication is: $authentication")
         productService.deleteProduct(productId)
         return ResponseEntity.ok().build()
     }
