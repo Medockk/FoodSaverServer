@@ -34,4 +34,9 @@ interface UserRepository : JpaRepository<UserEntity, UUID> {
      * @param email user email
      */
     fun findByEmail(email: String): Optional<UserEntity>
+
+    /**
+     * Method to find user by google id
+     */
+    fun findByGoogleId(googleId: String): Optional<UserEntity>
 }

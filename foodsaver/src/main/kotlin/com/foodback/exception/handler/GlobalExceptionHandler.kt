@@ -2,6 +2,7 @@ package com.foodback.exception.handler
 
 import com.foodback.exception.general.Error.GlobalError
 import com.foodback.exception.general.Error.GlobalErrorResponse
+import com.foodback.exception.general.ErrorCode.RequestError
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.core.annotation.Order
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
+import org.springframework.web.multipart.MaxUploadSizeExceededException
 import org.springframework.web.servlet.HandlerExceptionResolver
 import org.springframework.web.servlet.ModelAndView
 import java.io.EOFException
@@ -146,6 +148,18 @@ class GlobalExceptionHandler: HandlerExceptionResolver {
                     httpCode = HttpStatus.BAD_REQUEST.value()
                 )
             )
+    }
+
+    @ExceptionHandler(MaxUploadSizeExceededException::class)
+    fun handleMaxUploadSizeExceededException(e: MaxUploadSizeExceededException): ResponseEntity<GlobalErrorResponse> {
+        return ResponseEntity
+            .badRequest()
+            .body(GlobalErrorResponse(
+                error = "Max upload size exceeded exception",
+                message = "File is too large",
+                httpCode = HttpStatus.BAD_REQUEST.value(),
+                errorCode = RequestError.UserRequest.FILE_IS_TOO_LARGE.code
+            ))
     }
 
     @ExceptionHandler(GlobalError::class)

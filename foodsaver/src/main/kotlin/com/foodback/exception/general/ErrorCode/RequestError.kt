@@ -24,6 +24,8 @@ sealed interface RequestError : ErrorCode {
 
         UNAUTHORIZED_CSRF_TOKEN(1012),
         UNAUTHORIZED_JWT_TOKEN(1013),
+
+        FAILED_TO_VERIFY_GOOGLE_ID(1014)
     }
 
     // Code between 2000 until 2999
@@ -31,7 +33,9 @@ sealed interface RequestError : ErrorCode {
         UNKNOWN_ERROR,
         USER_NOT_FOUND(2001),
         EMPTY_EMAIL(2002),
-        EMAIL_NOT_FOUND(2003)
+        EMAIL_NOT_FOUND(2003),
+
+        FILE_IS_TOO_LARGE(2004)
     }
 
     // Code between 3000 until 3999
@@ -56,6 +60,18 @@ sealed interface RequestError : ErrorCode {
         CATEGORY_NOT_FOUND(6001),
 
         SOME_CATEGORIES_NOT_FOUND(6002),
+    }
+
+    enum class OfferRequest(override val code: Int = 7000): RequestError {
+        PRODUCT_NOT_FOUND
+    }
+
+    enum class PaymentRequest(override val code: Int = 8000): RequestError {
+        PAYMENT_METHOD_NOT_FOUND(8001),
+    }
+
+    enum class AddressRequest(override val code: Int = 9000): RequestError {
+        ADDRESS_NOT_FOUND(8001),
     }
 
     /**

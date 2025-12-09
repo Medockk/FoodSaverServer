@@ -2,6 +2,7 @@ package com.foodback.dto.request.user
 
 import com.foodback.utils.validation.NotBlankOrNull
 import jakarta.validation.constraints.Email
+import jakarta.validation.constraints.NotBlank
 
 /**
  * Request to update user data
@@ -11,10 +12,11 @@ import jakarta.validation.constraints.Email
  */
 data class UserRequestModel(
     @field:Email(message = "Invalid email type")
-    val email: String?,
-    @field:NotBlankOrNull(message = "Name must be not blank or null")
-    val name: String?,
-    @field:NotBlankOrNull(message = "Photo url must be not blank or null")
+    val email: String,
+    @field:NotBlank(message = "FullName must be not blank!")
+    val fullName: String,
+    val phone: String?,
+    val bio: String?,
     val photoUrl: String?
 )
 

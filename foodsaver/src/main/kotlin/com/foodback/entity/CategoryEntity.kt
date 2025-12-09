@@ -13,7 +13,7 @@ import java.util.*
  */
 @Entity
 @Table(name = "products_categories")
-data class ProductCategories(
+data class CategoryEntity(
     @Id
     @UuidGenerator(style = UuidGenerator.Style.RANDOM)
     var id: UUID? = null,

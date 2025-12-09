@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Primary
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -52,6 +53,13 @@ class SecurityConfig(
     fun passwordEncoder(): PasswordEncoder =
         BCryptPasswordEncoder()
 
+    @Bean
+    fun webSecurityCustomizer(): WebSecurityCustomizer {
+        return WebSecurityCustomizer {
+            it.ignoring().requestMatchers("/media/**")
+        }
+    }
+
     /**
      * Method to authorize HTTP requests for all users or some roles,
      * add JwtAuthenticationFilter before [UsernamePasswordAuthenticationFilter],
@@ -76,13 +84,13 @@ class SecurityConfig(
             }
             .authorizeHttpRequests {
                 it
-                    .requestMatchers("/api/auth/**").permitAll()
+                    .requestMatchers("/api/auth/**", "/media/**").permitAll()
                     // .requestMatchers("/api/users/**").hasAnyRole("USER", "ADMIN")
-                    .requestMatchers("/api/products").hasAnyRole("ADMIN")
+                    //.requestMatchers("/api/products").hasAnyRole("ADMIN")
                     .anyRequest().authenticated()
             }
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
-            .addFilterAfter(CsrfTokenFilter(accessDeniedHandler), UsernamePasswordAuthenticationFilter::class.java)
+            .addFilterAfter(CsrfTokenFilter(accessDeniedHandler), JwtAuthenticationFilter::class.java)
         return http.build()
     }
 }

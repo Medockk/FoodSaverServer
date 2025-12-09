@@ -64,7 +64,7 @@ class OrganizationPermissionEvaluator() : PermissionEvaluator {
      * Method to check: have current user permission or not
      * @return True, if user have permission, otherwise false
      */
-    fun hasPermission(user: UserDetailsImpl, permission: Any): Boolean {
+    private fun hasPermission(user: UserDetailsImpl, permission: Any): Boolean {
         return user.authorities.any { authority ->
             authority.authority == permission
         }

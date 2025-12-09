@@ -30,8 +30,9 @@ class CsrfTokenFilter(
 
         val path = request.requestURI
         response.generateCsrfToken()
-        if (!path.startsWith("/api/auth")) {
-            val cookie = request.cookies.find { it.name == cookieName } ?: run {
+        if (!path.startsWith("/api/auth") && !path.startsWith("/media")) {
+            println("Is cookies is null or empty? " + request.cookies.isNullOrEmpty())
+            val cookie = request.cookies?.find { it.name == cookieName } ?: run {
                 accessDeniedHandler.handle(
                     request,
                     response,
@@ -48,15 +49,13 @@ class CsrfTokenFilter(
                 return
             }
 
-            if (cookie.value == header) {
-                filterChain.doFilter(request, response)
-            } else {
+            if (cookie.value != header) {
                 accessDeniedHandler.handle(request, response, AccessDeniedException("CSRF-token not equal"))
                 return
             }
-        } else {
-            filterChain.doFilter(request, response)
         }
+
+        filterChain.doFilter(request, response)
     }
 
     /**
@@ -66,8 +65,10 @@ class CsrfTokenFilter(
     private fun HttpServletResponse.generateCsrfToken(): UUID {
         val token = UUID.randomUUID()
         val cookie = Cookie(cookieName, token.toString()).apply {
-            this.isHttpOnly = false
-            this.path = "/"
+            isHttpOnly = false
+            path = "/"
+            maxAge = 3_600_600
+            secure = false
         }
         this.addCookie(cookie)
         return token

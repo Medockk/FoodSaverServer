@@ -1,12 +1,14 @@
 package com.foodback.service
 
 import com.foodback.dto.request.cart.CartRequestModel
+import com.foodback.dto.response.cart.CartResponseModel
 import com.foodback.dto.response.cart.ProductResponseModel
 import com.foodback.entity.CartEntity
 import com.foodback.entity.CartItemEntity
 import com.foodback.exception.cart.CartException
 import com.foodback.exception.general.ErrorCode.RequestError
 import com.foodback.exception.product.ProductNotFoundException
+import com.foodback.mappers.toCartResponse
 import com.foodback.mappers.toProductResponse
 import com.foodback.mappers.toResponseModel
 import com.foodback.repository.CartItemRepository
@@ -75,7 +77,7 @@ class CartService(
      */
     fun getUserCart(
         uid: UUID
-    ): List<ProductResponseModel> {
+    ): List<CartResponseModel> {
         val cart = cartRepository.findByUid(uid).orElseGet {
             val entity = CartEntity(uid = uid)
             cartRepository.save(entity)
@@ -83,7 +85,7 @@ class CartService(
 
         val cartItems = cartItemRepository.findAllByCart(cart).orElseGet { emptyList() }
         val products = cartItems.mapNotNull {
-            it.product.toResponseModel()
+            it.toCartResponse()
         }
 
         return products
@@ -140,13 +142,15 @@ class CartService(
         val cartItemEntity = cart.items.firstOrNull {
             it.product.id == request.productId
         }?.apply {
-            quantity += request.quantity
+            quantity += 1
         }
 
         if (cartItemEntity != null) {
             val index = cart.items.indexOf(cartItemEntity)
-            cart.items[index] = cartItemEntity
-            cart.productCount += request.quantity
+            if (index != -1) {
+                cart.items[index] = cartItemEntity
+                cart.productCount += 1
+            }
             return cartItemEntity.toProductResponse()
         } else {
             throw ProductNotFoundException()
@@ -171,13 +175,15 @@ class CartService(
         val cartItemEntity = cart.items.firstOrNull {
             it.product.id == request.productId
         }?.apply {
-            quantity -= request.quantity
+            quantity -= 1
         }
 
         if (cartItemEntity != null) {
             val index = cart.items.indexOf(cartItemEntity)
-            cart.items[index] = cartItemEntity
-            cart.productCount -= request.quantity
+            if (index != -1) {
+                cart.items[index] = cartItemEntity
+                cart.productCount -= request.quantity
+            }
             return cartItemEntity.toProductResponse()
         } else {
             throw ProductNotFoundException()

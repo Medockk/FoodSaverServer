@@ -24,7 +24,7 @@ repositories {
 }
 
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter-web")            // REST + servlet
+    implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-websocket")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
@@ -36,9 +36,18 @@ dependencies {
     runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.12.5")
     /*JWT*/
 
+    /*OAUTH2*/
+    //implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
+    //implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
+    /*OAUTH2*/
+
     /*Email Sender*/
     implementation("org.springframework.boot:spring-boot-starter-mail")
     /*Email Sender*/
+
+    /*Google*/
+    implementation("com.google.api-client:google-api-client:2.8.1")
+    /*Google*/
 
     //implementation("org.springframework.boot:spring-boot-starter-webflux")
 
