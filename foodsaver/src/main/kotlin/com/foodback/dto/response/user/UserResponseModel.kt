@@ -1,5 +1,6 @@
 package com.foodback.dto.response.user
 
+import com.foodback.dto.response.address.AddressResponseModel
 import java.time.Instant
 import java.util.*
 
@@ -20,5 +21,10 @@ data class UserResponseModel(
     val name: String?,
     val photoUrl: String?,
     val createdAt: Instant,
-    val roles: List<String>
+    val roles: List<String>,
+
+    val phone: String?,
+    val bio: String?,
+    val addresses: List<AddressResponseModel> = emptyList(),
+    val paymentCartNumbers: List<PaymentCardResponse> = emptyList()
 )

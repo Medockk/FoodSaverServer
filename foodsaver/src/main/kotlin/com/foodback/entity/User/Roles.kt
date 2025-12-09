@@ -13,6 +13,7 @@ enum class Roles(val permissions: Set<String>) {
             Permissions.ADD_PRODUCT.value,
             Permissions.UPDATE_PRODUCT.value,
             Permissions.DELETE_PRODUCT.value,
+            Permissions.ADD_OFFERS.value
         )
     ),
     ADMIN(
@@ -21,6 +22,7 @@ enum class Roles(val permissions: Set<String>) {
             Permissions.ADD_PRODUCT.value,
             Permissions.UPDATE_PRODUCT.value,
             Permissions.DELETE_PRODUCT.value,
+            Permissions.ADD_OFFERS.value
         )
     );
 
@@ -45,4 +47,6 @@ enum class Permissions(val value: String) {
     DELETE_PRODUCT("DELETE_PRODUCT"),
     ADD_PRODUCT("ADD_PRODUCT"),
     UPDATE_PRODUCT("UPDATE_PRODUCT"),
+
+    ADD_OFFERS("ADD_OFFERS"),
 }

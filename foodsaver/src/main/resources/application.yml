@@ -1,3 +1,10 @@
+app:
+  media:
+    root: C:/foodback_data
+    path:
+      avatars: C:/foodback_data/avatars
+      offers: C:/foodback_data/offers
+
 spring:
   application:
     name: foodback
@@ -17,7 +24,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: update #create-drop  // for test debugging
     generate-ddl: true
     properties:
       hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
@@ -46,6 +53,24 @@ spring:
           starttls:
             enable: true
 
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id:
+              web: ${SPRING_GOOGLE_CLIENT_ID_WEB}
+              desktop: ${SPRING_GOOGLE_CLIENT_ID_DESKTOP}
+              android: ${SPRING_GOOGLE_CLIENT_ID_ANDROID}
+            client-secret: ${SPRING_GOOGLE_CLIENT_SECRET}
+            scope: openid, email, profile
+          provider:
+            issuer-uri: https://accounts.google.com
+
+  servlet:
+    multipart:
+      max-file-size: 10MB
+
 logging:
   level:
     org.springframework.security: DEBUG
@@ -60,5 +85,8 @@ jwt:
       ms: 604800000
 
 server:
-  address: 192.168.0.110
+  address: 10.152.104.227
+  web-address: 10.152.104.227
   port: 8088
+  web-port: 8087
+  protocol: http

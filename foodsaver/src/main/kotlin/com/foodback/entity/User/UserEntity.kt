@@ -1,6 +1,8 @@
 package com.foodback.entity.User
 
+import com.foodback.entity.AddressEntity
 import com.foodback.entity.OrganizationEntity
+import com.foodback.entity.PaymentMethodEntity
 import jakarta.persistence.*
 import jakarta.validation.constraints.Email
 import org.hibernate.annotations.OnDelete
@@ -23,6 +25,7 @@ import java.util.*
  * @param updatedAt Date of last update user data
  * @param roles Special roles of current user. This param is linked to other table in database
  * @param organization if not null, then the organization to which the user belongs
+ * @param googleId Identifier of Google account.
  */
 @Entity
 @Table(name = "users")
@@ -33,6 +36,7 @@ data class UserEntity(
 
     @Column(nullable = false)
     var username: String = "",
+    @Column(nullable = true)
     var passwordHash: String? = "",
 
     @Column(unique = true, nullable = true)
@@ -52,7 +56,7 @@ data class UserEntity(
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(
         name = "user_role",
-        joinColumns = [JoinColumn(name = "uid")],
+        joinColumns = [JoinColumn(name = "user_uid")],
         foreignKey = ForeignKey(ConstraintMode.CONSTRAINT)
     )
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -61,5 +65,25 @@ data class UserEntity(
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "organization_id", nullable = true)
-    var organization: OrganizationEntity? = null
+    var organization: OrganizationEntity? = null,
+
+    @Column(nullable = true)
+    var googleId: String? = null,
+
+    @Column(nullable = true)
+    var phone: String? = null,
+
+    @Column(nullable = true)
+    var bio: String? = null,
+
+    @OneToMany(
+        fetch = FetchType.LAZY,
+        cascade = [CascadeType.ALL],
+        orphanRemoval = true,
+        mappedBy = "user"
+    )
+    var addresses: MutableList<AddressEntity> = mutableListOf(),
+
+    @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true, mappedBy = "user")
+    var paymentMethods: MutableList<PaymentMethodEntity> = mutableListOf()
 )

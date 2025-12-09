@@ -5,6 +5,7 @@ import com.foodback.dto.request.auth.RefreshRequestModel
 import com.foodback.dto.request.auth.SignInRequest
 import com.foodback.dto.request.auth.SignUpRequest
 import com.foodback.dto.response.auth.AuthResponse
+import com.foodback.dto.response.auth.GoogleAuthResponse
 import com.foodback.dto.response.auth.RefreshResponseModel
 import com.foodback.entity.ResetPasswordEntity
 import com.foodback.entity.User.Roles
@@ -12,12 +13,15 @@ import com.foodback.entity.User.UserEntity
 import com.foodback.exception.auth.AuthenticationException
 import com.foodback.exception.auth.UserException
 import com.foodback.exception.general.ErrorCode.RequestError
-import com.foodback.mappers.toAuthResponse
+import com.foodback.mappers.UserMappers
 import com.foodback.repository.ResetPasswordRepository
 import com.foodback.repository.UserRepository
 import com.foodback.security.auth.UserDetailsImpl
 import com.foodback.security.jwt.JwtUtil
 import com.foodback.utils.CookieUtil
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier
+import com.google.api.client.http.javanet.NetHttpTransport
+import com.google.api.client.json.gson.GsonFactory
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpStatus
@@ -49,10 +53,17 @@ class AuthService(
     private val authenticationManager: AuthenticationManager,
     private val jwtUtil: JwtUtil,
     private val passwordEncoder: PasswordEncoder,
+    private val userMappers: UserMappers,
+
     @Value($$"${jwt.expiration.ms}")
     private val jwtExpirationMs: Long,
-
     private val resetPasswordRepository: ResetPasswordRepository,
+    @Value($$"${spring.security.oauth2.client.registration.google.client-id.web}")
+    private val webClientId: String,
+    @Value($$"${spring.security.oauth2.client.registration.google.client-id.android}")
+    private val androidClientId: String,
+    @Value($$"${spring.security.oauth2.client.registration.google.client-id.desktop}")
+    private val desktopClientId: String,
 ) {
 
     /**
@@ -71,6 +82,7 @@ class AuthService(
 
         val entity = UserEntity(
             username = request.username,
+            email = request.username,
             name = request.displayName,
             passwordHash = passwordEncoder.encode(request.password),
             roles = mutableListOf(Roles.USER.name)
@@ -82,7 +94,7 @@ class AuthService(
         response.addJwtCookie(accessToken)
 
         if (user.uid != null) {
-            return user.toAuthResponse(user.uid!!, accessToken, refreshToken, jwtExpirationMs)
+            return with(userMappers) { user.toAuthResponse(user.uid!!, accessToken, refreshToken, jwtExpirationMs) }
         } else {
             throw AuthenticationException(RequestError.Authentication.FAILED_REGISTER_USER)
         }
@@ -194,6 +206,93 @@ class AuthService(
         val user = entity.uid ?: throw UserException("Reset token linked to a null user", RequestError.Authentication.RESET_TOKEN_LINKED_TO_NULL)
         val passwordHash = passwordEncoder.encode(/* rawPassword = */ request.password)
         user.passwordHash = passwordHash
+    }
+
+    /**
+     * Method to verify Google id token
+     * @return A [GoogleAuthResponse] with [GoogleAuthResponse.idToken] - ID of Google account.
+     * If failed to verify Google ID token, return null
+     */
+    @Transactional
+    fun verifyGoogleIdToken(googleIdToken: String): GoogleAuthResponse? {
+        val transport = NetHttpTransport()
+        val jsonFactory = GsonFactory()
+
+        val verifier = GoogleIdTokenVerifier.Builder(transport, jsonFactory)
+            .setAudience(listOf(androidClientId, desktopClientId, webClientId))
+            .build()
+
+        val idToken = verifier.verify(googleIdToken) ?: return null
+        val payload = idToken.payload
+        
+        return GoogleAuthResponse(
+            idToken = payload.subject,
+            email = payload.email,
+            name = payload["name"] as String,
+            picture = payload["picture"] as String,
+            isEmailVerified = payload.emailVerified
+        )
+    }
+
+    /**
+     * Method to authenticate user with Google account. In first, try to find [GoogleAuthResponse.idToken] in [UserEntity].
+     * If user found, update [UserEntity.googleId] and return [AuthResponse].
+     * Else try to find user by email. If User found, update [UserEntity.googleId] and return [AuthResponse]
+     * Otherwise, if user not found by [UserEntity.googleId] or [UserEntity.email] create new user and
+     * return [AuthResponse]
+     * @return [AuthResponse] Response with authentication result
+     */
+    @Transactional
+    fun loadUser(
+        googleAuthResponse: GoogleAuthResponse,
+        response: HttpServletResponse
+    ): AuthResponse {
+        val userByGoogle = userRepository.findByGoogleId(googleAuthResponse.idToken)
+        if (userByGoogle.isPresent) {
+            userByGoogle.get().apply {
+                this.googleId = googleAuthResponse.idToken
+            }
+            return userByGoogle.get().setUserData(response)
+        }
+
+        val userByEmail = userRepository.findByEmail(googleAuthResponse.email)
+        if (userByEmail.isPresent) {
+            userByEmail.get().apply {
+                this.googleId = googleAuthResponse.idToken
+            }
+            return userByEmail.get().setUserData(response)
+        }
+
+        val newUser = UserEntity(
+            username = googleAuthResponse.email,
+            passwordHash = null,
+            email = googleAuthResponse.email,
+            name = googleAuthResponse.name,
+            photoUrl = googleAuthResponse.picture,
+            roles = mutableListOf(Roles.USER.name),
+            googleId = googleAuthResponse.idToken
+        )
+        return userRepository.save(newUser).setUserData(response)
+    }
+
+    /**
+     * Method to create JWT and Access tokens and set it to Response Cookie
+     * @return [AuthResponse] Response with JWT and Access tokens.
+     */
+    @Transactional
+    private fun UserEntity.setUserData(response: HttpServletResponse): AuthResponse {
+        val accessToken = jwtUtil.generateAccessToken(this.username)
+        val refreshToken = jwtUtil.generateRefreshToken(this.username)
+        response.addJwtCookie(accessToken)
+
+        return with(userMappers) {
+            this@setUserData.toAuthResponse(
+                uid = this@setUserData.uid!!,
+                jwtToken = accessToken,
+                refreshToken = refreshToken,
+                expiresIn = jwtExpirationMs
+            )
+        }
     }
 
     /**

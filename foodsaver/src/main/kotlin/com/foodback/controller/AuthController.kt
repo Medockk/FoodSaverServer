@@ -3,6 +3,7 @@ package com.foodback.controller
 import com.foodback.dto.request.auth.*
 import com.foodback.dto.response.auth.AuthResponse
 import com.foodback.dto.response.auth.RefreshResponseModel
+import com.foodback.exception.auth.AuthenticationException
 import com.foodback.exception.auth.UserException
 import com.foodback.exception.general.ErrorCode.RequestError
 import com.foodback.service.AuthService
@@ -111,41 +112,29 @@ class AuthController(
         authService.resetPassword(token = id, request)
         return ResponseEntity.ok().build()
     }
-}
 
-//@PostMapping("image")
-//fun uploadImage(
-//    @RequestParam("file") file: MultipartFile,
-//    httpServletRequest: HttpServletRequest
-//) {
-//    if (file.isEmpty) {
-//        throw Exception("File is empty!")
-//    }
-//
-//    val directory = System.getProperty("user.dir") + "/spring_images"
-//    File(directory).mkdirs()
-//    val time = System.currentTimeMillis()
-//
-//    val name = file.originalFilename ?: file.name
-//    val originName = name.dropLastWhile { it != '.' }.dropLast(1)
-//    val suffix = name.replaceBeforeLast(
-//        ".",
-//        "_$time"
-//    )
-//    try {
-//        val bytes = file.bytes
-//        val path = Paths.get(
-//            "$directory/$originName$suffix"
-//        )
-//        Files.write(path, bytes)
-//        path.toFile().setLastModified(time)
-//    } catch (e: Exception) {
-//        e.printStackTrace()
-//        throw e
-//    }
-//
-//    val jwt = httpServletRequest.cookies.find { it.name == "jwt" }?.value ?: return
-//    val uid = FirebaseAuth.getInstance().verifyIdToken(jwt).uid
-//    authService.getUsers()
-//    supabaseService.uploadAvatar(file, "$originName$suffix", uid)
-//}
+    /**
+     * Method to authenticate with Google Account
+     * @param googleAuthRequest Request body, contained [GoogleAuthRequest.idToken] - Special id token of current
+     * google account
+     * @return A [ResponseEntity] of [AuthResponse]
+     * @throws AuthenticationException If google id token failed to verify
+     */
+    @PostMapping("google")
+    fun authenticateWithGoogle(
+        @RequestBody
+        googleAuthRequest: GoogleAuthRequest,
+        response: HttpServletResponse
+    ): ResponseEntity<AuthResponse> {
+        val googleAuthResponse = authService.verifyGoogleIdToken(googleAuthRequest.idToken)
+            ?: throw AuthenticationException(
+                message = "Failed to verify Google id ${googleAuthRequest.idToken}",
+                customCode = RequestError.Authentication.FAILED_TO_VERIFY_GOOGLE_ID,
+                httpStatus = HttpStatus.BAD_REQUEST
+            )
+
+        val user = authService.loadUser(googleAuthResponse, response)
+
+        return ResponseEntity.ok(user)
+    }
+}

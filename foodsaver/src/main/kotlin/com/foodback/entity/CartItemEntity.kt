@@ -27,5 +27,11 @@ data class CartItemEntity(
     var product: ProductEntity,
 
     @Column(nullable = false)
-    var quantity: Int = 1
+    var quantity: Long = 1,
+
+    @UuidGenerator(style = UuidGenerator.Style.RANDOM)
+    @Column(
+        nullable = false
+    )
+    var tempId: UUID? = null
 )

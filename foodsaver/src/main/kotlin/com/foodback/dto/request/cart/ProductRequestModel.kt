@@ -20,7 +20,10 @@ data class ProductRequestModel(
     val cost: Float,
     val organizationId: UUID,
     val categoryIds: List<UUID>,
-    val count: Int = 1,
+    val count: Long = 1,
+
+    val unit: Long,
+    val unitName: String,
 
     val expiresAt: Instant? = Instant.now(),
     val addedAt: Instant? = Instant.now()

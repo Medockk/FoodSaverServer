@@ -14,5 +14,5 @@ data class CartRequestModel(
     val productId: UUID,
 
     @field:Min(value = 1, message = "Min quantity 1")
-    val quantity: Int = 1
+    val quantity: Long = 1
 )
