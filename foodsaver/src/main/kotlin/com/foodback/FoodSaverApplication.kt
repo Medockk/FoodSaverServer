@@ -12,5 +12,6 @@ import org.springframework.scheduling.annotation.EnableScheduling
 class FoodSaverApplication
 
 fun main(args: Array<String>) {
+    // Start the payment methods
     runApplication<FoodSaverApplication>(*args)
 }
