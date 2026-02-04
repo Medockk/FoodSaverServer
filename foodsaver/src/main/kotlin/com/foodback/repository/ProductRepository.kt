@@ -1,6 +1,8 @@
 package com.foodback.repository
 
 import com.foodback.entity.ProductEntity
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Modifying
 import org.springframework.data.jpa.repository.Query
@@ -27,13 +29,33 @@ interface ProductRepository : JpaRepository<ProductEntity, UUID> {
      * @param title Product title
      * @return A [List] of [ProductEntity] with special [title]
      */
-    fun findAllByTitleContainingIgnoreCase(title: String): List<ProductEntity>
+    fun findAllByTitleContainingIgnoreCase(title: String, pageable: Pageable): Page<ProductEntity>
 
     /**
-     * Method to find all [ProductEntity] with special [categoryId]. This method with strange named because
+     * Method to find some [ProductEntity] with special [categoryIds]. This method with strange named because
      * Spring Data Jpa generate SQL-queries by method names.
-     * @param categoryId Identifier of category
-     * @return A [List] of [ProductEntity] with special [categoryId]
+     * @param categoryIds Identifiers of categories
+     * @param pageable This parameter set LIMIT and OFFSET to SQL-query
+     * @return A [List] of [ProductEntity] with special [categoryIds]
      */
-    fun findAllByCategories_Id(categoryId: UUID): List<ProductEntity>
+    fun findAllByCategories_IdIn(categoryIds: List<UUID>, pageable: Pageable): Page<ProductEntity>
+
+    /**
+     * Method to get some [ProductEntity] with special [organizationId]
+     * @param organizationId The Identifier of current organization
+     * @param pageable This parameter set LIMIT and OFFSET to SQL-query
+     * @return A [List] of [ProductEntity] with special [organizationId]
+     */
+    fun findAllByOrganization_Id(organizationId: UUID, pageable: Pageable): Page<ProductEntity>
+
+    fun findAllByTitleContainingIgnoreCaseAndCategories_IdIn(title: String, categoryIds: List<UUID>, pageable: Pageable): Page<ProductEntity>
+
+    /**
+     * Method to get some [ProductEntity] with special [organizationId] and special [categoryId]
+     * @param organizationId The Identifier of current organization
+     * @param categoryId The identifier of products category
+     * @param pageable This parameter set LIMIT and OFFSET to SQL-query
+     * @return A [List] of [ProductEntity] with special [organizationId] and [categoryId]
+     */
+    fun findAllByOrganization_IdAndCategories_Id(organizationId: UUID, categoryId: UUID, pageable: Pageable): Page<ProductEntity>
 }

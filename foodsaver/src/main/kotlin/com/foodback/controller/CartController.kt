@@ -1,11 +1,13 @@
 package com.foodback.controller
 
 import com.foodback.dto.request.cart.CartRequestModel
+import com.foodback.dto.response.cart.CartResponseModel
 import com.foodback.dto.response.cart.ProductResponseModel
+import com.foodback.mappers.toCartResponse
+import com.foodback.mappers.toResponseModel
 import com.foodback.security.auth.UserDetailsImpl
 import com.foodback.service.CartService
 import org.springframework.http.ResponseEntity
-import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 import java.security.Principal
@@ -27,7 +29,7 @@ class CartController(
     fun getUserCart(
         @AuthenticationPrincipal
         principal: UserDetailsImpl
-    ): ResponseEntity<List<ProductResponseModel>> {
+    ): ResponseEntity<List<CartResponseModel>> {
         val uid = principal.uid
         return ResponseEntity.ok(cartService.getUserCart(uid))
     }
@@ -44,18 +46,23 @@ class CartController(
         cartRequestModel: CartRequestModel,
         @AuthenticationPrincipal
         principal: UserDetailsImpl
-    ) {
+    ): ResponseEntity<CartResponseModel> {
         val uid = principal.uid
-        cartService.addProductToCart(cartRequestModel, uid)
+        val cartItemEntity = cartService.addProductToCart(cartRequestModel, uid)
+
+        return if (cartItemEntity == null) {
+            ResponseEntity.badRequest().build()
+        } else {
+            ResponseEntity.ok(cartItemEntity.toCartResponse())
+        }
     }
 
     /**
-     * Method to delete product, if user have role ADMIN, of else throw [AccessDeniedException]
+     * Method to delete product from cart
      * @param productId special product id
      * @param principal auto-generated param, contains special UID
      */
     @DeleteMapping
-    @PreAuthorize("haseRole('ADMIN')")
     fun deleteProduct(
         @RequestParam(value = "product_id", required = true)
         productId: UUID,

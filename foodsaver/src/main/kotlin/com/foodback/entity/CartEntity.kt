@@ -22,7 +22,7 @@ data class CartEntity(
     var uid: UUID,
 
     @Column(nullable = false)
-    var productCount: Int = 0,
+    var productCount: Long = 0,
 
     @OneToMany(
         fetch = FetchType.LAZY,
