@@ -5,7 +5,6 @@ import com.foodback.app.address.entity.AddressEntity
 import com.foodback.app.user.auth.dto.response.AuthResponseV1
 import com.foodback.app.user.dto.response.UserResponseModelV1
 import com.foodback.app.user.entity.UserEntity
-import com.foodback.service.MediaService
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 

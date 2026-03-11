@@ -4,7 +4,6 @@ import com.foodback.app.user.auth.dto.request.*
 import com.foodback.app.user.auth.dto.response.AuthResponseV1
 import com.foodback.app.user.auth.dto.response.RefreshResponseModelV1
 import com.foodback.app.user.auth.service.AuthService
-import com.foodback.app.user.mapper.UserMapperV1
 import com.foodback.exception.auth.AuthenticationException
 import com.foodback.exception.auth.UserException
 import com.foodback.exception.general.ErrorCode.RequestError

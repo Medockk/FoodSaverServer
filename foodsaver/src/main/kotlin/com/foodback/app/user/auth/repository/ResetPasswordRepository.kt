@@ -4,8 +4,7 @@ import com.foodback.app.user.auth.entity.ResetPasswordEntity
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Modifying
 import org.springframework.data.jpa.repository.Query
-import java.util.Optional
-import java.util.UUID
+import java.util.*
 
 /**
  * interface to access with table 'reset_password_token' in database

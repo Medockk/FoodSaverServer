@@ -3,7 +3,6 @@ package com.foodback.config
 import com.foodback.exception.handler.CustomAccessDeniedHandler
 import com.foodback.exception.handler.CustomAuthenticationEntryPoint
 import com.foodback.security.auth.UserDetailsServiceImpl
-import com.foodback.security.csrf.CsrfTokenFilter
 import com.foodback.security.jwt.JwtAuthenticationFilter
 import com.foodback.security.jwt.JwtUtil
 import org.springframework.context.annotation.Bean

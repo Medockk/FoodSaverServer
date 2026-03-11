@@ -3,17 +3,14 @@ package com.foodback.app.user.service
 import com.foodback.app.user.dto.request.UserRequestModelV1
 import com.foodback.app.user.dto.response.UserResponseModelV1
 import com.foodback.app.user.entity.UserEntity
-import com.foodback.exception.auth.UserException
 import com.foodback.app.user.repository.UserRepository
+import com.foodback.exception.auth.UserException
 import com.foodback.service.MediaService
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.multipart.MultipartFile
-import java.io.File
-import java.nio.file.Files
-import java.nio.file.Paths
-import java.util.UUID
+import java.util.*
 
 /**
  * Service to make requests to database with same user data

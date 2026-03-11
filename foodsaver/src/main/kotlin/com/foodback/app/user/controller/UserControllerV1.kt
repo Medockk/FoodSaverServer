@@ -3,18 +3,13 @@ package com.foodback.app.user.controller
 import com.foodback.app.user.dto.request.UserRequestModelV1
 import com.foodback.app.user.dto.response.UserResponseModelV1
 import com.foodback.app.user.mapper.UserMapperV1
+import com.foodback.app.user.service.UserService
 import com.foodback.exception.auth.UserException
 import com.foodback.security.auth.UserDetailsImpl
-import com.foodback.app.user.service.UserService
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PutMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 
 /**

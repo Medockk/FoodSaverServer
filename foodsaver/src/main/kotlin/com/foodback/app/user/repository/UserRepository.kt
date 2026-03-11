@@ -3,8 +3,7 @@ package com.foodback.app.user.repository
 import com.foodback.app.user.entity.UserEntity
 import com.foodback.exception.auth.UserException
 import org.springframework.data.jpa.repository.JpaRepository
-import java.util.Optional
-import java.util.UUID
+import java.util.*
 
 /**
  * Special Repository to make requests to Database with JpaRepository.

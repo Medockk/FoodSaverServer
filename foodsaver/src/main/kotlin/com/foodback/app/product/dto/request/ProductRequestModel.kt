@@ -1,7 +1,7 @@
 package com.foodback.app.product.dto.request
 
 import java.time.Instant
-import java.util.UUID
+import java.util.*
 
 /**
  * Special DTO request to add product to server

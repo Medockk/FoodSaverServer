@@ -1,7 +1,5 @@
 package com.foodback.app.enterprises.service
 
-import com.foodback.app.enterprises.dto.request.GetEnterpriseRequestV1
-import com.foodback.app.enterprises.dto.response.EnterpriseImageResponseV1
 import com.foodback.app.enterprises.entity.EnterprisesEntity
 import com.foodback.app.enterprises.repository.EnterpriseRepository
 import com.foodback.service.MediaService
@@ -9,8 +7,7 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.multipart.MultipartFile
-import java.util.UUID
-import kotlin.jvm.optionals.getOrElse
+import java.util.*
 import kotlin.jvm.optionals.getOrNull
 
 @Service

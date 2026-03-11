@@ -1,6 +1,6 @@
 package com.foodback.app.offers.dto.response
 
-import java.util.UUID
+import java.util.*
 
 data class OfferResponseModel(
     val id: UUID,

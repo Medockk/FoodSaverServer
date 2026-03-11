@@ -1,8 +1,8 @@
 package com.foodback.app.product.controller
 
+import com.foodback.app.common.dto.response.ProductResponseModel
 import com.foodback.app.product.dto.request.ProductRequestModel
 import com.foodback.app.product.dto.response.CategoriesResponseModel
-import com.foodback.app.common.dto.response.ProductResponseModel
 import com.foodback.app.product.mapper.ProductMapperV1
 import com.foodback.app.product.service.ProductService
 import com.foodback.security.auth.UserDetailsImpl

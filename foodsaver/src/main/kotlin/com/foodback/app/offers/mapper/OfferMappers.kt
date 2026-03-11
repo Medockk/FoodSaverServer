@@ -1,7 +1,7 @@
 package com.foodback.app.offers.mapper
 
-import com.foodback.app.offers.entity.OffersEntity
 import com.foodback.app.offers.dto.response.OfferResponseModel
+import com.foodback.app.offers.entity.OffersEntity
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 

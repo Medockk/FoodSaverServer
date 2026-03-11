@@ -1,15 +1,13 @@
 package com.foodback.app.address.service
 
 import com.foodback.app.address.dto.request.AddAddressRequestModelV1
-import com.foodback.app.address.dto.response.AddressResponseModelV1
 import com.foodback.app.address.entity.AddressEntity
-import com.foodback.app.address.mapper.AddressMapperV1
 import com.foodback.app.address.repository.AddressRepository
-import com.foodback.exception.address.AddressException
 import com.foodback.app.user.repository.UserRepository
+import com.foodback.exception.address.AddressException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.util.UUID
+import java.util.*
 
 @Service
 class AddressService(

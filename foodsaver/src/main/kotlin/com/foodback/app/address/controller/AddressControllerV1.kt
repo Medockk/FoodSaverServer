@@ -3,19 +3,12 @@ package com.foodback.app.address.controller
 import com.foodback.app.address.dto.request.AddAddressRequestModelV1
 import com.foodback.app.address.dto.response.AddressResponseModelV1
 import com.foodback.app.address.mapper.AddressMapperV1
-import com.foodback.security.auth.UserDetailsImpl
 import com.foodback.app.address.service.AddressService
+import com.foodback.security.auth.UserDetailsImpl
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
-import org.springframework.web.bind.annotation.DeleteMapping
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.PutMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
-import java.util.UUID
+import org.springframework.web.bind.annotation.*
+import java.util.*
 
 @RestController
 @RequestMapping("/api/v1/address")

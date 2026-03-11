@@ -1,7 +1,7 @@
 package com.foodback.app.enterprises.dto.response
 
 import com.foodback.app.common.dto.response.OrganizationResponseV1
-import java.util.UUID
+import java.util.*
 
 data class EnterpriseResponseV1(
     val id: UUID,

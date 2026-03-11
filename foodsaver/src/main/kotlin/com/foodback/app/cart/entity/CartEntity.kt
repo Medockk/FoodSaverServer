@@ -1,15 +1,8 @@
 package com.foodback.app.cart.entity
 
-import com.foodback.app.cart.entity.CartItemEntity
-import jakarta.persistence.CascadeType
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.FetchType
-import jakarta.persistence.Id
-import jakarta.persistence.OneToMany
-import jakarta.persistence.Table
+import jakarta.persistence.*
 import org.hibernate.annotations.UuidGenerator
-import java.util.UUID
+import java.util.*
 
 /**
  * Special entity to save User cart to database

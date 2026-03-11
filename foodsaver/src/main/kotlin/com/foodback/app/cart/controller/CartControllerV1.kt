@@ -3,20 +3,13 @@ package com.foodback.app.cart.controller
 import com.foodback.app.cart.dto.request.CartRequestModel
 import com.foodback.app.cart.dto.response.CartResponseModel
 import com.foodback.app.cart.mapper.CartMapperV1
+import com.foodback.app.cart.service.CartService
 import com.foodback.app.common.dto.response.ProductResponseModel
 import com.foodback.security.auth.UserDetailsImpl
-import com.foodback.app.cart.service.CartService
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
-import org.springframework.web.bind.annotation.DeleteMapping
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.PutMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
-import java.util.UUID
+import org.springframework.web.bind.annotation.*
+import java.util.*
 
 /**
  * Rest controller to process HTTP request to get/modify user cart

@@ -1,7 +1,7 @@
 package com.foodback.app.address.dto.response
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import java.util.UUID
+import java.util.*
 
 data class AddressResponseModelV1(
     val id: UUID,

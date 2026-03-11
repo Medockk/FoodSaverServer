@@ -1,6 +1,5 @@
 package com.foodback.app.user.dto.response
 
-import com.foodback.app.address.dto.response.AddressResponseModelV1
 import java.time.Instant
 import java.util.*
 

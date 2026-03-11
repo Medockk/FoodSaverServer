@@ -1,7 +1,7 @@
 package com.foodback.app.cart.dto.response
 
 import com.foodback.app.common.dto.response.ProductResponseModel
-import java.util.UUID
+import java.util.*
 
 data class CartResponseModel(
     val id: UUID,

@@ -2,7 +2,7 @@ package com.foodback.app.cart.dto.request
 
 import jakarta.validation.constraints.Min
 import jakarta.validation.constraints.NotNull
-import java.util.UUID
+import java.util.*
 
 /**
  * Special DTO request to add product to cart
