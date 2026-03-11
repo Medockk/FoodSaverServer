@@ -1,9 +1,11 @@
 package com.foodback.config
 
 import com.foodback.exception.handler.GlobalExceptionHandler
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Configuration
 import org.springframework.web.servlet.HandlerExceptionResolver
 import org.springframework.web.servlet.config.annotation.CorsRegistry
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 
 /**
@@ -13,12 +15,14 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
  */
 @Configuration
 class WebConfig(
-    private val handler: GlobalExceptionHandler
+    private val handler: GlobalExceptionHandler,
+    @Value($$"${app.media.root}")
+    private val resourceLocation: String
 ) : WebMvcConfigurer {
 
     override fun addCorsMappings(registry: CorsRegistry) {
         registry.addMapping("/**")
-            .allowedOrigins("http://localhost:8087", "http://mylocalhost.com:8087", "http://10.152.104.227:8087")
+            .allowedOrigins("http://localhost:8087", "http://mylocalhost.com:8087", "http://10.198.60.227:8087")
             .allowedMethods("*")
             .allowedHeaders("*")
             .allowCredentials(true)
@@ -27,5 +31,10 @@ class WebConfig(
 
     override fun extendHandlerExceptionResolvers(resolvers: MutableList<HandlerExceptionResolver>) {
         resolvers.add(0, handler)
+    }
+
+    override fun addResourceHandlers(registry: ResourceHandlerRegistry) {
+        registry.addResourceHandler("media/**")
+            .addResourceLocations("file:///$resourceLocation/")
     }
 }

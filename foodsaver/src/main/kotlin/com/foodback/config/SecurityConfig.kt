@@ -84,13 +84,13 @@ class SecurityConfig(
             }
             .authorizeHttpRequests {
                 it
-                    .requestMatchers("/api/auth/**", "/media/**").permitAll()
+                    .requestMatchers("/api/v1/auth/**", "/media/**").permitAll()
                     // .requestMatchers("/api/users/**").hasAnyRole("USER", "ADMIN")
                     //.requestMatchers("/api/products").hasAnyRole("ADMIN")
                     .anyRequest().authenticated()
             }
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
-            .addFilterAfter(CsrfTokenFilter(accessDeniedHandler), JwtAuthenticationFilter::class.java)
+//            .addFilterAfter(CsrfTokenFilter(accessDeniedHandler), JwtAuthenticationFilter::class.java)
         return http.build()
     }
 }

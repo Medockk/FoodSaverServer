@@ -52,6 +52,9 @@ dependencies {
     //implementation("org.springframework.boot:spring-boot-starter-webflux")
 
     runtimeOnly("org.postgresql:postgresql")
+    // for GPS cords
+    implementation("org.hibernate.orm:hibernate-spatial")
+    implementation("org.locationtech.jts:jts-core:1.19.0")
 
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")

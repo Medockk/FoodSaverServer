@@ -24,7 +24,7 @@ class JwtAuthenticationFilter(
      */
     override fun shouldNotFilter(request: HttpServletRequest): Boolean {
         val path = request.requestURI
-        return path.startsWith("/api/auth") || path.startsWith("/media")
+        return path.startsWith("/api/v1/auth") || path.startsWith("/media")
     }
 
     /**

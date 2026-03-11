@@ -30,7 +30,7 @@ class CsrfTokenFilter(
 
         val path = request.requestURI
         response.generateCsrfToken()
-        if (!path.startsWith("/api/auth") && !path.startsWith("/media")) {
+        if (!path.startsWith("/api/v1/auth") && !path.startsWith("/media")) {
             println("Is cookies is null or empty? " + request.cookies.isNullOrEmpty())
             val cookie = request.cookies?.find { it.name == cookieName } ?: run {
                 accessDeniedHandler.handle(
