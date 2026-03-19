@@ -1,6 +1,5 @@
 package com.foodback.app.product.mapper
 
-import com.foodback.app.common.dto.response.OrganizationResponseV1
 import com.foodback.app.common.dto.response.ProductResponseModel
 import com.foodback.app.product.dto.request.ProductRequestModel
 import com.foodback.app.product.entity.CategoryEntity

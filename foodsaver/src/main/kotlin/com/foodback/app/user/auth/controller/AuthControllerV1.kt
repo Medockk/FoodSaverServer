@@ -7,7 +7,6 @@ import com.foodback.app.user.auth.service.AuthService
 import com.foodback.exception.auth.AuthenticationException
 import com.foodback.exception.auth.UserException
 import com.foodback.exception.general.ErrorCode.RequestError
-import com.foodback.service.notification.EmailNotificationService
 import com.foodback.service.notification.NotificationService
 import jakarta.servlet.http.HttpServletResponse
 import jakarta.validation.Valid
