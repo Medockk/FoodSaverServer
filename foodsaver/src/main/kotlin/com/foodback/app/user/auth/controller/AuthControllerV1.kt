@@ -7,9 +7,11 @@ import com.foodback.app.user.auth.service.AuthService
 import com.foodback.exception.auth.AuthenticationException
 import com.foodback.exception.auth.UserException
 import com.foodback.exception.general.ErrorCode.RequestError
-import com.foodback.service.DefaultEmailService
+import com.foodback.service.notification.EmailNotificationService
+import com.foodback.service.notification.NotificationService
 import jakarta.servlet.http.HttpServletResponse
 import jakarta.validation.Valid
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.transaction.annotation.Transactional
@@ -23,7 +25,8 @@ import java.util.*
 @RequestMapping("/api/v1/auth")
 class AuthControllerV1(
     private val authService: AuthService,
-    private val defaultEmailService: DefaultEmailService
+    @Qualifier("emailNotificationService")
+    private val notificationService: NotificationService
 ) {
 
     /**
@@ -87,7 +90,7 @@ class AuthControllerV1(
         val email = request.email
 
         val resetToken = authService.resetPassword(email = email)
-        defaultEmailService.sendMessage(email, resetToken)
+        notificationService.sendNotification(recipient = email, message = resetToken.toString())
         return ResponseEntity.ok().build()
     }
 

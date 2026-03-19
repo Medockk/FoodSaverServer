@@ -27,14 +27,6 @@ class CartMapperV1 {
             description = product.description,
             cost = product.cost,
             rating = product.rating,
-            organization = product.organization!!.let {
-                OrganizationResponseV1(
-                    id = it.id!!,
-                    organizationName = it.organizationName,
-                    owner = it.owner,
-                    createdAt = it.createdAt!!
-                )
-            },
             count = quantity,
             expiresAt = product.expiresAt!!,
             categoryIds = emptyList(),

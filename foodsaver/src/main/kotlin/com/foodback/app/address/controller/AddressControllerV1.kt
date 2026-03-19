@@ -5,6 +5,7 @@ import com.foodback.app.address.dto.response.AddressResponseModelV1
 import com.foodback.app.address.mapper.AddressMapperV1
 import com.foodback.app.address.service.AddressService
 import com.foodback.security.auth.UserDetailsImpl
+import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
@@ -12,6 +13,7 @@ import java.util.*
 
 @RestController
 @RequestMapping("/api/v1/address")
+@Tag(name = "NAME", description = "DESCRIPTION")
 class AddressControllerV1(
     private val addressService: AddressService,
     private val addressMapperV1: AddressMapperV1

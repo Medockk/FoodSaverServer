@@ -1,5 +1,6 @@
 package com.foodback.app.product.entity
 
+import com.foodback.app.cart.entity.CartItemEntity
 import com.foodback.app.enterprises.entity.EnterprisesEntity
 import jakarta.persistence.*
 import org.hibernate.annotations.ColumnDefault
@@ -39,10 +40,6 @@ data class ProductEntity(
     @ColumnDefault(value = "'Rub'")
     var costUnit: String = "Rub",
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "organization_id", nullable = false)
-    var organization: OrganizationEntity? = null,
-
     @Column(nullable = true)
     var rating: Float? = null,
 
@@ -65,10 +62,12 @@ data class ProductEntity(
     @Column(nullable = false)
     var unitName: String,
 
-    //DO("Add default value not-null")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "enterprise_id", nullable = true)
     var enterprise: EnterprisesEntity? = null,
+
+    @OneToMany(cascade = [CascadeType.ALL], mappedBy = "product", orphanRemoval = true)
+    var cartItemEntity: MutableList<CartItemEntity> = mutableListOf(),
 
     var addedAt: Instant? = Instant.now(),
     var expiresAt: Instant? = Instant.now(),

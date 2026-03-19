@@ -6,6 +6,8 @@ app:
       offers: C:/foodback_data/offers
       products: C:/foodback_data/products
       enterprises: C:/foodback_data/enterprises
+  firebase:
+    admin-sdk-path: firebase/firebase-admin-sdk.json
 
 spring:
   application:

@@ -39,3 +39,6 @@ out/
 ### Kotlin ###
 .kotlin
 demo/src/main/resources/firebase-admin-sdk.json
+
+### Firebase ###
+foodsaver/src/main/resources/firebase/firebase-admin-sdk.json

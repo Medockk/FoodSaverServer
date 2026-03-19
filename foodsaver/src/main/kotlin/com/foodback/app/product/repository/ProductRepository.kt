@@ -46,7 +46,7 @@ interface ProductRepository : JpaRepository<ProductEntity, UUID> {
      * @param pageable This parameter set LIMIT and OFFSET to SQL-query
      * @return A [List] of [ProductEntity] with special [organizationId]
      */
-    fun findAllByOrganization_Id(organizationId: UUID, pageable: Pageable): Page<ProductEntity>
+//    fun findAllByOrganization_Id(organizationId: UUID, pageable: Pageable): Page<ProductEntity>
 
     fun findAllByTitleContainingIgnoreCaseAndCategories_IdIn(title: String, categoryIds: List<UUID>, pageable: Pageable): Page<ProductEntity>
 
@@ -57,5 +57,5 @@ interface ProductRepository : JpaRepository<ProductEntity, UUID> {
      * @param pageable This parameter set LIMIT and OFFSET to SQL-query
      * @return A [List] of [ProductEntity] with special [organizationId] and [categoryId]
      */
-    fun findAllByOrganization_IdAndCategories_Id(organizationId: UUID, categoryId: UUID, pageable: Pageable): Page<ProductEntity>
+//    fun findAllByOrganization_IdAndCategories_Id(organizationId: UUID, categoryId: UUID, pageable: Pageable): Page<ProductEntity>
 }

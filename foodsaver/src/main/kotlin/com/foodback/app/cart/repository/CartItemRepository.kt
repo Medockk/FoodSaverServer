@@ -4,6 +4,7 @@ import com.foodback.app.cart.entity.CartEntity
 import com.foodback.app.cart.entity.CartItemEntity
 import com.foodback.app.product.entity.ProductEntity
 import org.springframework.data.jpa.repository.JpaRepository
+import java.time.Instant
 import java.util.*
 
 /**
@@ -22,4 +23,6 @@ interface CartItemRepository : JpaRepository<CartItemEntity, UUID> {
      * @return An [Optional] of [List] of [CartItemEntity]
      */
     fun findAllByCart(cartEntity: CartEntity): Optional<List<CartItemEntity>>
+
+    fun findAllByProductExpiresAtBefore(threshold: Instant): Optional<List<CartItemEntity>>
 }

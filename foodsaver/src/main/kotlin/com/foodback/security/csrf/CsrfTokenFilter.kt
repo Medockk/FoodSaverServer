@@ -1,5 +1,6 @@
 package com.foodback.security.csrf
 
+import com.foodback.config.SecurityConfig
 import com.foodback.exception.handler.CustomAccessDeniedHandler
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.Cookie
@@ -30,7 +31,12 @@ class CsrfTokenFilter(
 
         val path = request.requestURI
         response.generateCsrfToken()
-        if (!path.startsWith("/api/v1/auth") && !path.startsWith("/media")) {
+
+        val isPublicUrl = SecurityConfig.permittedRequestPaths.any {
+            path.startsWith(it)
+        }
+
+        if (!isPublicUrl) {
             println("Is cookies is null or empty? " + request.cookies.isNullOrEmpty())
             val cookie = request.cookies?.find { it.name == cookieName } ?: run {
                 accessDeniedHandler.handle(

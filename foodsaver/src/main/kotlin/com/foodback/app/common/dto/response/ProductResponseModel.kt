@@ -28,7 +28,6 @@ data class ProductResponseModel(
 
     val count: Long,
     val rating: Float?,
-    val organization: OrganizationResponseV1,
     val categoryIds: List<UUID>,
 
     val enterpriseId: UUID,

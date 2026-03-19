@@ -41,14 +41,6 @@ class ProductMapperV1 {
             oldCost = if (newPrice == cost) null
             else cost,
             rating = rating ?: 0f,
-            organization = productEntity.organization!!.let {
-                OrganizationResponseV1(
-                    id = it.id!!,
-                    organizationName = it.organizationName,
-                    owner = it.owner,
-                    createdAt = it.createdAt!!
-                )
-            },
             expiresAt = expiresAt ?: Instant.now(),
             count = count,
             categoryIds = categories.map { requireNotNull(it.id) },
@@ -67,7 +59,6 @@ fun ProductRequestModel.toEntity(organization: OrganizationEntity): ProductEntit
         description = description,
         cost = cost,
         expiresAt = expiresAt,
-        organization = organization,
         count = count,
         categories = categoryIds.map { id -> CategoryEntity(id = id) }.toMutableList(),
         unit = unit,

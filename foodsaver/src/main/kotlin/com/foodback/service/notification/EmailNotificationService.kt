@@ -1,12 +1,9 @@
-package com.foodback.service
+package com.foodback.service.notification
 
-import com.foodback.exception.auth.UserException
-import com.foodback.exception.general.ErrorCode.RequestError
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.mail.javamail.MimeMessageHelper
 import org.springframework.stereotype.Service
-import java.util.*
 
 /**
  * Special service to work with mail sender
@@ -14,29 +11,26 @@ import java.util.*
  * @param webAddress Current server address, taken from application.yml
  * @param webPort Current server port, taken from application.yml
  */
-@Service
-class DefaultEmailService(
+@Service(value = "emailNotificationService")
+class EmailNotificationService(
     private val javaMainSender: JavaMailSender,
     @Value($$"${server.web-address}")
     private val webAddress: String,
     @Value($$"${server.web-port}")
     private val webPort: String
-) {
+): NotificationService {
 
     /**
-     * Method to send [token] to [email]
-     * @param email the email address to send the [token]
-     * @param token RESET-PASSWORD token
-     * @throws UserException if [email] is null or empty
+     * Method to send token ([message]) to some user with email [recipient]
+     * @param recipient the email address to send the [message]
+     * @param message RESET-PASSWORD token
      */
-    fun sendMessage(email: String?, token: UUID) {
-
-        if (email.isNullOrBlank()) throw UserException("Email must be not empty!", RequestError.UserRequest.EMPTY_EMAIL)
+    override fun sendNotification(recipient: String, message: String) {
 
         val message = javaMainSender.createMimeMessage()
         val helper = MimeMessageHelper(message, true, "UTF-8")
 
-        val frontendUrl = "http://$webAddress:$webPort/reset-password?id=$token"
+        val frontendUrl = "http://$webAddress:$webPort/reset-password?id=$message"
         val htmlContent = """
         <html>
         <body>
@@ -59,7 +53,7 @@ class DefaultEmailService(
         </html>
     """.trimIndent()
 
-        helper.setTo(email)
+        helper.setTo(recipient)
         helper.setSubject("Reset password")
         helper.setText(htmlContent, true)
         helper.setFrom("no-reply@foodsaver.com")

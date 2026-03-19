@@ -2,7 +2,9 @@ package com.foodback.app.user.entity
 
 import com.foodback.app.address.entity.AddressEntity
 import com.foodback.app.bank.entity.BankEntity
+import com.foodback.app.firebase.entity.FCMTokensEntity
 import com.foodback.app.product.entity.OrganizationEntity
+import com.foodback.app.support.entity.AiRequestHistory
 import jakarta.persistence.*
 import jakarta.validation.constraints.Email
 import org.hibernate.annotations.OnDelete
@@ -86,4 +88,10 @@ data class UserEntity(
 
     @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true, mappedBy = "user")
     var banks: MutableList<BankEntity> = mutableListOf(),
+
+    @OneToMany(cascade = [CascadeType.ALL], mappedBy = "user", orphanRemoval = true)
+    var aiRequestHistory: MutableList<AiRequestHistory> = mutableListOf(),
+
+    @OneToMany(cascade = [CascadeType.ALL], mappedBy = "user", orphanRemoval = true)
+    var fcmTokensEntity: MutableList<FCMTokensEntity> = mutableListOf()
 )
