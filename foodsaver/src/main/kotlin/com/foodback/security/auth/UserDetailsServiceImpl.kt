@@ -2,6 +2,8 @@ package com.foodback.security.auth
 
 import com.foodback.app.user.repository.UserRepository
 import com.foodback.exception.auth.UserException
+import com.foodback.exception.auth.UserException
+import com.foodback.repository.UserRepository
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.stereotype.Service

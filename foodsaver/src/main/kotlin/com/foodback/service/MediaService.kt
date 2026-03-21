@@ -9,6 +9,8 @@ import org.springframework.web.multipart.MultipartFile
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.util.*
+import java.nio.file.Files
+import java.nio.file.Paths
 
 @Service
 class MediaService(
@@ -25,6 +27,10 @@ class MediaService(
 
     private val path = Paths.get(mediaRootPath)
     val baseUrl = "$serverProtocol://$serverAddress:$serverPort/"
+    private val mediaRootPath: String
+) {
+
+    private val path = Paths.get(mediaRootPath)
 
     init {
         if (!Files.exists(path)) Files.createDirectories(path)
