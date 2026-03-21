@@ -1,5 +1,6 @@
 package com.foodback.security.jwt
 
+import com.foodback.config.SecurityConfig
 import com.foodback.exception.auth.UserException
 import com.foodback.security.auth.UserDetailsImpl
 import com.foodback.security.auth.UserDetailsServiceImpl
@@ -24,7 +25,10 @@ class JwtAuthenticationFilter(
      */
     override fun shouldNotFilter(request: HttpServletRequest): Boolean {
         val path = request.requestURI
-        return path.startsWith("/api/auth") || path.startsWith("/media")
+        val shouldNotFilter = SecurityConfig.permittedRequestPaths.any { path.startsWith(it) }
+        println("Path is $path")
+        println("Should not filter $shouldNotFilter")
+        return shouldNotFilter
     }
 
     /**

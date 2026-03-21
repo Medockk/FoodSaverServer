@@ -1,5 +1,6 @@
 package com.foodback.service
 
+import com.foodback.app.user.auth.repository.ResetPasswordRepository
 import com.foodback.repository.ResetPasswordRepository
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Service

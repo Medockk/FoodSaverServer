@@ -5,6 +5,13 @@ plugins {
     id("io.spring.dependency-management") version "1.1.7"
 
     id("org.jetbrains.kotlin.plugin.jpa") version "2.2.0"
+    kotlin("plugin.allopen") version "2.2.0"
+}
+
+allOpen {
+    annotation("jakarta.persistence.Entity")
+    annotation("jakarta.persistence.MappedSuperclass")
+    annotation("jakarta.persistence.Embeddable")
 }
 
 group = "com.foodback"
@@ -47,11 +54,18 @@ dependencies {
 
     /*Google*/
     implementation("com.google.api-client:google-api-client:2.8.1")
+    implementation("com.google.firebase:firebase-admin:9.8.0")
     /*Google*/
 
     //implementation("org.springframework.boot:spring-boot-starter-webflux")
 
     runtimeOnly("org.postgresql:postgresql")
+    // for GPS cords
+    implementation("org.hibernate.orm:hibernate-spatial")
+    implementation("org.locationtech.jts:jts-core:1.19.0")
+
+    //swagger
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.2")
 
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")

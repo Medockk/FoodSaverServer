@@ -4,6 +4,10 @@ app:
     path:
       avatars: C:/foodback_data/avatars
       offers: C:/foodback_data/offers
+      products: C:/foodback_data/products
+      enterprises: C:/foodback_data/enterprises
+  firebase:
+    admin-sdk-path: firebase/firebase-admin-sdk.json
 
 spring:
   application:
@@ -70,6 +74,7 @@ spring:
   servlet:
     multipart:
       max-file-size: 10MB
+      max-request-size: 15MB
 
 logging:
   level:
@@ -82,11 +87,16 @@ jwt:
     ms: 3_600_000
   refresh:
     expiration:
-      ms: 604800000
+      ms: 2_678_400_000 # 1 month
 
 server:
-  address: 10.152.104.227
-  web-address: 10.152.104.227
+  tomcat:
+    max-swallow-size: -1
+    max-http-form-post-size: 10MB
+    max-post-size: -1
+
+  address: 10.222.73.227
+  web-address: 10.222.73.227
   port: 8088
   web-port: 8087
   protocol: http

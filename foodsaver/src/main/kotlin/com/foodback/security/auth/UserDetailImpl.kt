@@ -1,5 +1,7 @@
 package com.foodback.security.auth
 
+import com.foodback.app.user.entity.Roles
+import com.foodback.app.user.entity.UserEntity
 import com.foodback.entity.User.Roles
 import com.foodback.entity.User.UserEntity
 import org.springframework.security.core.GrantedAuthority

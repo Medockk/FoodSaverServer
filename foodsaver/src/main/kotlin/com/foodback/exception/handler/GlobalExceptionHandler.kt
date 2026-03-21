@@ -152,6 +152,7 @@ class GlobalExceptionHandler: HandlerExceptionResolver {
 
     @ExceptionHandler(MaxUploadSizeExceededException::class)
     fun handleMaxUploadSizeExceededException(e: MaxUploadSizeExceededException): ResponseEntity<GlobalErrorResponse> {
+        e.printStackTrace()
         return ResponseEntity
             .badRequest()
             .body(GlobalErrorResponse(

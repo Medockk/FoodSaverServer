@@ -84,7 +84,13 @@ class SecurityConfig(
             }
             .authorizeHttpRequests {
                 it
-                    .requestMatchers("/api/auth/**", "/media/**").permitAll()
+                    .requestMatchers(
+                        "/api/v1/auth/**",
+                        "/media/**",
+                        "/v3/api-docs/**",
+                        "/swagger-ui/**",
+                        "/swagger-ui.html"
+                    ).permitAll()
                     // .requestMatchers("/api/users/**").hasAnyRole("USER", "ADMIN")
                     //.requestMatchers("/api/products").hasAnyRole("ADMIN")
                     .anyRequest().authenticated()
@@ -92,5 +98,15 @@ class SecurityConfig(
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
             .addFilterAfter(CsrfTokenFilter(accessDeniedHandler), JwtAuthenticationFilter::class.java)
         return http.build()
+    }
+
+    companion object {
+        val permittedRequestPaths = arrayOf(
+            "/api/v1/auth",
+            "/media",
+            "/v3/api-docs",
+            "/swagger-ui",
+            "/swagger-ui.html"
+        )
     }
 }
