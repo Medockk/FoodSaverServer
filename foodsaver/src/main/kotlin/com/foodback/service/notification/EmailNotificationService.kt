@@ -25,7 +25,7 @@ class EmailNotificationService(
      * @param recipient the email address to send the [message]
      * @param message RESET-PASSWORD token
      */
-    override fun sendNotification(recipient: String, message: String) {
+    override fun sendNotification(recipient: String, message: String, metadata: Map<String, String>) {
 
         val message = javaMainSender.createMimeMessage()
         val helper = MimeMessageHelper(message, true, "UTF-8")

@@ -18,6 +18,7 @@ class FCMTokensService(
 
         val existingEntity = fcmRepository.findByToken(token)
             .getOrNull()
+        println("Existing token $existingEntity")
 
         if (existingEntity == null) {
             // if token doesn't exist

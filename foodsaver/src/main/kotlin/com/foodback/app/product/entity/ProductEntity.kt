@@ -4,6 +4,8 @@ import com.foodback.app.cart.entity.CartItemEntity
 import com.foodback.app.enterprises.entity.EnterprisesEntity
 import jakarta.persistence.*
 import org.hibernate.annotations.ColumnDefault
+import org.hibernate.annotations.OnDelete
+import org.hibernate.annotations.OnDeleteAction
 import org.hibernate.annotations.UuidGenerator
 import java.time.Instant
 import java.util.*
@@ -67,6 +69,7 @@ data class ProductEntity(
     var enterprise: EnterprisesEntity? = null,
 
     @OneToMany(cascade = [CascadeType.ALL], mappedBy = "product", orphanRemoval = true)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     var cartItemEntity: MutableList<CartItemEntity> = mutableListOf(),
 
     var addedAt: Instant? = Instant.now(),

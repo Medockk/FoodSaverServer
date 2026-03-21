@@ -4,6 +4,7 @@ import com.foodback.app.cart.entity.CartEntity
 import com.foodback.app.cart.entity.CartItemEntity
 import com.foodback.app.product.entity.ProductEntity
 import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.data.jpa.repository.Query
 import java.time.Instant
 import java.util.*
 
@@ -25,4 +26,18 @@ interface CartItemRepository : JpaRepository<CartItemEntity, UUID> {
     fun findAllByCart(cartEntity: CartEntity): Optional<List<CartItemEntity>>
 
     fun findAllByProductExpiresAtBefore(threshold: Instant): Optional<List<CartItemEntity>>
+
+    @Query("""
+        SELECT item FROM CartItemEntity item
+        JOIN FETCH item.cart cart
+        JOIN FETCH cart.user user
+        LEFT JOIN FETCH user.fcmTokensEntity
+        JOIN FETCH item.product product
+        WHERE product.expiresAt < :threshold
+        AND NOT EXISTS (
+            SELECT log FROM NotificationLogEntity log
+            WHERE log.uid = user.uid AND log.product = product
+        )"""
+    )
+    fun findAllExpiredToNotify(threshold: Instant): List<CartItemEntity>
 }

@@ -9,6 +9,7 @@ import com.foodback.app.cart.repository.CartItemRepository
 import com.foodback.app.cart.repository.CartRepository
 import com.foodback.app.common.dto.response.ProductResponseModel
 import com.foodback.app.product.repository.ProductRepository
+import com.foodback.app.user.repository.UserRepository
 import com.foodback.exception.cart.CartException
 import com.foodback.exception.general.ErrorCode.RequestError
 import com.foodback.exception.product.ProductNotFoundException
@@ -30,6 +31,7 @@ class CartService(
     private val cartRepository: CartRepository,
     private val cartItemRepository: CartItemRepository,
     private val productRepository: ProductRepository,
+    private val userRepository: UserRepository,
 
     private val cartMapperV1: CartMapperV1
 ) {
@@ -45,8 +47,9 @@ class CartService(
         uid: UUID,
     ): CartItemEntity? {
 
-        val cart = cartRepository.findByUid(uid).orElseGet {
-            val entity = CartEntity(uid = uid)
+        val cart = cartRepository.findByUserUid(uid).orElseGet {
+            val user = userRepository.findUserById(uid)
+            val entity = CartEntity(user = user)
             cartRepository.save(entity)
         }
 
@@ -78,8 +81,9 @@ class CartService(
     fun getUserCart(
         uid: UUID
     ): List<CartResponseModel> {
-        val cart = cartRepository.findByUid(uid).orElseGet {
-            val entity = CartEntity(uid = uid)
+        val cart = cartRepository.findByUserUid(uid).orElseGet {
+            val user = userRepository.findUserById(uid)
+            val entity = CartEntity(user = user)
             cartRepository.save(entity)
         }
 
@@ -97,7 +101,7 @@ class CartService(
      */
     @Transactional
     fun clearCart(uid: UUID) {
-        cartRepository.deleteAllByUid(uid)
+        cartRepository.deleteAllByUserUid(uid)
     }
 
     /**
@@ -110,7 +114,7 @@ class CartService(
         productId: UUID,
         uid: UUID
     ) {
-        val cart = cartRepository.findByUid(uid).orElseThrow {
+        val cart = cartRepository.findByUserUid(uid).orElseThrow {
             CartException(RequestError.CartRequest.CART_NOT_FOUND, "Cart not found")
         }
         val cartItemEntity = cart.items.firstOrNull {
@@ -136,7 +140,7 @@ class CartService(
         request: CartRequestModel,
         uid: UUID
     ): ProductResponseModel {
-        val cart = cartRepository.findByUid(uid).orElseThrow {
+        val cart = cartRepository.findByUserUid(uid).orElseThrow {
             CartException(RequestError.CartRequest.CART_NOT_FOUND, "Cart not found")
         }
         val cartItemEntity = cart.items.firstOrNull {
@@ -169,7 +173,7 @@ class CartService(
         uid: UUID
     ): ProductResponseModel {
 
-        val cart = cartRepository.findByUid(uid).orElseThrow {
+        val cart = cartRepository.findByUserUid(uid).orElseThrow {
             CartException(RequestError.CartRequest.CART_NOT_FOUND, "Cart not found")
         }
         val cartItemEntity = cart.items.firstOrNull {

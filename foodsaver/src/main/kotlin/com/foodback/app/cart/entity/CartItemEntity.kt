@@ -2,6 +2,8 @@ package com.foodback.app.cart.entity
 
 import com.foodback.app.product.entity.ProductEntity
 import jakarta.persistence.*
+import org.hibernate.annotations.OnDelete
+import org.hibernate.annotations.OnDeleteAction
 import org.hibernate.annotations.UuidGenerator
 import java.util.*
 
@@ -25,14 +27,13 @@ data class CartItemEntity(
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     var product: ProductEntity,
 
     @Column(nullable = false)
     var quantity: Long = 1,
 
     @UuidGenerator(style = UuidGenerator.Style.RANDOM)
-    @Column(
-        nullable = false
-    )
+    @Column(nullable = false)
     var tempId: UUID? = null
 )
