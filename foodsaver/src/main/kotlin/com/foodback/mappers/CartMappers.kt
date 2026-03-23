@@ -1,6 +1,7 @@
 package com.foodback.mappers
 
 import com.foodback.dto.request.cart.CartRequestModel
+import com.foodback.dto.response.cart.CartResponseModel
 import com.foodback.dto.response.cart.ProductResponseModel
 import com.foodback.entity.CartEntity
 import com.foodback.entity.CartItemEntity
@@ -24,5 +25,18 @@ fun CartItemEntity.toProductResponse() =
         rating = product.rating,
         organization = requireNotNull(product.organization),
         count = quantity,
-        expiresAt = product.expiresAt!!
+        expiresAt = product.expiresAt!!,
+        categoryIds = emptyList(),
+        photoUrl = product.photoUrl,
+        unit = product.unit,
+        unitName = product.unitName,
+        costUnit = product.costUnit
+    )
+
+fun CartItemEntity.toCartResponse() =
+    CartResponseModel(
+        id = id!!,
+        product = product.toResponseModel(),
+        quantity = quantity,
+        tempId = tempId!!
     )

@@ -1,5 +1,6 @@
 package com.foodback.security.jwt
 
+import com.foodback.config.SecurityConfig
 import com.foodback.exception.auth.UserException
 import com.foodback.security.auth.UserDetailsImpl
 import com.foodback.security.auth.UserDetailsServiceImpl
@@ -24,7 +25,10 @@ class JwtAuthenticationFilter(
      */
     override fun shouldNotFilter(request: HttpServletRequest): Boolean {
         val path = request.requestURI
-        return path.startsWith("/api/auth")
+        val shouldNotFilter = SecurityConfig.permittedRequestPaths.any { path.startsWith(it) }
+        println("Path is $path")
+        println("Should not filter $shouldNotFilter")
+        return shouldNotFilter
     }
 
     /**
@@ -46,6 +50,7 @@ class JwtAuthenticationFilter(
 
         try {
             if (jwtUtil.validate(idToken)) {
+                println("Token valid")
                 val username = jwtUtil.getUsername(idToken)
                 val user = userDetailsService.loadUserByUsername(username) as UserDetailsImpl
 
@@ -57,13 +62,15 @@ class JwtAuthenticationFilter(
                 auth.details = WebAuthenticationDetailsSource().buildDetails(request)
                 SecurityContextHolder.getContext().authentication = auth
 
-                filterChain.doFilter(request, response)
             } else {
                 response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid JWT token")
+                return
             }
         } catch (e: Exception) {
             throw e
         }
+
+        filterChain.doFilter(request, response)
     }
 
     /**
@@ -72,11 +79,13 @@ class JwtAuthenticationFilter(
     private fun exactToken(request: HttpServletRequest): String? {
         val header = request.getHeader("Authorization")
         if (header != null && header.startsWith("Bearer ")) {
-            return header.removePrefix("Bearer ").trim()
+            val token = header.removePrefix("Bearer ").trim()
+            println("\nJWT token from header: $token\n")
+            return token
         }
 
         val cookie = request.cookies ?: return null
         println("\n\n\n${cookie.firstOrNull { it.name == "jwt" }?.value}\n\n\n")
-        return cookie.firstOrNull { it.name == "jwt" }?.value
+        return cookie.firstOrNull { it.name == "jwt" }?.value?.trim()
     }
 }

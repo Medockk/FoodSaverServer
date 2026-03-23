@@ -7,12 +7,22 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority
  * @param permissions Permissions of current role
  */
 enum class Roles(val permissions: Set<String>) {
-    USER(setOf(Permissions.REFRESH_TOKEN.value)),
-    ADMIN(
-        setOf(
-            Permissions.GET_USERS.value,
-            Permissions.REFRESH_TOKEN.value,
+    USER(setOf()),
+    MANAGER(
+        permissions = setOf(
+            Permissions.ADD_PRODUCT.value,
+            Permissions.UPDATE_PRODUCT.value,
             Permissions.DELETE_PRODUCT.value,
+            Permissions.ADD_OFFERS.value
+        )
+    ),
+    ADMIN(
+        permissions = setOf(
+            Permissions.GET_USERS.value,
+            Permissions.ADD_PRODUCT.value,
+            Permissions.UPDATE_PRODUCT.value,
+            Permissions.DELETE_PRODUCT.value,
+            Permissions.ADD_OFFERS.value
         )
     );
 
@@ -33,7 +43,10 @@ enum class Roles(val permissions: Set<String>) {
  * Enum class with all permissions
  */
 enum class Permissions(val value: String) {
-    REFRESH_TOKEN("REFRESH_TOKEN"),
     GET_USERS("GET_USERS"),
-    DELETE_PRODUCT("DELETE_PRODUCT")
+    DELETE_PRODUCT("DELETE_PRODUCT"),
+    ADD_PRODUCT("ADD_PRODUCT"),
+    UPDATE_PRODUCT("UPDATE_PRODUCT"),
+
+    ADD_OFFERS("ADD_OFFERS"),
 }

@@ -3,9 +3,15 @@ package com.foodback.service
 import com.foodback.dto.request.user.UserRequestModel
 import com.foodback.dto.response.user.UserResponseModel
 import com.foodback.exception.auth.UserException
-import com.foodback.mappers.toResponse
+import com.foodback.mappers.UserMappers
 import com.foodback.repository.UserRepository
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
+import org.springframework.web.multipart.MultipartFile
+import java.io.File
+import java.nio.file.Files
+import java.nio.file.Paths
 import java.util.*
 
 /**
@@ -14,7 +20,15 @@ import java.util.*
  */
 @Service
 class UserService(
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val userMappers: UserMappers,
+
+    @Value($$"${server.address}")
+    private val serverAddress: String,
+    @Value($$"${server.port}")
+    private val serverPort: String,
+    @Value($$"${app.media.path.avatars}")
+    private val uploadPath: String,
 ) {
 
     /**
@@ -28,7 +42,9 @@ class UserService(
     ): UserResponseModel {
         val user = userRepository.findUserById(uid)
 
-        return user.toResponse()
+        return with(userMappers) {
+            user.toResponse()
+        }
     }
 
     /**
@@ -43,11 +59,33 @@ class UserService(
         request: UserRequestModel
     ): UserResponseModel {
         val user = userRepository.findUserById(uid).apply {
-            request.email?.let { this.email = it }
-            request.name?.let { this.name = request.name }
+            this.name = request.fullName
+            this.email = request.email
+            request.phone?.let { this.phone = request.phone }
+            request.bio?.let { this.bio = request.bio }
             request.photoUrl?.let { this.photoUrl = request.photoUrl }
         }
+        println(user)
 
-        return userRepository.save(user).toResponse()
+        return with(userMappers) { userRepository.save(user).toResponse() }
+    }
+
+    @Transactional
+    fun uploadAvatar(file: MultipartFile, uid: UUID): String {
+        if (file.isEmpty) throw UserException("File is empty!")
+        val user = userRepository.findUserById(uid)
+
+        val uploadDir = File(uploadPath)
+        if (!uploadDir.exists()) uploadDir.mkdirs()
+
+        val fileName = "${UUID.randomUUID()}_${file.originalFilename}.jpg"
+        val path = Paths.get(uploadPath, fileName)
+
+        Files.write(path, file.bytes)
+        val fileUrl = "media/avatars/$fileName"
+        user.photoUrl = fileUrl
+
+        val url = "http://$serverAddress:$serverPort/$fileUrl"
+        return url
     }
 }

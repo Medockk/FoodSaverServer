@@ -1,0 +1,38 @@
+package com.foodback.app.cart.mapper
+
+import com.foodback.app.cart.dto.response.CartResponseModel
+import com.foodback.app.cart.entity.CartItemEntity
+import com.foodback.app.common.dto.response.ProductResponseModel
+import org.springframework.stereotype.Component
+
+// Methods to convert Request to entity and vice versa
+
+@Component
+class CartMapperV1 {
+    fun mapToProductResponse(cartItemEntity: CartItemEntity) = with(cartItemEntity) {
+        ProductResponseModel(
+            productId = product.id,
+            title = product.title,
+            description = product.description,
+            cost = product.cost,
+            rating = product.rating,
+            count = quantity,
+            expiresAt = product.expiresAt!!,
+            categoryIds = emptyList(),
+            photoUrl = product.photoUrl,
+            unit = product.unit,
+            unitName = product.unitName,
+            enterpriseId = product.enterprise!!.id!!,
+            costUnit = product.costUnit
+        )
+    }
+
+    fun mapToCartResponse(cartItemEntity: CartItemEntity) = with(cartItemEntity) {
+        CartResponseModel(
+            id = id!!,
+            product = mapToProductResponse(cartItemEntity),
+            quantity = quantity,
+            tempId = tempId!!
+        )
+    }
+}

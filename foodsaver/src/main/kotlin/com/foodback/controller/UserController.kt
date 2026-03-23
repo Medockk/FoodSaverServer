@@ -6,9 +6,15 @@ import com.foodback.exception.auth.UserException
 import com.foodback.security.auth.UserDetailsImpl
 import com.foodback.service.UserService
 import jakarta.validation.Valid
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.multipart.MultipartFile
+import java.io.File
+import java.nio.file.Files
+import java.nio.file.Paths
+import java.util.UUID
 
 /**
  * Special controller to handle HTTP-requests to endpoint /api/user/
@@ -17,7 +23,7 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/api/user")
 class UserController(
-    private val userService: UserService
+    private val userService: UserService,
 ) {
 
     /**
@@ -53,5 +59,16 @@ class UserController(
     ): ResponseEntity<UserResponseModel> {
         val uid = principal.uid
         return ResponseEntity.ok(userService.updateUser(uid, request))
+    }
+
+    @PutMapping("upload-avatar")
+    fun uploadAvatar(
+        @RequestParam("avatar")
+        file: MultipartFile,
+        @AuthenticationPrincipal
+        principal: UserDetailsImpl
+    ): ResponseEntity<String> {
+        val url = userService.uploadAvatar(file, principal.uid)
+        return ResponseEntity.ok(url)
     }
 }

@@ -27,4 +27,9 @@ class AuthenticationException : GlobalError {
         this.customCode = customCode
         this.httpStatus = HttpStatus.resolve(customCode.code) ?: HttpStatus.INTERNAL_SERVER_ERROR
     }
+
+    constructor(message: String, customCode: ErrorCode, httpStatus: HttpStatus): super(message) {
+        this.customCode = customCode
+        this.httpStatus = httpStatus
+    }
 }
