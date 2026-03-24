@@ -1,7 +1,6 @@
 package com.foodback.security.authority
 
 import com.foodback.app.user.entity.Permissions
-import com.foodback.entity.User.Permissions
 import com.foodback.utils.EvaluatorTargetType
 import org.springframework.security.access.PermissionEvaluator
 import org.springframework.security.core.Authentication

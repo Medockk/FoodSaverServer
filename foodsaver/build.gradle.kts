@@ -59,6 +59,13 @@ dependencies {
 
     //implementation("org.springframework.boot:spring-boot-starter-webflux")
 
+    /**
+     * AI model dependencies
+     */
+    implementation("dev.langchain4j:langchain4j:0.36.2")
+    implementation("dev.langchain4j:langchain4j-spring-boot-starter:0.36.2")
+    implementation("dev.langchain4j:langchain4j-ollama-spring-boot-starter:0.36.2")
+
     runtimeOnly("org.postgresql:postgresql")
     // for GPS cords
     implementation("org.hibernate.orm:hibernate-spatial")

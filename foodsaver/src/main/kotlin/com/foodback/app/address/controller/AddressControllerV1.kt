@@ -13,7 +13,7 @@ import java.util.*
 
 @RestController
 @RequestMapping("/api/v1/address")
-@Tag(name = "NAME", description = "DESCRIPTION")
+@Tag(name = "Address", description = "This endpoints used for working with user's addresses")
 class AddressControllerV1(
     private val addressService: AddressService,
     private val addressMapperV1: AddressMapperV1

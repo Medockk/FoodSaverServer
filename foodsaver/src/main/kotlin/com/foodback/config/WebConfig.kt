@@ -6,9 +6,6 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.web.servlet.HandlerExceptionResolver
 import org.springframework.web.servlet.config.annotation.CorsRegistry
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
-import org.springframework.context.annotation.Configuration
-import org.springframework.web.servlet.HandlerExceptionResolver
-import org.springframework.web.servlet.config.annotation.CorsRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 
 /**
@@ -21,7 +18,6 @@ class WebConfig(
     private val handler: GlobalExceptionHandler,
     @Value($$"${app.media.root}")
     private val resourceLocation: String
-    private val handler: GlobalExceptionHandler
 ) : WebMvcConfigurer {
 
     override fun addCorsMappings(registry: CorsRegistry) {
