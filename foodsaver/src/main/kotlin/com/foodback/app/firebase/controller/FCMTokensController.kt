@@ -21,6 +21,7 @@ class FCMTokensController(
         @AuthenticationPrincipal
         principal: UserDetailsImpl
     ) {
+        println("\n\n\nFCM TOKEN\n\n\n")
         fcmTokensService.saveToken(token, principal.uid)
     }
 }

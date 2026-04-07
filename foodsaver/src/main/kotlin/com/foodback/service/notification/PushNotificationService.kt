@@ -26,6 +26,7 @@ class PushNotificationService: NotificationService {
         try {
             val response = FirebaseMessaging.getInstance().send(firebaseMessageBuilder.build())
             println("Response is $response")
+            println("Response to recipient $recipient")
         } catch (e: Exception) {
             e.printStackTrace()
         }

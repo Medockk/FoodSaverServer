@@ -2,6 +2,7 @@ package com.foodback.app.product.entity
 
 import com.foodback.app.cart.entity.CartItemEntity
 import com.foodback.app.enterprises.entity.EnterprisesEntity
+import com.foodback.app.ingredients.entity.IngredientsEntity
 import jakarta.persistence.*
 import org.hibernate.annotations.ColumnDefault
 import org.hibernate.annotations.OnDelete
@@ -71,6 +72,9 @@ data class ProductEntity(
     @OneToMany(cascade = [CascadeType.ALL], mappedBy = "product", orphanRemoval = true)
     @OnDelete(action = OnDeleteAction.CASCADE)
     var cartItemEntity: MutableList<CartItemEntity> = mutableListOf(),
+
+    @OneToMany(cascade = [CascadeType.ALL], mappedBy = "product", orphanRemoval = true)
+    var ingredients: MutableList<IngredientsEntity> = mutableListOf(),
 
     var addedAt: Instant? = Instant.now(),
     var expiresAt: Instant? = Instant.now(),

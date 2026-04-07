@@ -14,7 +14,6 @@ import com.foodback.app.user.entity.UserEntity
 import com.foodback.app.user.mapper.UserMapperV1
 import com.foodback.app.user.repository.UserRepository
 import com.foodback.exception.auth.AuthenticationException
-import com.foodback.exception.auth.UserException
 import com.foodback.exception.general.ErrorCode.RequestError
 import com.foodback.security.auth.UserDetailsImpl
 import com.foodback.security.jwt.JwtUtil
@@ -176,7 +175,7 @@ class AuthService(
         email: String
     ): UUID {
         val user = userRepository.findByEmail(email).orElseThrow {
-            UserException("User with email $email not found!", RequestError.UserRequest.EMAIL_NOT_FOUND)
+            AuthenticationException("User with email $email not found!", RequestError.Authentication.USER_NOT_AUTHORIZED)
         }
 
         val expiresAt = Instant.ofEpochMilli(System.currentTimeMillis() + 1_800_000)
@@ -200,15 +199,15 @@ class AuthService(
         request: NewPasswordRequestV1
     ) {
         val entity: ResetPasswordEntity = resetPasswordRepository.findByResetToken(token).orElseThrow {
-            UserException(
+            AuthenticationException(
                 "Token expires or wrong",
-                HttpStatus.BAD_REQUEST,
-                RequestError.Authentication.RESET_TOKEN_NOT_FOUND
+                RequestError.Authentication.RESET_TOKEN_NOT_FOUND,
+                HttpStatus.BAD_REQUEST
             )
         }
         entity.isUsed = true
 
-        val user = entity.uid ?: throw UserException(
+        val user = entity.uid ?: throw AuthenticationException(
             "Reset token linked to a null user",
             RequestError.Authentication.RESET_TOKEN_LINKED_TO_NULL
         )

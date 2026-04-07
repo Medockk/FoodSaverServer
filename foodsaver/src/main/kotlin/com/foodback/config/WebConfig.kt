@@ -2,8 +2,12 @@ package com.foodback.config
 
 import com.foodback.exception.handler.GlobalExceptionHandler
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor
+import org.springframework.security.task.DelegatingSecurityContextAsyncTaskExecutor
 import org.springframework.web.servlet.HandlerExceptionResolver
+import org.springframework.web.servlet.config.annotation.AsyncSupportConfigurer
 import org.springframework.web.servlet.config.annotation.CorsRegistry
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
@@ -19,6 +23,23 @@ class WebConfig(
     @Value($$"${app.media.root}")
     private val resourceLocation: String
 ) : WebMvcConfigurer {
+
+    @Bean
+    fun getAsyncThreadPoolTaskExecutor(): ThreadPoolTaskExecutor {
+        val executor = ThreadPoolTaskExecutor()
+        executor.corePoolSize = 10
+        executor.maxPoolSize = 15
+        executor.setThreadNamePrefix("ai-executor-")
+        executor.initialize()
+        return executor
+    }
+
+    override fun configureAsyncSupport(configurer: AsyncSupportConfigurer) {
+        configurer.setTaskExecutor(DelegatingSecurityContextAsyncTaskExecutor(
+            getAsyncThreadPoolTaskExecutor())
+        )
+        configurer.setDefaultTimeout(90_000)
+    }
 
     override fun addCorsMappings(registry: CorsRegistry) {
         registry.addMapping("/**")
