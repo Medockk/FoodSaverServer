@@ -14,7 +14,6 @@ import com.foodback.app.user.entity.UserEntity
 import com.foodback.app.user.mapper.UserMapperV1
 import com.foodback.app.user.repository.UserRepository
 import com.foodback.exception.auth.AuthenticationException
-import com.foodback.exception.auth.UserException
 import com.foodback.exception.general.ErrorCode.RequestError
 import com.foodback.security.auth.UserDetailsImpl
 import com.foodback.security.jwt.JwtUtil
@@ -33,7 +32,6 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
 import java.util.*
-import kotlin.jvm.Throws
 
 /**
  * Service to Authenticate user and update JWT token

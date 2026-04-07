@@ -1,6 +1,6 @@
 package com.foodback.app.ingredients.dto.response
 
-import java.util.UUID
+import java.util.*
 
 data class IngredientResponseModel(
     val id: UUID,

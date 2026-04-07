@@ -4,7 +4,6 @@ import com.foodback.app.ai.service.AiServiceAnalyst
 import com.foodback.app.ingredients.service.IngredientsService
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.http.MediaType
-import org.springframework.scheduling.annotation.Async
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam

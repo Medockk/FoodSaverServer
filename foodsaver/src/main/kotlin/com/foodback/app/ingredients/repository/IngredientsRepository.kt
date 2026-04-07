@@ -2,8 +2,7 @@ package com.foodback.app.ingredients.repository
 
 import com.foodback.app.ingredients.entity.IngredientsEntity
 import org.springframework.data.jpa.repository.JpaRepository
-import java.util.Optional
-import java.util.UUID
+import java.util.*
 
 interface IngredientsRepository: JpaRepository<IngredientsEntity, UUID> {
 
