@@ -20,7 +20,7 @@ spring:
     password: ${SPRING_DATASOURCE_PASSWORD}
     driver-class-name: org.postgresql.Driver
     hikari:
-      maximum-pool-size: 1
+      maximum-pool-size: 10
       minimum-idle: 0
       idle-timeout: 10000
       max-lifetime: 30000
@@ -34,6 +34,10 @@ spring:
       hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
 
   tomcat:
+    threads:
+      max: 200
+      min-spare: 10
+      max-connections: 10000
     connection-timeout: 60000
 
   jackson:
@@ -76,6 +80,14 @@ spring:
       max-file-size: 10MB
       max-request-size: 15MB
 
+  mvc:
+    async:
+      request-timeout: 90_000
+
+  threads:
+    virtual:
+      enabled: true
+
 logging:
   level:
     org.springframework.security: DEBUG
@@ -96,6 +108,11 @@ langchain4j:
       model-name: "gemma2:2b"
       temperature: 0.1
       timeout: 90s
+    streaming-chat-model:
+      base-url: "http://localhost:11434"
+      model-name: "gemma2:2b"
+      temperature: 0.1
+      timeout: 90s
 
 server:
   tomcat:
@@ -103,8 +120,8 @@ server:
     max-http-form-post-size: 10MB
     max-post-size: -1
 
-  address: 10.18.117.227
-  web-address: 10.18.117.227
+  address: 10.236.62.227
+  web-address: 10.48.224.227
   port: 8088
   web-port: 8087
   protocol: http

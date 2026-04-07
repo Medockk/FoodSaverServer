@@ -33,6 +33,7 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
 import java.util.*
+import kotlin.jvm.Throws
 
 /**
  * Service to Authenticate user and update JWT token
@@ -176,7 +177,7 @@ class AuthService(
         email: String
     ): UUID {
         val user = userRepository.findByEmail(email).orElseThrow {
-            UserException("User with email $email not found!", RequestError.UserRequest.EMAIL_NOT_FOUND)
+            AuthenticationException("User with email $email not found!", RequestError.Authentication.USER_NOT_AUTHORIZED)
         }
 
         val expiresAt = Instant.ofEpochMilli(System.currentTimeMillis() + 1_800_000)
@@ -200,15 +201,15 @@ class AuthService(
         request: NewPasswordRequestV1
     ) {
         val entity: ResetPasswordEntity = resetPasswordRepository.findByResetToken(token).orElseThrow {
-            UserException(
+            AuthenticationException(
                 "Token expires or wrong",
-                HttpStatus.BAD_REQUEST,
-                RequestError.Authentication.RESET_TOKEN_NOT_FOUND
+                RequestError.Authentication.RESET_TOKEN_NOT_FOUND,
+                HttpStatus.BAD_REQUEST
             )
         }
         entity.isUsed = true
 
-        val user = entity.uid ?: throw UserException(
+        val user = entity.uid ?: throw AuthenticationException(
             "Reset token linked to a null user",
             RequestError.Authentication.RESET_TOKEN_LINKED_TO_NULL
         )

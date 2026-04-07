@@ -1,6 +1,7 @@
 package com.foodback.app.ai.service
 
 import dev.langchain4j.service.SystemMessage
+import dev.langchain4j.service.TokenStream
 import dev.langchain4j.service.spring.AiService
 
 @AiService
@@ -17,10 +18,11 @@ interface AiServiceAnalyst {
         3. Е250 — это Нитрит натрия. Это ВЫСОКИЙ уровень опасности (канцероген, фиксатор окраски в колбасах).
         4. Сахар — СРЕДНИЙ уровень опасности (риск диабета и ожирения).
         5. Подсолнечное масло — НИЗКИЙ уровень опасности (но калорийно).
+        6. Не пиши вступительных фраз вроде 'Конечно, вот ваш анализ'
         
         Формат отчета:
         - [Ингредиент]: [Уровень] — [Пояснение]
     """
     )
-    fun analyzeIngredients(ingredients: String): String
+    fun analyzeIngredients(ingredients: String): TokenStream
 }

@@ -6,6 +6,7 @@ import com.foodback.security.auth.UserDetailsServiceImpl
 import com.foodback.security.csrf.CsrfTokenFilter
 import com.foodback.security.jwt.JwtAuthenticationFilter
 import com.foodback.security.jwt.JwtUtil
+import jakarta.servlet.DispatcherType
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Primary
@@ -83,8 +84,9 @@ class SecurityConfig(
                 it.accessDeniedHandler(accessDeniedHandler)
             }
             .authorizeHttpRequests {
-                it
-                    .requestMatchers(
+                it.dispatcherTypeMatchers(DispatcherType.ASYNC)
+                    .permitAll()
+                it.requestMatchers(
                         "/api/v1/auth/**",
                         "/media/**",
                         "/v3/api-docs/**",

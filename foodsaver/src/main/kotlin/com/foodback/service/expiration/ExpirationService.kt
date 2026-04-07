@@ -35,7 +35,10 @@ class ExpirationService(
             val user = item.cart.user
             val product = item.product
 
+            println("Items to notify ${product.id} to user with id ${user?.uid}")
+
             user?.fcmTokensEntity?.forEach { tokenEntity ->
+                println("Try to notify user with FCM ${tokenEntity.token}")
                 try {
                     val metadata = mapOf(
                         "product_id" to product.id.toString()

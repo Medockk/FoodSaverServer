@@ -109,10 +109,10 @@ class AuthControllerV1(
     ): ResponseEntity<Unit> {
 
         if (request.password != request.confirmPassword)
-            throw UserException(
+            throw AuthenticationException(
                 "Password and Confirm password must be equals!",
-                HttpStatus.BAD_REQUEST,
-                RequestError.Authentication.PASSWORD_NOT_EQUALS
+                RequestError.Authentication.PASSWORD_NOT_EQUALS,
+                HttpStatus.BAD_REQUEST
             )
 
         authService.resetPassword(token = id, request)

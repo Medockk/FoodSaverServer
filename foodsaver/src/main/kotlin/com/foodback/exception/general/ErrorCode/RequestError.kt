@@ -25,7 +25,8 @@ sealed interface RequestError : ErrorCode {
         UNAUTHORIZED_CSRF_TOKEN(1012),
         UNAUTHORIZED_JWT_TOKEN(1013),
 
-        FAILED_TO_VERIFY_GOOGLE_ID(1014)
+        FAILED_TO_VERIFY_GOOGLE_ID(1014),
+        USER_NOT_AUTHORIZED(1015)
     }
 
     // Code between 2000 until 2999
