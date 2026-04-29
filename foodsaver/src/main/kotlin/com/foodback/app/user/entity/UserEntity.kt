@@ -2,6 +2,7 @@ package com.foodback.app.user.entity
 
 import com.foodback.app.address.entity.AddressEntity
 import com.foodback.app.bank.entity.BankEntity
+import com.foodback.app.enterprises.entity.EnterprisesEntity
 import com.foodback.app.firebase.entity.FCMTokensEntity
 import com.foodback.app.product.entity.OrganizationEntity
 import com.foodback.app.support.entity.AiRequestHistory
@@ -65,9 +66,15 @@ data class UserEntity(
     @Column(name = "role")
     var roles: MutableList<String> = mutableListOf(Roles.USER.name),
 
+    // пока для миграции оставить, но затем удалить!
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "organization_id", nullable = true)
     var organization: OrganizationEntity? = null,
+
+    // миграция
+    @ManyToOne(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+    @JoinColumn(name = "enterprise_id", nullable = true)
+    var enterprise: EnterprisesEntity? = null,
 
     @Column(nullable = true)
     var googleId: String? = null,
@@ -94,4 +101,28 @@ data class UserEntity(
 
     @OneToMany(cascade = [CascadeType.ALL], mappedBy = "user", orphanRemoval = true)
     var fcmTokensEntity: MutableList<FCMTokensEntity> = mutableListOf()
-)
+) {
+    override fun toString(): String {
+        return """
+            ${this::class.java.simpleName}(
+                uid = $uid,
+                username = $username,
+                passwordHash = $passwordHash,
+                email = $email,
+                name = $name,
+                photoUrl = $photoUrl,
+                createdAt = $createdAt,
+                updatedAt = $updatedAt,
+                roles = $roles,
+                organization = $organization,
+                googleId = $googleId,
+                phone = $phone,
+                bio = $bio,
+                addresses = $addresses,
+                banks = $banks,
+                aiRequestHistory = $aiRequestHistory,
+                fcmTokensEntity = $fcmTokensEntity
+            )
+        """.trimIndent()
+    }
+}

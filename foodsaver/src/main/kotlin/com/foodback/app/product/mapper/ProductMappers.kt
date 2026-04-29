@@ -5,6 +5,8 @@ import com.foodback.app.product.dto.request.ProductRequestModel
 import com.foodback.app.product.entity.CategoryEntity
 import com.foodback.app.product.entity.OrganizationEntity
 import com.foodback.app.product.entity.ProductEntity
+import com.foodback.utils.http.HttpAddressUtil
+import com.foodback.utils.http.PhotoUrlUtil
 import org.springframework.stereotype.Component
 import java.time.Instant
 import kotlin.time.toKotlinDuration
@@ -12,11 +14,15 @@ import kotlin.time.toKotlinDuration
 // Methods to convert Request to entity and vice versa
 
 @Component
-class ProductMapperV1 {
+class ProductMapperV1(
+    private val photoUrlUtil: PhotoUrlUtil
+) {
+
     fun mapToResponse(productEntity: ProductEntity) = with(productEntity) {
         var newPrice: Float = cost
         val expiresDuration = Instant.now().until(expiresAt).toKotlinDuration()
-        if (expiresDuration.inWholeDays == 0L) {
+        val days = expiresDuration.inWholeDays
+        if (days == 0L) {
             val hours = expiresDuration.inWholeHours
             newPrice = when (hours) {
                 in 12L..24L -> cost
@@ -25,11 +31,15 @@ class ProductMapperV1 {
                 else -> cost / 4
             }
         } else {
-            val days = expiresDuration.inWholeDays
             newPrice = when (days) {
-                1L -> cost / 1.5f
+                in 4L..7L -> cost / 1.2f
+                in 2L..3L -> cost / 1.5f
+                1L -> cost / 2f
                 else -> cost
             }
+        }
+        val photoUrl = this.photoUrl?.let { url ->
+            photoUrlUtil.mapRelativeUrlToAbsoluteUrl(url)
         }
 
         ProductResponseModel(

@@ -1,16 +1,26 @@
 package com.foodback.app.product.controller
 
+import com.foodback.app.cart.service.CartService
 import com.foodback.app.category.service.CategoryService
 import com.foodback.app.common.dto.response.ProductResponseModel
 import com.foodback.app.product.dto.request.ProductRequestModel
 import com.foodback.app.product.mapper.ProductMapperV1
+import com.foodback.app.product.service.PersonalizationInputData
+import com.foodback.app.product.service.PersonalizationService
 import com.foodback.app.product.service.ProductService
+import com.foodback.app.user.service.UserService
+import com.foodback.exception.auth.AuthenticationException
+import com.foodback.exception.general.ErrorCode.ErrorCode
+import com.foodback.exception.general.ErrorCode.RequestError
+import com.foodback.exception.general.ErrorCode.ServerErrorCode
+import com.foodback.security.auth.UserDetailsImpl
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
 import org.springframework.data.web.PageableDefault
 import org.springframework.data.web.SortDefault
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 import java.util.*
@@ -28,7 +38,8 @@ private const val defaultPageNumber = 0
 class ProductController(
     private val productService: ProductService,
     private val categoryService: CategoryService,
-    private val productMapperV1: ProductMapperV1
+    private val productMapperV1: ProductMapperV1,
+    private val personalizationService: PersonalizationService
 ) {
 
     /**
@@ -38,18 +49,21 @@ class ProductController(
      * @param productRequestModel request with current product
      */
     @PostMapping
-    @PreAuthorize("@haveAuthority.canAddProduct(authentication) OR hasRole('ADMIN')")
-    fun addProduct(
+    @PreAuthorize("@haveAuthority.canAddProduct(authentication) OR hasRole('ADMIN') OR hasRole('MANAGER')")
+    suspend fun addProduct(
         @RequestPart("product", required = true)
         productRequestModel: ProductRequestModel,
         @RequestPart("file")
-        file: MultipartFile? = null
+        file: MultipartFile,
+        @AuthenticationPrincipal
+        principal: UserDetailsImpl
     ): ResponseEntity<ProductResponseModel> {
         val categories = categoryService.getAllCategories()
         val product = productService.addProduct(
             product = productRequestModel,
             categories = categories,
-            file = file
+            file = file,
+            userEnterprise = principal.enterprise
         )
         return ResponseEntity.ok(productMapperV1.mapToResponse(product))
     }
@@ -81,10 +95,32 @@ class ProductController(
             SortDefault(sort = ["expiresAt"], direction = Sort.Direction.ASC),
             SortDefault(sort = ["rating"], direction = Sort.Direction.DESC)
         )
-        pageable: Pageable
+        pageable: Pageable,
+        @AuthenticationPrincipal
+        userDetailsImpl: UserDetailsImpl,
+        @RequestParam(required = false)
+        searchRadiusKm: Double = 3.0,
+        @RequestParam(required = false)
+        searchType: PersonalizationInputData.SearchType = PersonalizationInputData.SearchType.NEARBY
     ): ResponseEntity<List<ProductResponseModel>> {
-        val response = productService.getAllProduct(pageable)
-        return ResponseEntity.ok(response.map { productMapperV1.mapToResponse(it) })
+
+        val products = personalizationService.personalizeProducts(
+            input = PersonalizationInputData(
+                uid = userDetailsImpl.uid,
+                searchRadiusKm = searchRadiusKm,
+                searchType = searchType
+            ),
+            pageable = pageable
+        )
+
+        return if (products.isEmpty()) {
+            ResponseEntity.noContent().build()
+        } else {
+            val productResponseModels = products.map {
+                productMapperV1.mapToResponse(it)
+            }
+            ResponseEntity.ok(productResponseModels)
+        }
     }
 
     /**

@@ -33,4 +33,15 @@ data class CartEntity(
         orphanRemoval = true
     )
     var items: MutableList<CartItemEntity> = mutableListOf()
-)
+) {
+    override fun toString(): String {
+        return """
+            ${this::class.java.simpleName}(
+                id = $id,
+                user = ${user?.uid},
+                productCount = $productCount,
+                items = $items
+            )
+        """.trimIndent()
+    }
+}

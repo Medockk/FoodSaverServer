@@ -76,7 +76,9 @@ class AuthService(
         request: SignUpRequestV1,
         response: HttpServletResponse
     ): AuthResponseV1 {
-        if (userRepository.findByUsername(request.username) != null) {
+        val t = userRepository.findByUsername(request.username)
+        if (t != null) {
+            println("Authentication \nUser $t already registered")
             throw AuthenticationException("User already registered", RequestError.Authentication.USERNAME_OCCUPIED)
         }
 

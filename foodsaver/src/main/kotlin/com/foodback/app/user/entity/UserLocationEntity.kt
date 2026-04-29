@@ -1,29 +1,29 @@
-package com.foodback.app.firebase.entity
+package com.foodback.app.user.entity
 
-import com.foodback.app.user.entity.UserEntity
 import jakarta.persistence.*
-import org.hibernate.annotations.UuidGenerator
 import java.util.*
 
 @Entity
-@Table(name = "fcm_tokens")
-class FCMTokensEntity(
+@Table(name = "user_location")
+class UserLocationEntity(
     @Id
-    @UuidGenerator(style = UuidGenerator.Style.RANDOM)
     var id: UUID? = null,
 
     @Column(nullable = false)
-    var token: String = "",
+    var latitude: Double? = null,
+    @Column(nullable = false)
+    var longitude: Double? = null,
 
-    @ManyToOne
-    @JoinColumn(name = "user_uid", nullable = false)
+    @OneToOne(fetch = FetchType.LAZY)
+    @MapsId
     var user: UserEntity? = null
 ) {
     override fun toString(): String {
         return """
             ${this::class.java.simpleName}(
                 id = $id,
-                token = $token,
+                latitude = $latitude,
+                longitude = $longitude,
                 user = ${user?.uid}
             )
         """.trimIndent()

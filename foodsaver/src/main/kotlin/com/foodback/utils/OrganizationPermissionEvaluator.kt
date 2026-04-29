@@ -1,5 +1,6 @@
 package com.foodback.utils
 
+import com.foodback.app.enterprises.entity.EnterprisesEntity
 import com.foodback.security.auth.UserDetailsImpl
 import org.springframework.security.access.PermissionEvaluator
 import org.springframework.security.core.Authentication
@@ -32,12 +33,12 @@ class OrganizationPermissionEvaluator() : PermissionEvaluator {
     ): Boolean {
 
         val user = authentication.principal as? UserDetailsImpl ?: return false
-        val organizationId = user.organizationId ?: return false
+        val enterprise = user.enterprise ?: return false
 
         val isMemberOfOrganization = when (targetType) {
             EvaluatorTargetType.PRODUCT_TYPE_DELETE.type,
             EvaluatorTargetType.PRODUCT_TYPE_UPDATE.type -> {
-                isMemberOfOrganization(user, organizationId, permission)
+                isMemberOfOrganization(user, enterprise, permission)
             }
 
             EvaluatorTargetType.PRODUCT_TYPE_ADD.type -> {
@@ -54,10 +55,10 @@ class OrganizationPermissionEvaluator() : PermissionEvaluator {
      * Method check: user belongs to an organization or not
      * @return True, if user belongs to an organization, otherwise false
      */
-    fun isMemberOfOrganization(user: UserDetailsImpl, organizationId: UUID, permission: Any): Boolean {
-        if (user.organizationId == null) return false
+    fun isMemberOfOrganization(user: UserDetailsImpl, enterprisesEntity: EnterprisesEntity, permission: Any): Boolean {
+        if (user.enterprise == null) return false
 
-        return user.organizationId == organizationId && hasPermission(user, permission)
+        return user.enterprise.id == enterprisesEntity.id && hasPermission(user, permission)
     }
 
     /**

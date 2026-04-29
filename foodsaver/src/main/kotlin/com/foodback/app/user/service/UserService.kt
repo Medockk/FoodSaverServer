@@ -46,6 +46,7 @@ class UserService(
      * @return An [UserResponseModelV1] of new user data
      */
     @Throws(UserException::class)
+    @Transactional
     fun updateUser(
         uid: UUID,
         request: UserRequestModelV1

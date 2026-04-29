@@ -24,4 +24,16 @@ data class AddressEntity(
 
     @Column(nullable = false)
     var isCurrentAddress: Boolean = false
-)
+){
+    override fun toString(): String {
+        return """
+            ${this::class.java.simpleName}(
+                id = $id,
+                user = ${user?.uid},
+                name = $name,
+                address = $address,
+                isCurrentAddress = $isCurrentAddress
+            )
+        """.trimIndent()
+    }
+}

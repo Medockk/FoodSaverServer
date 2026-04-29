@@ -4,6 +4,7 @@ import com.foodback.app.product.entity.ProductEntity
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor
 import org.springframework.data.jpa.repository.Modifying
 import org.springframework.data.jpa.repository.Query
 import org.springframework.transaction.annotation.Transactional
@@ -13,7 +14,7 @@ import java.util.*
 /**
  * interface to access with table 'products' in database
  */
-interface ProductRepository : JpaRepository<ProductEntity, UUID> {
+interface ProductRepository : JpaRepository<ProductEntity, UUID>, JpaSpecificationExecutor<ProductEntity> {
 
     /**
      * Method to delete [ProductEntity] if product already expired
@@ -49,6 +50,8 @@ interface ProductRepository : JpaRepository<ProductEntity, UUID> {
 //    fun findAllByOrganization_Id(organizationId: UUID, pageable: Pageable): Page<ProductEntity>
 
     fun findAllByTitleContainingIgnoreCaseAndCategories_IdIn(title: String, categoryIds: List<UUID>, pageable: Pageable): Page<ProductEntity>
+
+
 
     /**
      * Method to get some [ProductEntity] with special [organizationId] and special [categoryId]

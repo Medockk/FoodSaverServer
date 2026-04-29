@@ -36,4 +36,16 @@ data class CartItemEntity(
     @UuidGenerator(style = UuidGenerator.Style.RANDOM)
     @Column(nullable = false)
     var tempId: UUID? = null
-)
+) {
+    override fun toString(): String {
+        return """
+            ${this::class.java.simpleName}(
+                id = $id,
+                cart = ${cart.id},
+                product = ${product.id},
+                quantity = $quantity,
+                tempId = $tempId
+            )
+        """.trimIndent()
+    }
+}

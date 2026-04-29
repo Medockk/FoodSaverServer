@@ -41,7 +41,8 @@ sealed interface RequestError : ErrorCode {
 
     // Code between 3000 until 3999
     enum class ProductRequest(override val code: Int = 3000) : RequestError {
-        PRODUCT_NOT_FOUND(3001)
+        PRODUCT_NOT_FOUND(3001),
+        PRODUCT_NOT_FRESH(3002)
     }
 
     // Code between 4000 until 4999

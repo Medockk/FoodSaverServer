@@ -1,11 +1,17 @@
 package com.foodback.app.product.service
 
+import com.foodback.app.ai.service.AiImageAnalyzerService
+import com.foodback.app.cart.repository.CartItemRepository
 import com.foodback.app.common.dto.response.ProductResponseModel
+import com.foodback.app.enterprises.entity.EnterprisesEntity
+import com.foodback.app.ingredients.entity.IngredientsEntity
+import com.foodback.app.ingredients.repository.IngredientsRepository
 import com.foodback.app.product.dto.request.ProductRequestModel
 import com.foodback.app.product.entity.CategoryEntity
 import com.foodback.app.product.entity.ProductEntity
 import com.foodback.app.product.repository.ProductRepository
 import com.foodback.exception.product.ProductNotFoundException
+import com.foodback.exception.product.ProductNotFreshException
 import com.foodback.service.MediaService
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.data.domain.Pageable
@@ -24,7 +30,8 @@ class ProductService(
     private val productRepository: ProductRepository,
     private val mediaService: MediaService,
     @Value($$"${app.media.path.products}")
-    private val uploadPath: String
+    private val uploadPath: String,
+    private val aiImageAnalyzerService: AiImageAnalyzerService
 ) {
 
     /**
@@ -32,21 +39,26 @@ class ProductService(
      * @param product the product itself
      */
     @Transactional
-    fun addProduct(
+    suspend fun addProduct(
         product: ProductRequestModel,
         categories: List<CategoryEntity>,
-        file: MultipartFile?
+        userEnterprise: EnterprisesEntity?,
+        file: MultipartFile
     ): ProductEntity {
-        val relativeUrl = file?.let {
-            if (file.isEmpty) return@let null
-            mediaService.uploadImage(
-                file = file,
-                baseUploadPath = uploadPath,
-                fileUrlType = MediaService.FileUrlType.PRODUCTS
-            )
-        }
 
-        val entity = ProductEntity(
+        if (userEnterprise == null) throw Exception("No have authorities")
+        if (file.isEmpty) throw Exception("Multipart file must be not empty")
+
+        val aiImageResponse = aiImageAnalyzerService
+            .analyzeImage(file.bytes, file.originalFilename ?: "image.jpeg")
+        if (!aiImageResponse.isFresh) throw ProductNotFreshException("Product not fresh!")
+
+        val relativeUrl = mediaService.uploadImage(
+            file = file,
+            baseUploadPath = uploadPath,
+            fileUrlType = MediaService.FileUrlType.PRODUCTS
+        )
+        val newProduct = ProductEntity(
             title = product.title,
             description = product.description,
             cost = product.cost,
@@ -58,9 +70,17 @@ class ProductService(
             unit = product.unit,
             unitName = product.unitName,
             addedAt = Instant.now(),
-            expiresAt = product.expiresAt
+            expiresAt = product.expiresAt,
+            enterprise = userEnterprise,
         )
-        return productRepository.save(entity)
+        val ingredients = IngredientsEntity(
+            ingredients = product.ingredients.toMutableList()
+        )
+
+        ingredients.product = newProduct
+        newProduct.ingredients.add(ingredients)
+
+        return productRepository.save(newProduct)
     }
 
     /**

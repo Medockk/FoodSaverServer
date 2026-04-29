@@ -80,7 +80,7 @@ class CartService(
      */
     fun getUserCart(
         uid: UUID
-    ): List<CartResponseModel> {
+    ): List<CartItemEntity> {
         val cart = cartRepository.findByUserUid(uid).orElseGet {
             val user = userRepository.findUserById(uid)
             val entity = CartEntity(user = user)
@@ -88,11 +88,7 @@ class CartService(
         }
 
         val cartItems = cartItemRepository.findAllByCart(cart).orElseGet { emptyList() }
-        val products = cartItems.mapNotNull {
-            cartMapperV1.mapToCartResponse(it)
-        }
-
-        return products
+        return cartItems
     }
 
     /**

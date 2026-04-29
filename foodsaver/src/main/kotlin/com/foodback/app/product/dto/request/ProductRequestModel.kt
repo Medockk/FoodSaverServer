@@ -23,6 +23,7 @@ data class ProductRequestModel(
 
     val unit: Long,
     val unitName: String,
+    val ingredients: List<String>,
 
     val expiresAt: Instant? = Instant.now(),
     val addedAt: Instant? = Instant.now()

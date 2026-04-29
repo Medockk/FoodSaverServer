@@ -2,6 +2,8 @@ package com.foodback.app.offers.entity
 
 import com.foodback.app.product.entity.ProductEntity
 import jakarta.persistence.*
+import org.hibernate.annotations.OnDelete
+import org.hibernate.annotations.OnDeleteAction
 import org.hibernate.annotations.UuidGenerator
 import java.util.*
 
@@ -22,5 +24,6 @@ data class OffersEntity(
 
     @OneToOne(fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "product_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     var productEntity: ProductEntity? = null
 )

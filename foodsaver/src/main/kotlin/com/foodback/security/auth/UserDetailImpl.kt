@@ -1,5 +1,6 @@
 package com.foodback.security.auth
 
+import com.foodback.app.enterprises.entity.EnterprisesEntity
 import com.foodback.app.user.entity.Roles
 import com.foodback.app.user.entity.UserEntity
 import org.springframework.security.core.GrantedAuthority
@@ -18,7 +19,9 @@ class UserDetailsImpl(
         "User identifier must be not null"
     }
 
-    val organizationId: UUID? = userEntity.organization?.id
+    // Изменить на enterprise
+    val enterprise: EnterprisesEntity? = userEntity.enterprise
+        ?: userEntity.organization?.enterprises?.firstOrNull() // for migration!
 
     /**
      * Method to get all user authorize

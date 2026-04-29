@@ -18,10 +18,8 @@ class PushNotificationService: NotificationService {
             .setNotification(notification)
             .setToken(recipient)
 
-        val productId = metadata["product_id"]
-        productId?.let {
-            firebaseMessageBuilder.putData("product_id", productId)
-        }
+        // add all metadata to request
+        firebaseMessageBuilder.putAllData(metadata)
 
         try {
             val response = FirebaseMessaging.getInstance().send(firebaseMessageBuilder.build())
@@ -29,6 +27,7 @@ class PushNotificationService: NotificationService {
             println("Response to recipient $recipient")
         } catch (e: Exception) {
             e.printStackTrace()
+            throw e
         }
     }
 }

@@ -57,8 +57,12 @@ dependencies {
     implementation("com.google.firebase:firebase-admin:9.8.0")
     /*Google*/
 
-    //implementation("org.springframework.boot:spring-boot-starter-webflux")
+    implementation("org.springframework.boot:spring-boot-starter-webflux")
+    //implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
 
+    // supports for kotlin coroutines!!
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor") // особенно это для работы Spring'а
     /**
      * AI model dependencies
      */
@@ -80,6 +84,10 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    testImplementation("org.mockito:mockito-core")
+    testImplementation("org.springframework.security:spring-security-test")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:5.2.1")
+    testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")
 }
 
 kotlin {

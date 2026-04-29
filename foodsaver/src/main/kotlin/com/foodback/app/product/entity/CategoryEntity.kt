@@ -18,4 +18,13 @@ data class CategoryEntity(
     @UuidGenerator(style = UuidGenerator.Style.RANDOM)
     var id: UUID? = null,
     var name: String = ""
-)
+) {
+    override fun toString(): String {
+        return """
+            ${this::class.java.simpleName}(
+                id = $id,
+                name = $name
+            )
+        """.trimIndent()
+    }
+}

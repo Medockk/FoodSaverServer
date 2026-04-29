@@ -30,7 +30,14 @@ class CartControllerV1(
         principal: UserDetailsImpl
     ): ResponseEntity<List<CartResponseModel>> {
         val uid = principal.uid
-        return ResponseEntity.ok(cartService.getUserCart(uid))
+        val cartItems = cartService.getUserCart(principal.uid)
+        return if (cartItems.isEmpty()) ResponseEntity.noContent().build()
+        else {
+            val cartResponseModels = cartItems.map {
+                cartMapperV1.mapToCartResponse(it)
+            }
+            ResponseEntity.ok(cartResponseModels)
+        }
     }
 
     /**

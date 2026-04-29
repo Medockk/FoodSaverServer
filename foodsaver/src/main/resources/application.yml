@@ -20,11 +20,11 @@ spring:
     password: ${SPRING_DATASOURCE_PASSWORD}
     driver-class-name: org.postgresql.Driver
     hikari:
-      maximum-pool-size: 10
-      minimum-idle: 0
+      maximum-pool-size: 10 # by default 10
+      minimum-idle: 0 # by default minimum-idle == maximum-pool-size
       idle-timeout: 10000
       max-lifetime: 30000
-      connection-timeout: 20000
+      connection-timeout: 20000 # by default 30 seconds
 
   jpa:
     hibernate:
@@ -114,14 +114,20 @@ langchain4j:
       temperature: 0.1
       timeout: 90s
 
+ai:
+  server:
+    protocol: http
+    address: 10.143.136.227
+    port: 8089
+
 server:
   tomcat:
     max-swallow-size: -1
     max-http-form-post-size: 10MB
     max-post-size: -1
 
-  address: 10.236.62.227
-  web-address: 10.48.224.227
+  address: 10.143.136.227
+  web-address: 10.173.196.227
   port: 8088
   web-port: 8087
   protocol: http

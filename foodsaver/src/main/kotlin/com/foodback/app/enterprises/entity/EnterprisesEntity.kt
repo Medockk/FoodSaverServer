@@ -30,4 +30,18 @@ data class EnterprisesEntity(
 
     @Column(nullable = true)
     var imageUrls: MutableList<String>? = mutableListOf(),
-)
+) {
+    override fun toString(): String {
+        return """
+            ${this::class.java.simpleName}(
+                id = $id,
+                latitude = $latitude,
+                longitude = $longitude,
+                addressName = $addressName,
+                coords = $coords,
+                organization = ${organization?.id},
+                imageUrls = $imageUrls
+            )
+        """.trimIndent()
+    }
+}

@@ -37,4 +37,16 @@ data class OrganizationEntity(
         mappedBy = "organization"
     )
     var enterprises: MutableList<EnterprisesEntity> = mutableListOf()
-)
+) {
+    override fun toString(): String {
+        return """
+            ${this::class.java.simpleName}(
+                id = $id,
+                organizationName = $organizationName,
+                owner = $owner,
+                createdAt = $createdAt,
+                enterprises = $enterprises
+            )
+        """.trimIndent()
+    }
+}

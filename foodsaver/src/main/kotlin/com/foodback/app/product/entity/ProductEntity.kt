@@ -18,7 +18,6 @@ import java.util.*
  * @param description Description of current product
  * @param cost Cost of current product
  * @param rating 5-star rating
- * @param organization Organization, whose sell current product
  * @param addedAt Date, when current product added in system
  * @param expiresAt Date, when current product expiration
  * @param count The count of current product in storage
@@ -58,6 +57,7 @@ data class ProductEntity(
     )
     var categories: MutableList<CategoryEntity> = mutableListOf(),
 
+    @Column(columnDefinition = "TEXT")
     var photoUrl: String? = null,
 
     @Column(nullable = false)
@@ -78,4 +78,27 @@ data class ProductEntity(
 
     var addedAt: Instant? = Instant.now(),
     var expiresAt: Instant? = Instant.now(),
-)
+) {
+    override fun toString(): String {
+        return """
+            ${this::class.java.simpleName}(
+                id = $id,
+                title = $title,
+                description = $description,
+                cost = $cost,
+                constUnit = $costUnit,
+                rating = $rating,
+                count = $count,
+                categories = $categories,
+                photoUrl = $photoUrl,
+                unit = $unit,
+                unitName = $unitName,
+                enterprise = $enterprise,
+                cartItemEntity = $cartItemEntity,
+                ingredients = $ingredients,
+                addedAt = $addedAt,
+                expiresAt = $expiresAt
+            )
+        """.trimIndent()
+    }
+}

@@ -52,6 +52,7 @@ class GlobalExceptionHandler: HandlerExceptionResolver {
     fun handleGeneralException(
         exception: Exception
     ): ResponseEntity<GlobalErrorResponse> {
+        exception.printStackTrace()
         return ResponseEntity
             .status(HttpStatus.INTERNAL_SERVER_ERROR)
             .body(
@@ -69,6 +70,7 @@ class GlobalExceptionHandler: HandlerExceptionResolver {
      */
     @ExceptionHandler(IOException::class)
     fun handleIOException(exception: IOException): ResponseEntity<GlobalErrorResponse> {
+        exception.printStackTrace()
         return ResponseEntity
             .status(HttpStatus.BAD_GATEWAY)
             .body(
@@ -86,6 +88,7 @@ class GlobalExceptionHandler: HandlerExceptionResolver {
      */
     @ExceptionHandler(SocketException::class)
     fun handleSocketException(exception: SocketException): ResponseEntity<GlobalErrorResponse> {
+        exception.printStackTrace()
         return ResponseEntity
             .status(HttpStatus.BAD_GATEWAY)
             .body(
@@ -103,6 +106,7 @@ class GlobalExceptionHandler: HandlerExceptionResolver {
      */
     @ExceptionHandler(TimeoutException::class)
     fun handleTimeoutException(exception: TimeoutException): ResponseEntity<GlobalErrorResponse> {
+        exception.printStackTrace()
         return ResponseEntity
             .status(HttpStatus.GATEWAY_TIMEOUT)
             .body(
@@ -120,6 +124,7 @@ class GlobalExceptionHandler: HandlerExceptionResolver {
      */
     @ExceptionHandler(EOFException::class)
     fun handleEOFException(exception: EOFException): ResponseEntity<GlobalErrorResponse> {
+        exception.printStackTrace()
         return ResponseEntity
             .status(HttpStatus.INTERNAL_SERVER_ERROR)
             .body(
