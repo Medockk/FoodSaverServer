@@ -6,6 +6,8 @@ plugins {
 
     id("org.jetbrains.kotlin.plugin.jpa") version "2.2.0"
     kotlin("plugin.allopen") version "2.2.0"
+
+    kotlin("kapt")
 }
 
 allOpen {
@@ -14,9 +16,8 @@ allOpen {
     annotation("jakarta.persistence.Embeddable")
 }
 
-group = "com.foodback"
+group = "com.foodback.feature.product"
 version = "0.0.1-SNAPSHOT"
-description = "Demo project for Spring Boot"
 
 
 java {
@@ -31,17 +32,14 @@ repositories {
 }
 
 dependencies {
-
-    implementation(project(":core"))
-    implementation(project(":core:coreCommon"))
     implementation(project(":core:coreMedia"))
     implementation(project(":core:coreSecurity"))
+    implementation(project(":core:coreCommon"))
 
-    implementation(project(":feature"))
-    implementation(project(":feature:featureRestaurant"))
-    implementation(project(":feature:featureCompany"))
-    implementation(project(":feature:featureUsers"))
-    implementation(project(":feature:featureProduct"))
+    //mapstruct to map dto's
+    implementation("org.mapstruct:mapstruct:1.5.5.Final")
+    kapt("org.mapstruct:mapstruct-processor:1.5.5.Final")
+    implementation("org.mapstruct:mapstruct-processor:1.5.5.Final")
 
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-websocket")
@@ -49,43 +47,11 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-security")
 
-    /*JWT*/
-    implementation("io.jsonwebtoken:jjwt-api:0.12.5")
-    runtimeOnly("io.jsonwebtoken:jjwt-impl:0.12.5")
-    runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.12.5")
-    /*JWT*/
-
-    /*OAUTH2*/
-    //implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
-    //implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
-    /*OAUTH2*/
-
-    /*Email Sender*/
-    implementation("org.springframework.boot:spring-boot-starter-mail")
-    /*Email Sender*/
-
-    /*Google*/
-    implementation("com.google.api-client:google-api-client:2.8.1")
-    implementation("com.google.firebase:firebase-admin:9.8.0")
-    /*Google*/
-
-    implementation("org.springframework.boot:spring-boot-starter-webflux")
-    //implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
-
     // supports for kotlin coroutines!!
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor") // особенно это для работы Spring'а
-    /**
-     * AI model dependencies
-     */
-    implementation("dev.langchain4j:langchain4j:0.36.2")
-    implementation("dev.langchain4j:langchain4j-spring-boot-starter:0.36.2")
-    implementation("dev.langchain4j:langchain4j-ollama-spring-boot-starter:0.36.2")
 
     runtimeOnly("org.postgresql:postgresql")
-    // for GPS cords
-    implementation("org.hibernate.orm:hibernate-spatial")
-    implementation("org.locationtech.jts:jts-core:1.19.0")
 
     //swagger
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.2")
