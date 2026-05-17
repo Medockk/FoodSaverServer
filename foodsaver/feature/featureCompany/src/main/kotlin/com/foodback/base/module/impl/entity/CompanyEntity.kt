@@ -22,6 +22,8 @@ internal class CompanyEntity(
     var ownerFullName: String = "",
     @Column(name = "owner_user_id")
     var ownerId: UUID? = null,
+
+    @Column(columnDefinition = "TEXT")
     var logoUri: String? = null,
 
     @CreatedDate

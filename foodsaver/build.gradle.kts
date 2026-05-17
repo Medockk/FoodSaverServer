@@ -33,21 +33,29 @@ repositories {
 dependencies {
 
     implementation(project(":core"))
+    implementation(project(":core:coreEvent"))
     implementation(project(":core:coreCommon"))
     implementation(project(":core:coreMedia"))
     implementation(project(":core:coreSecurity"))
 
     implementation(project(":feature"))
+    implementation(project(":feature:featureOrder"))
+    implementation(project(":feature:featurePaymentMethod"))
+    implementation(project(":feature:featureIngredients"))
+    implementation(project(":feature:featureMediaConfig"))
     implementation(project(":feature:featureRestaurant"))
     implementation(project(":feature:featureCompany"))
     implementation(project(":feature:featureUsers"))
     implementation(project(":feature:featureProduct"))
+    implementation(project(":feature:featureCategory"))
+    implementation(project(":feature:featureCart"))
 
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-websocket")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-security")
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
 
     /*JWT*/
     implementation("io.jsonwebtoken:jjwt-api:0.12.5")
@@ -110,4 +118,14 @@ kotlin {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+tasks.withType<JavaExec> {
+    jvmArgs("-Dfile.encoding=UTF-8")
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    compilerOptions {
+        freeCompilerArgs.add("-Xjsr305=strict")
+    }
 }

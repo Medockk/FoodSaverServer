@@ -35,6 +35,10 @@ dependencies {
     implementation(project(":core:coreMedia"))
     implementation(project(":core:coreSecurity"))
     implementation(project(":core:coreCommon"))
+    implementation(project(":core:coreEvent"))
+
+    implementation(project(":feature:featureRestaurant"))
+    implementation(project(":feature:featureCategory"))
 
     //mapstruct to map dto's
     implementation("org.mapstruct:mapstruct:1.5.5.Final")

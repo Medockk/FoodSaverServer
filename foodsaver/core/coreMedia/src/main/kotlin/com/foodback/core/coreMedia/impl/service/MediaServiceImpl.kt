@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Primary
 import org.springframework.stereotype.Service
 import java.nio.file.Files
 import java.nio.file.Paths
+import java.nio.file.StandardCopyOption
 import java.util.UUID
 
 @Service
@@ -30,6 +31,18 @@ internal class MediaServiceImpl(
         Files.write(targetFile, bytes)
 
         return "$folder/$fileName"
+    }
+
+    override fun moveFromTemp(tempUri: String, newFolder: String): String {
+        val fileName = tempUri.substringAfterLast("/")
+        val sourcePath = Paths.get(mediaRootPath, tempUri)
+        val targetFolder = Paths.get(mediaRootPath, newFolder)
+        val targetPath = targetFolder.resolve(fileName)
+
+        Files.createDirectories(targetFolder)
+
+        Files.move(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING)
+        return "$newFolder/$fileName"
     }
 
     override fun delete(relativeUrl: String) {

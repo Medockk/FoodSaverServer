@@ -7,6 +7,8 @@ import jakarta.servlet.http.Cookie
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.security.access.AccessDeniedException
+import org.springframework.security.web.csrf.CsrfToken
+import org.springframework.security.web.csrf.CsrfTokenRepository
 import org.springframework.web.filter.OncePerRequestFilter
 import java.util.*
 
@@ -15,7 +17,8 @@ import java.util.*
  */
 internal class CsrfTokenFilter(
     private val accessDeniedHandler: CustomAccessDeniedHandler,
-    private val securityConfigurationCustomizers: List<SecurityConfigurationCustomizer>
+    private val securityConfigurationCustomizers: List<SecurityConfigurationCustomizer>,
+    private val csrfTokenRepository: CsrfTokenRepository
 ) : OncePerRequestFilter() {
 
     private val cookieName = "XSRF-TOKEN"
@@ -30,44 +33,66 @@ internal class CsrfTokenFilter(
         filterChain: FilterChain
     ) {
 
-        val path = request.requestURI
-        val isPublicPath = securityConfigurationCustomizers
-            .flatMap {
-                it.getPublicPaths()
-            }.any {
-                path.startsWith(it.replace("/**", ""))
-            }
-        println("CSRF-TOKEN-FILTER: isPublicPath: $isPublicPath")
+//        val path = request.requestURI
+//        val isPublicPath = securityConfigurationCustomizers
+//            .flatMap {
+//                it.getPublicPaths()
+//            }.any {
+//                path.startsWith(it.replace("/**", ""))
+//            }
+//        println("CSRF-TOKEN-FILTER: isPublicPath: $isPublicPath")
+//
+//        val safeMethods = listOf("GET", "HEAD", "OPTIONS", "TRACE")
+//        val isSafeMethods = safeMethods.contains(request.method)
+//        println("CSRF-TOKEN-FILTER: isSafeMethods: $isSafeMethods")
+//
+//
+//        if (!isPublicPath && !isSafeMethods) {
+//            val cookie = request.cookies?.find { it.name == cookieName } ?: run {
+//                accessDeniedHandler.handle(
+//                    request,
+//                    response,
+//                    AccessDeniedException("Failed to exact CSRF-token from cookies")
+//                )
+//                return
+//            }
+//            val header = request.getHeader(headerName) ?: run {
+//                accessDeniedHandler.handle(
+//                    request,
+//                    response,
+//                    AccessDeniedException("Failed to exact CSRF-token from header")
+//                )
+//                return
+//            }
+//
+//            if (cookie.value != header) {
+//                accessDeniedHandler.handle(request, response, AccessDeniedException("CSRF-token not equal"))
+//                return
+//            }
+//        }
+//
+//        if (shouldGenerateToken()) {
+//            response.generateCsrfToken(request)
+//        }
+//
+//        filterChain.doFilter(request, response)
 
-        val safeMethods = listOf("GET", "HEAD", "OPTIONS", "TRACE")
-        val isSafeMethods = safeMethods.contains(request.method)
-        println("CSRF-TOKEN-FILTER: isSafeMethods: $isSafeMethods")
 
+        var token = csrfTokenRepository.loadToken(request)
+        println("CSRF load token ${token?.token}")
+        if (token == null && shouldGenerateToken(request)) {
+            println("CSRF token null and shouldGenerateToken: true")
+            token = csrfTokenRepository.generateToken(request)
+            csrfTokenRepository.saveToken(token, request, response)
+            println("CSRF load new token ${csrfTokenRepository.loadToken(request)?.token}")
+        }
 
-        if (!isPublicPath && !isSafeMethods) {
-            val cookie = request.cookies?.find { it.name == cookieName } ?: run {
-                accessDeniedHandler.handle(
-                    request,
-                    response,
-                    AccessDeniedException("Failed to exact CSRF-token from cookies")
-                )
-                return
-            }
-            val header = request.getHeader(headerName) ?: run {
-                accessDeniedHandler.handle(
-                    request,
-                    response,
-                    AccessDeniedException("Failed to exact CSRF-token from header")
-                )
-                return
-            }
+        if (token != null) {
+            request.setAttribute(CsrfToken::class.java.name, token)
+            request.setAttribute(token.parameterName, token)
 
-            if (cookie.value != header) {
-                accessDeniedHandler.handle(request, response, AccessDeniedException("CSRF-token not equal"))
-                return
-            }
-
-            response.generateCsrfToken(request)
+            response.setHeader(headerName, token.token)
+            println("CSRF token not null. Successful set attributes and header")
         }
 
         filterChain.doFilter(request, response)
@@ -89,5 +114,12 @@ internal class CsrfTokenFilter(
         }
         this.addCookie(cookie)
         return token
+    }
+
+    private fun shouldGenerateToken(request: HttpServletRequest): Boolean {
+        val path = request.requestURI
+        return path.contains("auth/login") ||
+                path.contains("auth/signup") ||
+                path.contains("/refreshToken")
     }
 }

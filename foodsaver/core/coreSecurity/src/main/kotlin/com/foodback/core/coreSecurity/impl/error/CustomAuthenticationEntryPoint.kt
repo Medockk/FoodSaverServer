@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component
 /**
  * Custom handler for 401 HTTP-error
  */
-@Component
+@Component // выбрасывает именно это исключение!
 internal class CustomAuthenticationEntryPoint : AuthenticationEntryPoint {
 
     override fun commence(

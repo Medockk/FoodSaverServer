@@ -20,6 +20,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository
+import org.springframework.security.web.csrf.CsrfTokenRepository
+import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository
 
 /**
  * Security class to configure permissions and main security configurations
@@ -63,6 +66,14 @@ internal class SecurityConfig(
         }
     }
 
+    @Bean
+    fun csrfTokenRepository(): CsrfTokenRepository {
+        val repository = CookieCsrfTokenRepository.withHttpOnlyFalse()
+        repository.setCookieName("XSRF-TOKEN")
+        repository.setHeaderName("X-XSRF-TOKEN")
+        return repository
+    }
+
     /**
      * Method to authorize HTTP requests for all users or some roles,
      * add JwtAuthenticationFilter before [UsernamePasswordAuthenticationFilter],
@@ -74,7 +85,8 @@ internal class SecurityConfig(
         http: HttpSecurity,
         jwtAuthenticationFilter: JwtAuthenticationFilter,
         authHandler: CustomAuthenticationEntryPoint,
-        accessDeniedHandler: CustomAccessDeniedHandler
+        accessDeniedHandler: CustomAccessDeniedHandler,
+        csrfTokenRepository: CsrfTokenRepository,
     ): SecurityFilterChain {
 
         val publicPaths = securityConfigurationCustomizers
@@ -96,7 +108,14 @@ internal class SecurityConfig(
                     .anyRequest().authenticated()
             }
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
-            .addFilterAfter(CsrfTokenFilter(accessDeniedHandler, securityConfigurationCustomizers), JwtAuthenticationFilter::class.java)
+            .addFilterAfter(
+                CsrfTokenFilter(
+                    accessDeniedHandler,
+                    securityConfigurationCustomizers,
+                    csrfTokenRepository
+                ),
+                JwtAuthenticationFilter::class.java
+            )
         return http.build()
     }
 }

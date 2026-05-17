@@ -190,6 +190,17 @@ class GlobalExceptionHandler: HandlerExceptionResolver {
             )
     }
 
+    @ExceptionHandler(AccessDeniedException::class)
+    fun handleAccessDeniedException(ex: AccessDeniedException): ResponseEntity<GlobalErrorResponse> {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(
+            GlobalErrorResponse(
+                error = "Forbidden",
+                message = "У вас недостаточно прав: ${ex.message}",
+                httpCode = 403
+            )
+        )
+    }
+
     override fun resolveException(
         request: HttpServletRequest,
         response: HttpServletResponse,

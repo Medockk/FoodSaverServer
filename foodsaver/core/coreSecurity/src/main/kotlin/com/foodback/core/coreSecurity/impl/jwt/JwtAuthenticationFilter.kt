@@ -31,12 +31,14 @@ internal class JwtAuthenticationFilter(
     ) {
         val idToken = exactToken(request) ?: run {
             // если токена нет мы пропускаем запрос дальше
+            println("JWT token doesn't exist. Continue filter chain")
             filterChain.doFilter(request, response)
             return
         }
 
         try {
             if (jwtUtil.validateToken(idToken)) {
+                println("JWT token is valid")
                 val username = jwtUtil.getUsername(idToken)
                 val user = userDetailsService.findByUsername(username)
                     ?: throw Exception("User not found")
@@ -55,9 +57,11 @@ internal class JwtAuthenticationFilter(
             // до SecurityConfig -> JwtFilter даже на публичных путях не будет работать!!!
         } catch (e: Exception) {
             // то же самое
+            println("JWT exception...")
             e.printStackTrace()
         }
 
+        println("Checking JWT token is ending")
         filterChain.doFilter(request, response)
     }
 

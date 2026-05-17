@@ -20,8 +20,12 @@ internal class UserEntity(
     @Id
     @UuidGenerator(style = UuidGenerator.Style.RANDOM)
     val uid: UUID? = null,
+    
     val username: String = "",
     var email: String = "",
+    @Column(nullable = false)
+    var fullName: String = "",
+
     var passwordHash: String? = null,
 
     @ElementCollection(fetch = FetchType.EAGER)
@@ -32,6 +36,5 @@ internal class UserEntity(
 
     var restaurantId: UUID? = null,
     var googleId: String? = null,
-    var fullName: String? = null,
     var imageUri: String? = null,
 )

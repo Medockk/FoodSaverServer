@@ -1,5 +1,7 @@
 package com.foodback.core.coreCommon.api.error
 
+import io.swagger.v3.oas.annotations.media.Schema
+
 /**
  * Global Error Response body
  * @param error Current Error Type
@@ -8,10 +10,12 @@ package com.foodback.core.coreCommon.api.error
  * @param serverErrorCode Custom HTTP response code of error
  * @param timestamp Time, when current error was called
  */
+@Schema(name = "GlobalErrorResponse", description = "Общий формат ответа с ошибкой")
 data class GlobalErrorResponse(
     val error: String,
     val message: String,
     val httpCode: Int,
+
     val serverErrorCode: Int = 0,
     val timestamp: Long = System.currentTimeMillis(),
 ) {

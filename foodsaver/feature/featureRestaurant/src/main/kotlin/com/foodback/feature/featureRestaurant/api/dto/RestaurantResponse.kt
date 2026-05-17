@@ -14,4 +14,5 @@ data class RestaurantResponse(
     val latitude: Double,
     val longitude: Double,
     val addressName: String,
+    val companyId: UUID,
 )

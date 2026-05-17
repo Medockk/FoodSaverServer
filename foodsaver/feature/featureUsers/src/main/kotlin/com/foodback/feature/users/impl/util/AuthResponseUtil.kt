@@ -1,7 +1,7 @@
 package com.foodback.feature.users.impl.util
 
 import com.foodback.core.coreSecurity.api.service.JwtService
-import com.foodback.feature.users.api.dto.AuthResponse
+import com.foodback.feature.users.api.dto.auth.AuthResponse
 import com.foodback.feature.users.impl.entity.UserEntity
 import org.springframework.stereotype.Service
 

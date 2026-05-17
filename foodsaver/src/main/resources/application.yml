@@ -114,6 +114,15 @@ langchain4j:
       temperature: 0.1
       timeout: 90s
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info
+  endpoint:
+    health:
+      show-details: always
+
 ai:
   server:
     protocol: http
@@ -121,12 +130,13 @@ ai:
     port: 8089
 
 server:
+  forward-headers-strategy: framework # чтобы MediaUriMapperService мог получить внешний url, на котором он запущен
   tomcat:
     max-swallow-size: -1
     max-http-form-post-size: 10MB
     max-post-size: -1
 
-  address: 172.17.233.227
+  address: 10.195.66.227
   web-address: 10.173.196.227
   port: 8088
   web-port: 8087

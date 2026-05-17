@@ -5,4 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository
 import java.util.UUID
 
 internal interface RestaurantRepository: JpaRepository<RestaurantEntity, UUID> {
+
+    fun findAllByNameContainingIgnoreCase(name: String): List<RestaurantEntity>
+
+    fun findAllByIsSuggestedTrue(): List<RestaurantEntity>
 }
