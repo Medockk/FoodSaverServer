@@ -16,7 +16,7 @@ allOpen {
     annotation("jakarta.persistence.Embeddable")
 }
 
-group = "com.foodback.feature.users"
+group = "com.foodback.feature.address"
 version = "0.0.1-SNAPSHOT"
 
 
@@ -34,11 +34,10 @@ repositories {
 dependencies {
     implementation(project(":core:coreSecurity"))
     implementation(project(":core:coreCommon"))
-    implementation(project(":core:coreMedia"))
-    implementation(project(":feature:featureAddress"))
 
-    // oauth2
-    implementation("com.google.api-client:google-api-client:2.8.1")
+    // coords
+    implementation("org.hibernate.orm:hibernate-spatial")
+    implementation("org.locationtech.jts:jts-core:1.19.0")
 
     //mapstruct to map dto's
     implementation("org.mapstruct:mapstruct:1.5.5.Final")

@@ -1,8 +1,10 @@
 package com.foodback.feature.users.impl.repository
 
-import com.foodback.feature.users.impl.entity.UserEntity
+import com.foodback.feature.users.impl.entity.ProfileEntity
 import org.springframework.data.jpa.repository.JpaRepository
-import java.util.UUID
+import java.util.*
 
-internal interface ProfileRepository: JpaRepository<UserEntity, UUID> {
+internal interface ProfileRepository: JpaRepository<ProfileEntity, UUID> {
+
+
 }

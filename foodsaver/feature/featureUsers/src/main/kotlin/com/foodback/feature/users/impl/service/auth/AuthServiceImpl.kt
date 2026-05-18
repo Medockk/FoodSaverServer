@@ -4,8 +4,10 @@ import com.foodback.core.coreSecurity.api.dto.UserRole
 import com.foodback.feature.users.api.dto.auth.AuthResponse
 import com.foodback.feature.users.api.dto.auth.LoginRequest
 import com.foodback.feature.users.api.dto.auth.SignupRequest
+import com.foodback.feature.users.api.dto.proifle.CreateProfileRequest
 import com.foodback.feature.users.api.service.auth.AuthService
-import com.foodback.feature.users.impl.entity.UserEntity
+import com.foodback.feature.users.api.service.profile.WriteProfileService
+import com.foodback.feature.users.impl.entity.AuthEntity
 import com.foodback.feature.users.impl.exception.auth.UserAlreadyRegisteredException
 import com.foodback.feature.users.impl.exception.auth.UserNotFoundException
 import com.foodback.feature.users.impl.repository.AuthRepository
@@ -18,7 +20,9 @@ import org.springframework.transaction.annotation.Transactional
 internal class AuthServiceImpl(
     private val authRepository: AuthRepository,
     private val passwordEncoder: PasswordEncoder,
-    private val authResponseUtil: AuthResponseUtil
+    private val authResponseUtil: AuthResponseUtil,
+    
+    private val writeProfileService: WriteProfileService
 ) : AuthService {
 
     override fun login(request: LoginRequest): AuthResponse {
@@ -50,15 +54,23 @@ internal class AuthServiceImpl(
             .encode(request.password)
             ?: throw IllegalArgumentException()
 
-        val entityRequest = UserEntity(
+        val entityRequest = AuthEntity(
             username = request.email,
             passwordHash = passwordHash,
-            fullName = request.fullName,
             email = request.email,
             roles = mutableListOf(UserRole.USER)
         )
 
         val savedEntity = authRepository.save(entityRequest)
+        writeProfileService.createProfile(
+            request = CreateProfileRequest(
+                userId = savedEntity.uid!!,
+                fullName = request.fullName,
+                phone = null,
+                bio = null,
+                imageUri = null
+            )
+        )
         return authResponseUtil.buildAuthResponse(savedEntity)
     }
 

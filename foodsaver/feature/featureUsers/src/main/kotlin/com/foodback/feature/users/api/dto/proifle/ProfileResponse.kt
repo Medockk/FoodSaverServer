@@ -8,5 +8,12 @@ data class ProfileResponse(
     val fullName: String,
     val imageUri: String?,
     val restaurantId: UUID?,
-    val authorities: List<String>
+    val authorities: List<String>,
+
+    val phone: String?,
+    val bio: String?,
+
+    val addressIds: List<UUID>,
+    val currentAddressId: UUID?,
+    val currentPaymentMethodId: UUID?
 )

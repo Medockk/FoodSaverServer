@@ -2,8 +2,10 @@ package com.foodback.feature.users.impl.service.auth
 
 import com.foodback.feature.users.api.dto.auth.AuthResponse
 import com.foodback.feature.users.api.dto.auth.GoogleRequest
+import com.foodback.feature.users.api.dto.proifle.CreateProfileRequest
 import com.foodback.feature.users.api.service.auth.AuthGoogleService
-import com.foodback.feature.users.impl.entity.UserEntity
+import com.foodback.feature.users.api.service.profile.WriteProfileService
+import com.foodback.feature.users.impl.entity.AuthEntity
 import com.foodback.feature.users.impl.exception.auth.InvalidGoogleTokenException
 import com.foodback.feature.users.impl.repository.AuthRepository
 import com.foodback.feature.users.impl.util.AuthResponseUtil
@@ -15,7 +17,8 @@ import org.springframework.transaction.annotation.Transactional
 internal class AuthGoogleServiceImpl(
     private val authRepository: AuthRepository,
     private val authResponseUtil: AuthResponseUtil,
-    private val verifier: GoogleIdTokenVerifier
+    private val verifier: GoogleIdTokenVerifier,
+    private val writeProfileService: WriteProfileService
 ): AuthGoogleService {
 
     @Transactional
@@ -45,15 +48,23 @@ internal class AuthGoogleServiceImpl(
 
         // это новый пользовать
         // хэш пароль - null, т.к. он только регается без пароля
-        val newUserEntity = UserEntity(
+        val newAuthEntity = AuthEntity(
             username = payload.email,
             email = payload.email,
-            fullName = payload["name"] as String,
             passwordHash = null,
-            googleId = googleId,
-            imageUri = payload["picture"] as? String // это абсолютная ссылка на сервера Гугла
+            googleId = googleId
         )
-        val savedUserEntity = authRepository.save(newUserEntity)
-        return authResponseUtil.buildAuthResponse(savedUserEntity)
+        val savedAuthEntity = authRepository.save(newAuthEntity)
+        writeProfileService.createProfile(
+            request = CreateProfileRequest(
+                userId = savedAuthEntity.uid!!,
+                fullName = payload["name"] as? String ?: "",
+                phone = null,
+                bio = null,
+                imageUri = payload["picture"] as? String
+            )
+        )
+
+        return authResponseUtil.buildAuthResponse(savedAuthEntity)
     }
 }

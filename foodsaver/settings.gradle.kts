@@ -7,6 +7,7 @@ pluginManagement {
 rootProject.name = "FoodSaverServer"
 
 include("feature")
+include("feature:featureAddress")
 include("feature:featureOrder")
 include("feature:featurePaymentMethod")
 include("feature:featureIngredients")
