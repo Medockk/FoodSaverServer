@@ -24,7 +24,10 @@ internal class AuthGoogleServiceImpl(
     @Transactional
     override fun authorizeWithGoogle(request: GoogleRequest): AuthResponse {
         val idToken = verifier.verify(request.googleId)
-            ?: throw InvalidGoogleTokenException()
+            ?: run {
+                println("Google id token is not verified")
+                throw InvalidGoogleTokenException()
+            }
 
         val payload = idToken.payload
         val googleId = payload.subject

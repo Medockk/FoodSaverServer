@@ -10,5 +10,6 @@ enum class Permission {
     EDIT_RESTAURANT,
     DELETE_RESTAURANT,
 
-    ADD_CATEGORY
+    ADD_CATEGORY,
+    EDIT_CATEGORY
 }

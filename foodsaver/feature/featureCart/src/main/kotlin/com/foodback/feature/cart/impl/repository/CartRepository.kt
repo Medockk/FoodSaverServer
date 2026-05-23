@@ -9,4 +9,6 @@ internal interface CartRepository: JpaRepository<CartEntity, UUID> {
 
     fun findByUserId(userId: UUID): CartEntity?
     fun findByUserIdAndCartItemsId(userId: UUID, cartItemId: UUID): Optional<CartEntity>
+
+    fun deleteByIdAndUserId(id: UUID, userId: UUID)
 }

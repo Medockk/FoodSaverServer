@@ -2,8 +2,10 @@ package com.foodback.feature.featureProduct.impl.controller
 
 import com.foodback.core.coreSecurity.api.dto.SecurityPrincipal
 import com.foodback.feature.featureProduct.api.dto.AddProductRequest
+import com.foodback.feature.featureProduct.api.dto.Currencies
 import com.foodback.feature.featureProduct.api.dto.EditProductRequest
 import com.foodback.feature.featureProduct.api.dto.ProductResponse
+import com.foodback.feature.featureProduct.api.dto.UploadImageResponse
 import com.foodback.feature.featureProduct.api.dto.UploadProductImageRequest
 import com.foodback.feature.featureProduct.api.service.ReadProductService
 import com.foodback.feature.featureProduct.api.service.WriteProductService
@@ -37,6 +39,12 @@ internal class ProductController(
 
         return ResponseEntity
             .ok(product)
+    }
+
+    @GetMapping("/currencies")
+    fun getAllCurrencies(): ResponseEntity<List<Currencies>> {
+        val currencies = Currencies.entries
+        return ResponseEntity.ok(currencies)
     }
 
     @GetMapping("/ids")
@@ -119,7 +127,7 @@ internal class ProductController(
         imageExtension: String?,
         @AuthenticationPrincipal
         principal: SecurityPrincipal
-    ): ResponseEntity<String> {
+    ): ResponseEntity<UploadImageResponse> {
         val restaurantId = principal.restaurantId
             ?: return ResponseEntity.status(HttpStatus.FORBIDDEN)
                 .build()
@@ -156,5 +164,16 @@ internal class ProductController(
         val products = readProductService.getSuggestedProducts()
         return if (products.isEmpty()) ResponseEntity.noContent().build()
         else ResponseEntity.ok(products)
+    }
+
+    @DeleteMapping("/delete")
+    @PreAuthorize("hasAuthority('DELETE_PRODUCT')")
+    fun deleteProduct(
+        @RequestParam id: UUID,
+        @AuthenticationPrincipal
+        principal: SecurityPrincipal
+    ): ResponseEntity<Unit> {
+        writeProductService.deleteProduct(id, principal.restaurantId)
+        return ResponseEntity.ok().build()
     }
 }

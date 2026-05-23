@@ -24,6 +24,21 @@ internal class IngredientsServiceImpl(
         return ingredientsMapper.toResponse(ingredient)
     }
 
+    override fun getAllIngredients(): List<IngredientResponse> {
+        val ingredients = ingredientsRepository
+            .findAll()
+
+        return ingredients.map {
+            ingredientsMapper.toResponse(it)
+        }
+    }
+
+    override fun getIngredientsByIds(ids: List<UUID>): List<IngredientResponse> {
+        val ingredients = ingredientsRepository.findAllById(ids)
+
+        return ingredients.map { ingredientsMapper.toResponse(it) }
+    }
+
     override fun addIngredient(request: AddIngredientRequest): IngredientResponse {
         val entity = ingredientsMapper.toEntity(request)
         val ingredient = ingredientsRepository

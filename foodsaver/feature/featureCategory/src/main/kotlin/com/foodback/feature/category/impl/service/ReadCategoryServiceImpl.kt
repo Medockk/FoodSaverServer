@@ -7,6 +7,7 @@ import com.foodback.feature.category.impl.repository.CategoryRepository
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
+import java.util.UUID
 
 @Service
 internal class ReadCategoryServiceImpl(
@@ -15,16 +16,23 @@ internal class ReadCategoryServiceImpl(
 ): ReadCategoryService {
 
     override fun getAllCategories(): List<CategoryResponse> {
-        return categoryRepository.findAll()
+        return categoryRepository.findAllByIsDeletedFalse()
             .map {
                 categoryMapper.toResponse(it)
             }
     }
 
     override fun getAllCategories(pageable: Pageable): Page<CategoryResponse> {
-        return categoryRepository.findAll(pageable)
+        return categoryRepository.findAllByIsDeletedFalse(pageable)
             .map {
                 categoryMapper.toResponse(it)
             }
+    }
+
+    override fun getCategoryById(id: UUID): CategoryResponse {
+        val category = categoryRepository.findById(id)
+            .orElseThrow()
+
+        return categoryMapper.toResponse(category)
     }
 }

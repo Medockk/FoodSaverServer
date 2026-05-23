@@ -13,6 +13,8 @@ internal class GoogleAuthConfig(
     private val androidGoogleId: String,
     @Value($$"${spring.security.oauth2.client.registration.google.client-id.desktop}")
     private val desktopGoogleId: String,
+    @Value($$"${spring.security.oauth2.client.registration.google.client-id.ios}")
+    private val iosGoogleId: String,
     @Value($$"${spring.security.oauth2.client.registration.google.client-id.web}")
     private val webGoogleId: String,
 ) {
@@ -23,7 +25,7 @@ internal class GoogleAuthConfig(
         val jsonFactory = GsonFactory()
 
         return GoogleIdTokenVerifier.Builder(transport, jsonFactory)
-            .setAudience(listOf(androidGoogleId, desktopGoogleId, webGoogleId))
+            .setAudience(listOf(androidGoogleId, desktopGoogleId, webGoogleId, iosGoogleId))
             .build()
     }
 }

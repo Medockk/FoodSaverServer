@@ -32,6 +32,25 @@ internal class IngredientsController(
         return ResponseEntity.ok(ingredient)
     }
 
+    @GetMapping("/ids")
+    fun getIngredientsByIds(
+        @RequestParam
+        ids: List<UUID>
+    ): ResponseEntity<List<IngredientResponse>> {
+        val ingredients = readIngredientsService.getIngredientsByIds(ids)
+
+        return if (ingredients.isEmpty()) ResponseEntity.noContent().build()
+        else ResponseEntity.ok(ingredients)
+    }
+
+    @GetMapping("/all")
+    fun getAllIngredients(): ResponseEntity<List<IngredientResponse>> {
+        val ingredients = readIngredientsService.getAllIngredients()
+
+        return if (ingredients.isEmpty()) ResponseEntity.noContent().build()
+        else ResponseEntity.ok(ingredients)
+    }
+
     @PreAuthorize("hasAuthority('ADD_CATEGORY')")
     @PostMapping("/add")
     fun addIngredient(

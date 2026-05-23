@@ -18,6 +18,7 @@ include("feature:featureUsers")
 include("feature:featureProduct")
 include("feature:featureCategory")
 include("feature:featureCart")
+include("feature:featureAi")
 
 include(":core")
 include(":core:coreEvent")

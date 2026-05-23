@@ -1,11 +1,11 @@
-package com.foodback.features.ai.service
+package com.foodback.feature.ai.impl.service
 
 import dev.langchain4j.service.SystemMessage
 import dev.langchain4j.service.TokenStream
 import dev.langchain4j.service.spring.AiService
 
 @AiService
-interface AiServiceAnalyst {
+internal interface AiIngredientsServiceAnalyst {
 
     @SystemMessage(
         """
@@ -25,4 +25,25 @@ interface AiServiceAnalyst {
     """
     )
     fun analyzeIngredients(ingredients: String): TokenStream
+
+    @SystemMessage(
+        """
+        Ты — профессиональный пищевой технолог и нутрициолог. 
+        Твоя задача: анализировать состав продуктов питания на русском языке.
+        Отвечай ТОЛЬКО на русском языке.
+        
+        Е250 — это Нитрит натрия. Это ВЫСОКИЙ уровень опасности (канцероген, фиксатор окраски в колбасах).
+        Сахар — СРЕДНИЙ уровень опасности (риск диабета и ожирения).
+        Подсолнечное масло — НИЗКИЙ уровень опасности (но калорийно).
+        
+        Ты ОБЯЗАН ответить строго в формате JSON, соответствующем следующей структуре:
+        {
+            "name": "Название ингредиента",
+            "dangerLevel": "Низкий" или "Средний" или "Высокий",
+            "explanation": "Краткое пояснение"
+        }
+        Никакого другого текста, кроме этого JSON, выводить нельзя.
+    """
+    )
+    fun analyzeIngredientsJson(ingredients: String): TokenStream
 }

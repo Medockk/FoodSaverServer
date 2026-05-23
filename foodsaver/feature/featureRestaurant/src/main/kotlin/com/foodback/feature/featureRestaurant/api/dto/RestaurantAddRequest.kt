@@ -7,7 +7,7 @@ data class RestaurantAddRequest(
 
     val name: String,
     val description: String,
-    val photoUri: String,
+    val photoUris: List<String>,
 
     val rating: Double? = null,
     val averageDeliveryTime: Double? = null,

@@ -96,8 +96,11 @@ internal class WriteCartServiceImpl(
         cartItemEntity.quantity = if (request.newQuantity < 1L) {
             1L
         } else request.newQuantity
-
         return cartItemMapper.toResponse(cartItemEntity)
+    }
+
+    override fun clearCart(userId: UUID, cartId: UUID) {
+        cartRepository.deleteByIdAndUserId(cartId, userId)
     }
 
     private fun checkUser(userId: UUID, cartItemId: UUID) {

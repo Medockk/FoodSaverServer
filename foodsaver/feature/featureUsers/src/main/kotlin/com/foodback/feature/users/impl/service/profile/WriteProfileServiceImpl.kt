@@ -11,7 +11,7 @@ import com.foodback.feature.users.impl.repository.AuthRepository
 import com.foodback.feature.users.impl.repository.ProfileRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.util.UUID
+import java.util.*
 
 @Service
 internal class WriteProfileServiceImpl(

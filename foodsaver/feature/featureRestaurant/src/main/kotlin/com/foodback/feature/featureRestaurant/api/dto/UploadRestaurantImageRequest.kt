@@ -3,7 +3,7 @@ package com.foodback.feature.featureRestaurant.api.dto
 import java.util.UUID
 
 data class UploadRestaurantImageRequest(
-    val restaurantId: UUID,
+    val restaurantId: UUID?,
     val image: ByteArray,
     val imageExtension: String?
 ) {

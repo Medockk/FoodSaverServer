@@ -28,7 +28,7 @@ internal abstract class ProfileMapper {
 
     @Mapping(target = "currentAddressId", ignore = true)
     @Mapping(target = "currentPaymentMethodId", ignore = true)
-    @Mapping(target = "addressIds", ignore = true)
+    @Mapping(target = "addressIds", expression = "java(new java.util.ArrayList<>())")
     abstract fun toEntity(request: CreateProfileRequest): ProfileEntity
 
     @Named(value = "rolesToAuthorities")

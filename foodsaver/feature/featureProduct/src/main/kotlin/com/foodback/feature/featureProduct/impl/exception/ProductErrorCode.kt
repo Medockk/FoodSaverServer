@@ -7,6 +7,7 @@ import com.foodback.core.coreCommon.api.errorCode.ServerErrorCode
  */
 internal enum class ProductErrorCode(override val code: Int): ServerErrorCode {
 
-    PRODUCT_NOT_FOUND(12_001)
+    PRODUCT_NOT_FOUND(12_001),
+    PRODUCT_NOT_FRESH(12_002)
 }
 

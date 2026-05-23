@@ -39,6 +39,7 @@ internal abstract class ProductMapper {
             }
         }
 
+        println("Map imageUris for Product. Result: $absoluteUris")
         return absoluteUris
     }
 }

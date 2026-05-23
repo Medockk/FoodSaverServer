@@ -1,6 +1,7 @@
-package com.foodback.features.ai.service
+package com.foodback.feature.ai.impl.service
 
-import com.foodback.features.ai.dto.ImageAnalyzeResponse
+import com.foodback.feature.ai.api.dto.ImageAnalyzeResponse
+import com.foodback.feature.ai.api.service.AiImageAnalyzerService
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.MediaType
 import org.springframework.http.client.MultipartBodyBuilder
@@ -10,20 +11,20 @@ import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.client.awaitBody
 
 @Service
-class AiImageAnalyzerService(
+internal class AiImageAnalyzerServiceImpl(
     @Value($$"${ai.server.address}")
     private val aiServerAddress: String,
     @Value($$"${ai.server.port}")
     private val aiServerPort: String,
     @Value($$"${ai.server.protocol}")
     private val aiServerProtocol: String,
-) {
+): AiImageAnalyzerService {
 
     private val webClient = WebClient
         .create()
     private val aiUri = "$aiServerProtocol://$aiServerAddress:$aiServerPort"
 
-    suspend fun analyzeImage(image: ByteArray, imageName: String): ImageAnalyzeResponse {
+    override suspend fun analyzeImage(image: ByteArray, imageName: String): ImageAnalyzeResponse {
         val bodyBuilder = MultipartBodyBuilder()
         bodyBuilder.part("file", image)
             .filename(imageName)

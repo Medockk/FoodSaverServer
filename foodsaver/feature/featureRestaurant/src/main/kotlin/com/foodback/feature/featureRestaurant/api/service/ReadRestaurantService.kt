@@ -10,5 +10,7 @@ interface ReadRestaurantService {
     fun getAllRestaurants(pageable: Pageable): Page<RestaurantResponse>
     fun getRestaurantById(id: UUID): RestaurantResponse?
 
+    fun getRestaurantsByIds(ids: List<UUID>): List<RestaurantResponse>
+
     fun getSuggestedRestaurants(): List<RestaurantResponse>
 }

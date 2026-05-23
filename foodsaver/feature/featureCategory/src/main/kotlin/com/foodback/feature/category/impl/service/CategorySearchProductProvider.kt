@@ -11,7 +11,9 @@ internal class CategorySearchProductProvider(
 ): SearchProductProvider {
 
     override fun findProductIds(query: String): List<UUID> {
-        return categoryRepository.findAllByNameContainingIgnoreCase(query)
+        val categories = categoryRepository.findAllByNameContainingIgnoreCaseAndIsDeletedFalse(query)
             .mapNotNull { it.id }
+        println("Searched categories $categories")
+        return categories
     }
 }

@@ -4,6 +4,7 @@ import com.foodback.core.coreSecurity.api.dto.Permission
 import com.foodback.core.coreSecurity.api.dto.SecurityPrincipal
 import com.foodback.feature.featureRestaurant.api.dto.RestaurantAddRequest
 import com.foodback.feature.featureRestaurant.api.dto.RestaurantResponse
+import com.foodback.feature.featureRestaurant.api.dto.UpdateRestaurantRequest
 import com.foodback.feature.featureRestaurant.api.dto.UploadRestaurantImageRequest
 import com.foodback.feature.featureRestaurant.api.service.ReadRestaurantService
 import com.foodback.feature.featureRestaurant.api.service.WriteRestaurantService
@@ -16,8 +17,10 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.annotation.AuthenticationPrincipal
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
@@ -62,6 +65,13 @@ internal class RestaurantController(
         }
     }
 
+    @GetMapping("/ids")
+    fun getRestaurantsByIds(@RequestParam ids: List<UUID>): ResponseEntity<List<RestaurantResponse>> {
+        val response = readRestaurantService.getRestaurantsByIds(ids)
+        return if (response.isEmpty()) ResponseEntity.noContent().build()
+        else ResponseEntity.ok(response)
+    }
+
     @PostMapping("/add")
     @PreAuthorize("hasAuthority('ADD_RESTAURANT')")
     fun addRestaurant(
@@ -75,18 +85,16 @@ internal class RestaurantController(
     }
 
     @PostMapping("/uploadImage")
-    @PreAuthorize("hasAuthority('ADD_RESTAURANT')")
+    @PreAuthorize("hasAuthority('ADD_RESTAURANT') OR hasAuthority('EDIT_RESTAURANT')")
     fun uploadRestaurantImage(
         @RequestPart
         image: MultipartFile,
-        @RequestParam
-        restaurantId: UUID,
+        @RequestParam(required = false)
+        restaurantId: UUID?,
         @AuthenticationPrincipal
         principal: SecurityPrincipal
     ): ResponseEntity<String> {
-        val userRestaurantId = principal
-            .restaurantId
-            ?: return ResponseEntity.status(HttpStatus.FORBIDDEN).build()
+        val userRestaurantId = principal.restaurantId
 
         val imageExtension = image
             .originalFilename
@@ -109,5 +117,22 @@ internal class RestaurantController(
         val restaurants = readRestaurantService.getSuggestedRestaurants()
         return if (restaurants.isEmpty()) ResponseEntity.noContent().build()
         else ResponseEntity.ok(restaurants)
+    }
+
+    @PutMapping("/update")
+    @PreAuthorize("hasAuthority('EDIT_RESTAURANT')")
+    fun updateRestaurant(
+        @RequestBody
+        request: UpdateRestaurantRequest
+    ): ResponseEntity<RestaurantResponse> {
+        val response = writeRestaurantService.updateRestaurant(request)
+        return ResponseEntity.ok(response)
+    }
+
+    @DeleteMapping("/delete")
+    @PreAuthorize("hasAuthority('DELETE_RESTAURANT')")
+    fun deleteRestaurant(@RequestParam id: UUID): ResponseEntity<Unit> {
+        writeRestaurantService.deleteRestaurant(id)
+        return ResponseEntity.ok().build()
     }
 }

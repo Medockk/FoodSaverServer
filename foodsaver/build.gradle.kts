@@ -50,6 +50,7 @@ dependencies {
     implementation(project(":feature:featureProduct"))
     implementation(project(":feature:featureCategory"))
     implementation(project(":feature:featureCart"))
+    implementation(project(":feature:featureAi"))
 
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-websocket")

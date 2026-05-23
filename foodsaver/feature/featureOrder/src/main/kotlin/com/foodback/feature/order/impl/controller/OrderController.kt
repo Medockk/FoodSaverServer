@@ -3,9 +3,11 @@ package com.foodback.feature.order.impl.controller
 import com.foodback.core.coreSecurity.api.dto.SecurityPrincipal
 import com.foodback.feature.order.api.dto.OrderResponse
 import com.foodback.feature.order.api.service.ReadOrderService
+import com.foodback.feature.order.api.service.WriteOrderService
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -13,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/api/v1/order")
 internal class OrderController(
     private val readOrderService: ReadOrderService,
-//    private val writeOrderService: WriteOrderService
+    private val writeOrderService: WriteOrderService
 ) {
 
     @GetMapping("/my")
@@ -26,5 +28,12 @@ internal class OrderController(
 
         return if (orders.isEmpty()) ResponseEntity.noContent().build()
         else ResponseEntity.ok(orders)
+    }
+
+    @PostMapping("/makeOrder")
+    fun makeOrder(@AuthenticationPrincipal principal: SecurityPrincipal): ResponseEntity<List<OrderResponse>> {
+        val response = writeOrderService.createOrder(principal.uid)
+        return if (response.isEmpty()) ResponseEntity.noContent().build()
+        else ResponseEntity.ok(response)
     }
 }

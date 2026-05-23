@@ -38,6 +38,7 @@ internal class OrderEntity(
     @Column(nullable = false)
     var status: OrderStatus = OrderStatus.CREATED,
 
+    @Column(columnDefinition = "TEXT")
     var restaurantImageUri: String? = null,
 
     @Column(nullable = false)
@@ -49,7 +50,7 @@ internal class OrderEntity(
     @Column(nullable = false)
     var orderSize: Int = 0,
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     var trackNumber: String = "",
 
     @CreatedDate

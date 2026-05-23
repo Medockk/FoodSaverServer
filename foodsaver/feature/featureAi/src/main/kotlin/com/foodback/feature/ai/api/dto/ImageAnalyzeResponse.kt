@@ -1,4 +1,4 @@
-package com.foodback.features.ai.dto
+package com.foodback.feature.ai.api.dto
 
 import com.fasterxml.jackson.annotation.JsonProperty
 

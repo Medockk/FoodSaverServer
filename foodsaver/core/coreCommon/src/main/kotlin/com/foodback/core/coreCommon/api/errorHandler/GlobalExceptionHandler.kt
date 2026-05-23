@@ -49,9 +49,7 @@ class GlobalExceptionHandler: HandlerExceptionResolver {
      * @return [GlobalErrorResponse] - Response of error type
      */
     @ExceptionHandler(Exception::class)
-    fun handleGeneralException(
-        exception: Exception
-    ): ResponseEntity<GlobalErrorResponse> {
+    fun handleGeneralException(exception: Exception): ResponseEntity<GlobalErrorResponse> {
         exception.printStackTrace()
         return ResponseEntity
             .status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -137,9 +135,7 @@ class GlobalExceptionHandler: HandlerExceptionResolver {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException::class)
-    fun handleMethodArgument(
-        e: MethodArgumentNotValidException
-    ): ResponseEntity<GlobalErrorResponse> {
+    fun handleMethodArgument(e: MethodArgumentNotValidException): ResponseEntity<GlobalErrorResponse> {
         e.printStackTrace()
         val error = e.bindingResult.allErrors.joinToString(separator = "; ") {
             "${it.defaultMessage}"
@@ -169,9 +165,7 @@ class GlobalExceptionHandler: HandlerExceptionResolver {
     }
 
     @ExceptionHandler(GlobalError::class)
-    fun handleGlobalError(
-        e: GlobalError
-    ): ResponseEntity<GlobalErrorResponse> {
+    fun handleGlobalError(e: GlobalError): ResponseEntity<GlobalErrorResponse> {
         e.printStackTrace()
 
         val httpStatus = e.httpStatus

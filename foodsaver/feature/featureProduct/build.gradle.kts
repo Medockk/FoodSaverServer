@@ -39,6 +39,7 @@ dependencies {
 
     implementation(project(":feature:featureRestaurant"))
     implementation(project(":feature:featureCategory"))
+    implementation(project(":feature:featureIngredients"))
 
     //mapstruct to map dto's
     implementation("org.mapstruct:mapstruct:1.5.5.Final")

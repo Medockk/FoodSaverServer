@@ -11,7 +11,8 @@ enum class UserRole(val permissions: Set<Permission>) {
         Permission.DELETE_RESTAURANT,
         Permission.ADD_RESTAURANT,
         Permission.DELETE_PRODUCT,
-        Permission.ADD_CATEGORY
+        Permission.ADD_CATEGORY,
+        Permission.EDIT_CATEGORY
     )),
     MANAGER(setOf(
         Permission.ADD_PRODUCT,

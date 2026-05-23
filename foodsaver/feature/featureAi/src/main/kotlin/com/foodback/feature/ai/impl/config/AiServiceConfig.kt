@@ -1,4 +1,4 @@
-package com.foodback.features.ai.config
+package com.foodback.feature.ai.impl.config
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

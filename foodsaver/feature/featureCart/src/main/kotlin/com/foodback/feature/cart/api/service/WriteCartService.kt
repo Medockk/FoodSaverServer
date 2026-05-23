@@ -10,4 +10,6 @@ interface WriteCartService {
     fun addCartItem(request: AddCartItemRequest, userId: UUID): CartItemResponse
     fun deleteCartItem(cartItemId: UUID, userId: UUID)
     fun changeQuantity(request: ChangeQuantityRequest, userId: UUID): CartItemResponse
+
+    fun clearCart(userId: UUID, cartId: UUID)
 }
