@@ -39,6 +39,8 @@ dependencies {
     implementation(project(":core:coreSecurity"))
 
     implementation(project(":feature"))
+    implementation(project(":feature:featureExpiration"))
+    implementation(project(":feature:featureNotification"))
     implementation(project(":feature:featureAddress"))
     implementation(project(":feature:featureOrder"))
     implementation(project(":feature:featurePaymentMethod"))

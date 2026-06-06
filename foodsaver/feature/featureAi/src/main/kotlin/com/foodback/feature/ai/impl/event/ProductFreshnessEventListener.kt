@@ -21,7 +21,7 @@ internal class ProductFreshnessEventListener(
                 )
 
                 event.result = ValidateProductFreshnessEvent.FreshnessResult(
-                    isFresh = if (response.confidence < 85.0) true else response.isFresh,
+                    isFresh = if (response.confidence < 85.0) false else response.isFresh,
                     label = response.label,
                     confidence = response.confidence,
                     action = response.action

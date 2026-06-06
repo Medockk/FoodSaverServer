@@ -107,6 +107,7 @@ internal class WriteProductServiceImpl(
             imageName = "food_image.${request.imageExtension ?: "png"}"
         )
         applicationEventPublisher.publishEvent(event)
+        println("AI Result ${event.result}")
 
         val aiResult = event.result
             ?: throw ProductNotFreshException()

@@ -26,6 +26,19 @@ internal class ReadCartServiceImpl(
     private val productService: ReadProductService
 ) : ReadCartService {
 
+    override fun getProductIdsInCart(userId: UUID): List<ProductInCartResponse> {
+        val products = cartRepository
+            .findByUserId(userId)
+            ?: return emptyList()
+
+        return products.cartItems.map {
+            ProductInCartResponse(
+                productId = it.productId!!,
+                cartItemId = it.id!!
+            )
+        }
+    }
+
     override fun getCartByUserId(userId: UUID): CartResponse? {
 
         try {
@@ -87,16 +100,5 @@ internal class ReadCartServiceImpl(
         }
     }
 
-    override fun getProductIdsInCart(userId: UUID): List<ProductInCartResponse> {
-        val products = cartRepository
-            .findByUserId(userId)
-            ?: return emptyList()
 
-        return products.cartItems.map {
-            ProductInCartResponse(
-                productId = it.productId!!,
-                cartItemId = it.id!!
-            )
-        }
-    }
 }
