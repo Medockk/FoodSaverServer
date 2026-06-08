@@ -102,18 +102,18 @@ internal class WriteProductServiceImpl(
     override fun uploadImage(request: UploadProductImageRequest, userRestaurantId: UUID?): UploadImageResponse {
         checkPermissions(request.restaurantId, userRestaurantId)
 
-        val event = ValidateProductFreshnessEvent(
-            image = request.image,
-            imageName = "food_image.${request.imageExtension ?: "png"}"
-        )
-        applicationEventPublisher.publishEvent(event)
-        println("AI Result ${event.result}")
-
-        val aiResult = event.result
-            ?: throw ProductNotFreshException()
-        if (!aiResult.isFresh) {
-            throw ProductNotFreshException()
-        }
+//        val event = ValidateProductFreshnessEvent(
+//            image = request.image,
+//            imageName = "food_image.${request.imageExtension ?: "png"}"
+//        )
+//        applicationEventPublisher.publishEvent(event)
+//        println("AI Result ${event.result}")
+//
+//        val aiResult = event.result
+//            ?: throw ProductNotFreshException()
+//        if (!aiResult.isFresh) {
+//            throw ProductNotFreshException()
+//        }
 
         // checking for new product
         val folder = if (request.productId != null) {

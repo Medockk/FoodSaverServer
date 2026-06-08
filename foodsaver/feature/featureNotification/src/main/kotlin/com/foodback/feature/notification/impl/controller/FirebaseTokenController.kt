@@ -21,6 +21,7 @@ internal class FirebaseTokenController(
         @AuthenticationPrincipal
         principal: SecurityPrincipal
     ) {
+        println("Update token \n${request.token}\n")
         userPushTokenService.updateFirebaseToken(
             principal.uid,
             request.token

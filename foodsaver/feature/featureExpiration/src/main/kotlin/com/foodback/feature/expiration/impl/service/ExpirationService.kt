@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component
 import java.sql.Timestamp
 import java.time.Duration
 import java.time.Instant
+import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
 
 @Component
@@ -26,10 +27,10 @@ class ExpirationService(
         val now = Instant.now()
         val threshold = now.plus(Duration.ofHours(2L))
 
-        log.debug("Сканирование истекающих продуктов через Native SQL...")
+        log.info("Сканирование истекающих продуктов через Native SQL...")
 
         val sql = """
-            SELECT t.firebase_token AS token, p.name AS product_name
+            SELECT t.firebase_token AS token, p.name AS product_name, p.id AS product_id
             FROM public.cart_items ci
             JOIN public.carts c ON ci.cart_id = c.id
             JOIN public.products p ON ci.product_id = p.id
@@ -49,11 +50,13 @@ class ExpirationService(
         val alerts = jdbcTemplate.query(sql, params) { rs, _ ->
             ExpirationAlert(
                 token = rs.getString("token"),
-                productName = rs.getString("product_name")
+                productName = rs.getString("product_name"),
+                productId = UUID.fromString(rs.getString("product_id"))
             )
         }
 
         if (alerts.isEmpty()) {
+            log.info("Nothing not found in cart.")
             if (sentNotificationsCache.isNotEmpty()) {
                 sentNotificationsCache.clear()
             }
@@ -62,7 +65,7 @@ class ExpirationService(
 
         // Отправляем пуши
         alerts.forEach { alert ->
-            val cacheKey = "${alert.token}_${alert.productName}"
+            val cacheKey = "${alert.token}_${alert.productId}"
 
             if (!sentNotificationsCache.contains(cacheKey)) {
                 log.info("Отправка push-уведомления для токена ...${alert.token.takeLast(8)}")
@@ -71,8 +74,8 @@ class ExpirationService(
                     recipient = alert.token,
                     message = "Продукт '${alert.productName}' в вашей корзине скоро спишется по сроку годности! Успейте заказать ⏳",
                     metadata = mapOf(
-                        "click_action" to "open_cart",
-                        "type" to "expiration_alert"
+                        "product_id" to alert.productId.toString(),
+                        "product_name" to alert.productName
                     )
                 )
 
